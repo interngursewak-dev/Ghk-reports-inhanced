@@ -18,6 +18,8 @@
       --orange-light:#fef3c7;
       --red:         #dc2626;
       --red-light:   #fee2e2;
+      --teal:        #0891b2;
+      --teal-light:  #e0f2fe;
       --text:        #111827;
       --muted:       #6b7280;
       --border:      #e5e7eb;
@@ -73,7 +75,7 @@
     .user-avatar{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;}
     .logout-btn{font-size:12px;color:var(--muted);cursor:pointer;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--white);transition:color .15s,border-color .15s;}
     .logout-btn:hover{color:var(--red);border-color:#fca5a5;}
-    main{max-width:960px;margin:0 auto;padding:28px 20px 60px;}
+    main{max-width:1100px;margin:0 auto;padding:28px 20px 60px;}
     .section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:14px;}
 
     /* ── HOME ── */
@@ -92,10 +94,12 @@
     .school-card h2{font-size:20px;font-weight:700;margin-bottom:8px;}
     .school-card p{font-size:14px;color:var(--muted);line-height:1.5;}
     .school-card .count{margin-top:18px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;}
-    .dash-btn{display:inline-flex;align-items:center;gap:5px;margin-top:12px;padding:6px 12px;font-size:12px;font-weight:600;border-radius:7px;border:none;cursor:pointer;transition:opacity .15s;}
+    .dash-btn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:6px 12px;font-size:12px;font-weight:600;border-radius:7px;border:none;cursor:pointer;transition:opacity .15s;}
     .school-card.blue .dash-btn{background:var(--blue-light);color:var(--blue);}
     .school-card.purple .dash-btn{background:var(--purple-light);color:var(--purple);}
     .dash-btn:hover{opacity:.75;}
+    .home-allreports-btn{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:24px;padding:14px 24px;background:linear-gradient(135deg,#0891b2,#1a56db);color:white;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:opacity .18s,transform .12s;width:100%;}
+    .home-allreports-btn:hover{opacity:.9;transform:translateY(-1px);}
 
     /* ── REPORT TYPES ── */
     .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);cursor:pointer;margin-bottom:22px;padding:6px 0;}
@@ -163,7 +167,7 @@
     .view.active{display:block;}
 
     /* ══════════════════════════════════════════════════════
-       DASHBOARD
+       CLASSIC DASHBOARD
     ══════════════════════════════════════════════════════ */
     .dash-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
     .dash-topbar-title{display:flex;align-items:center;gap:12px;}
@@ -172,8 +176,6 @@
     .dash-school-pill.purple{background:var(--purple-light);color:var(--purple);}
     .dash-topbar h1{font-size:22px;font-weight:800;}
     .dash-topbar p{font-size:13px;color:var(--muted);margin-top:3px;}
-
-    /* Stat cards */
     .dash-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:28px;}
     .kpi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;position:relative;overflow:hidden;}
     .kpi-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px;}
@@ -182,6 +184,7 @@
     .kpi-card.k-green::after{background:var(--green);}
     .kpi-card.k-orange::after{background:var(--orange);}
     .kpi-card.k-red::after{background:var(--red);}
+    .kpi-card.k-teal::after{background:var(--teal);}
     .kpi-icon{font-size:18px;margin-bottom:8px;}
     .kpi-value{font-size:28px;font-weight:800;line-height:1;}
     .kpi-label{font-size:12px;color:var(--muted);margin-top:5px;}
@@ -190,8 +193,7 @@
     .kpi-card.k-green .kpi-value{color:var(--green);}
     .kpi-card.k-orange .kpi-value{color:var(--orange);}
     .kpi-card.k-red .kpi-value{color:var(--red);}
-
-    /* Report type sections */
+    .kpi-card.k-teal .kpi-value{color:var(--teal);}
     .dash-sections{display:flex;flex-direction:column;gap:20px;}
     .dash-sec{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
     .dash-sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);}
@@ -201,8 +203,6 @@
     .browse-link{font-size:12px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:var(--bg);transition:all .15s;text-decoration:none;}
     .browse-link.blue:hover{color:var(--blue);border-color:var(--blue);background:var(--blue-light);}
     .browse-link.purple:hover{color:var(--purple);border-color:var(--purple);background:var(--purple-light);}
-
-    /* Frequency status bar */
     .dash-freq-bar{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
     .freq-status-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 11px;border-radius:20px;border:1px solid var(--border);cursor:pointer;transition:all .15s;background:var(--bg);}
     .freq-status-chip .dot{width:7px;height:7px;border-radius:50%;}
@@ -213,8 +213,6 @@
     .freq-status-chip:hover{border-color:#9ca3af;}
     .freq-status-chip.blue:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
     .freq-status-chip.purple:hover{background:var(--purple-light);border-color:var(--purple);color:var(--purple);}
-
-    /* Latest files in each section */
     .dash-latest-files{padding:0 20px 16px;}
     .dash-latest-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding-top:14px;margin-bottom:8px;}
     .dash-file-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);cursor:pointer;transition:background .1s;}
@@ -230,7 +228,20 @@
     .mini-spin{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
     .no-files-note{padding:12px 20px 16px;font-size:13px;color:var(--muted);}
 
-    /* ── Analyze-by-date panel (inside Files view) ── */
+    /* ── LIVE SHEET DATA PANEL inside dashboard sections ── */
+    .sheet-data-panel{padding:0 20px 16px;}
+    .sheet-data-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding-top:14px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+    .sheet-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:12px;}
+    .sheet-kpi{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center;}
+    .sheet-kpi .sv{font-size:22px;font-weight:800;color:var(--text);}
+    .sheet-kpi .sl{font-size:11px;color:var(--muted);margin-top:2px;}
+    .sheet-kpi.green .sv{color:var(--green);}
+    .sheet-kpi.red .sv{color:var(--red);}
+    .sheet-kpi.orange .sv{color:var(--orange);}
+    .sheet-kpi.blue .sv{color:var(--blue);}
+    .sheet-kpi.purple .sv{color:var(--purple);}
+
+    /* ── Analyze panel ── */
     .analyze-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
     .analyze-controls{display:flex;gap:10px;align-items:center;margin-bottom:6px;flex-wrap:wrap;}
     .analyze-date-input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;}
@@ -259,6 +270,92 @@
     table.arc-table tr:first-child{background:var(--bg);font-weight:600;}
     .arc-open-btn{font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg);cursor:pointer;margin-top:4px;}
 
+    /* ══════════════════════════════════════════════════════
+       ALL-REPORTS DASHBOARD VIEW
+    ══════════════════════════════════════════════════════ */
+    #all-reports-view .ard-header{background:linear-gradient(135deg,#0891b2,#1a56db);color:white;padding:28px 0 24px;border-radius:var(--radius);margin-bottom:28px;text-align:center;}
+    #all-reports-view .ard-header h1{font-size:26px;font-weight:800;margin-bottom:6px;}
+    #all-reports-view .ard-header p{font-size:14px;opacity:.85;}
+    .ard-school-tabs{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;}
+    .ard-school-tab{padding:9px 20px;border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;}
+    .ard-school-tab.active.blue{background:var(--blue);color:white;border-color:var(--blue);}
+    .ard-school-tab.active.purple{background:var(--purple);color:white;border-color:var(--purple);}
+    .ard-school-tab:hover{border-color:#9ca3af;}
+    .ard-report-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+    .ard-rtype-btn{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;}
+    .ard-rtype-btn:hover{border-color:#9ca3af;}
+    .ard-rtype-btn.active.blue{background:var(--blue-light);color:var(--blue);border-color:var(--blue);}
+    .ard-rtype-btn.active.purple{background:var(--purple-light);color:var(--purple);border-color:var(--purple);}
+    .ard-panels{display:grid;grid-template-columns:1fr;gap:20px;}
+    .ard-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+    .ard-panel-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .ard-panel-head h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .ard-panel-body{padding:20px;}
+    .ard-loading{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;padding:20px;}
+
+    /* Sheet data table in ARD */
+    .ard-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px;margin-top:14px;}
+    table.ard-table{width:100%;border-collapse:collapse;font-size:13px;}
+    table.ard-table th{background:var(--bg);padding:8px 12px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;}
+    table.ard-table td{padding:8px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+    table.ard-table tr:last-child td{border-bottom:none;}
+    table.ard-table tr:hover td{background:var(--bg);}
+    .status-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+    .status-badge.present{background:var(--green-light);color:var(--green);}
+    .status-badge.absent{background:var(--red-light);color:var(--red);}
+    .status-badge.late{background:var(--orange-light);color:var(--orange);}
+    .status-badge.leave{background:var(--purple-light);color:var(--purple);}
+
+    /* ══════════════════════════════════════════════════════
+       COMPARISON VIEW
+    ══════════════════════════════════════════════════════ */
+    #comparison-view .cmp-header{margin-bottom:24px;}
+    #comparison-view .cmp-header h1{font-size:22px;font-weight:800;}
+    #comparison-view .cmp-header p{font-size:13px;color:var(--muted);margin-top:4px;}
+    .cmp-setup{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:22px;}
+    .cmp-setup h3{font-size:16px;font-weight:700;margin-bottom:16px;}
+    .cmp-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+    @media(max-width:600px){.cmp-row{grid-template-columns:1fr;}}
+    .cmp-period{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;}
+    .cmp-period h4{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+    .cmp-period h4 .period-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .cmp-period h4 .period-dot.a{background:var(--blue);}
+    .cmp-period h4 .period-dot.b{background:var(--orange);}
+    .cmp-field{margin-bottom:10px;}
+    .cmp-field label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;}
+    .cmp-field input,.cmp-field select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;outline:none;}
+    .cmp-field input:focus,.cmp-field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+    .cmp-run-btn{padding:10px 24px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;transition:opacity .15s;}
+    .cmp-run-btn:hover{opacity:.88;}
+    .cmp-results{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;}
+    @media(max-width:600px){.cmp-results{grid-template-columns:1fr;}}
+    .cmp-result-card{background:var(--white);border:2px solid var(--border);border-radius:var(--radius);padding:18px;}
+    .cmp-result-card.a{border-color:var(--blue);}
+    .cmp-result-card.b{border-color:var(--orange);}
+    .cmp-result-card h4{font-size:14px;font-weight:700;margin-bottom:14px;}
+    .cmp-result-card h4.a{color:var(--blue);}
+    .cmp-result-card h4.b{color:var(--orange);}
+    .cmp-stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed var(--border);}
+    .cmp-stat-row:last-child{border-bottom:none;}
+    .cmp-stat-label{font-size:13px;color:var(--muted);}
+    .cmp-stat-value{font-size:15px;font-weight:700;}
+    .cmp-diff-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:22px;}
+    .cmp-diff-card h3{font-size:16px;font-weight:700;margin-bottom:16px;}
+    .cmp-diff-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px;margin-bottom:6px;background:var(--bg);}
+    .cmp-diff-label{font-size:13px;font-weight:600;}
+    .cmp-diff-change{font-size:13px;font-weight:700;display:flex;align-items:center;gap:4px;}
+    .cmp-diff-change.up{color:var(--green);}
+    .cmp-diff-change.down{color:var(--red);}
+    .cmp-diff-change.neutral{color:var(--muted);}
+    .cmp-bar-wrap{margin-top:8px;}
+    .cmp-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+    .cmp-bar-label{font-size:12px;width:80px;flex-shrink:0;color:var(--muted);}
+    .cmp-bar-track{flex:1;background:var(--border);border-radius:3px;height:8px;overflow:hidden;}
+    .cmp-bar-fill{height:100%;border-radius:3px;transition:width .5s ease;}
+    .cmp-bar-fill.a{background:var(--blue);}
+    .cmp-bar-fill.b{background:var(--orange);}
+    .cmp-bar-val{font-size:12px;font-weight:600;min-width:40px;text-align:right;}
+
     /* ── PDF share modal overlay ── */
     #pdf-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
     #pdf-modal.show{display:flex;}
@@ -275,6 +372,9 @@
     .pdf-modal-btn.download{background:var(--red);color:white;}
     .pdf-modal-btn.download:hover{opacity:.88;}
     .pdf-modal-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+    /* Utility */
+    .tag-chip{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
   </style>
 </head>
 <body>
@@ -321,7 +421,7 @@
     </div>
   </header>
 
-  <!-- Viewer -->
+  <!-- Viewer (outside main, full height) -->
   <div id="viewer-view">
     <div class="viewer-topbar">
       <span class="back" onclick="closeViewer()">&#8592;</span>
@@ -353,6 +453,8 @@
           <button class="dash-btn" onclick="event.stopPropagation();openDashboard('GHK Lab School')">📊 View Dashboard</button>
         </div>
       </div>
+      <button class="home-allreports-btn" onclick="openAllReportsDashboard()">📈 All Reports Dashboard — Live Data from Both Schools</button>
+      <button class="home-allreports-btn" style="background:linear-gradient(135deg,#7c3aed,#059669);margin-top:10px;" onclick="openComparisonView()">⚖️ Period Comparison Tool — Compare Any Two Date Ranges</button>
     </div>
 
     <!-- View 2: Report types -->
@@ -375,7 +477,7 @@
       </div>
     </div>
 
-    <!-- View 4: Dashboard -->
+    <!-- View 4: Classic Dashboard -->
     <div class="view" id="dashboard-view">
       <div class="back-btn" onclick="goHome()">&#8592; All Schools</div>
       <div class="dash-topbar">
@@ -398,6 +500,60 @@
         <div class="kpi-card k-red"><div class="kpi-icon">⚠️</div><div class="kpi-value" id="kpi-empty">—</div><div class="kpi-label">Empty Folders</div></div>
       </div>
       <div class="dash-sections" id="dash-sections"></div>
+    </div>
+
+    <!-- View 5: ALL REPORTS DASHBOARD -->
+    <div class="view" id="all-reports-view">
+      <div class="back-btn" onclick="goHome()">&#8592; Home</div>
+      <div class="ard-header">
+        <h1>📈 All Reports Dashboard</h1>
+        <p>Live data pulled directly from Google Sheets · Select school and report type</p>
+      </div>
+      <div class="ard-school-tabs">
+        <div class="ard-school-tab" id="ard-tab-ghk" onclick="ardSelectSchool('GHK School')">🏫 GHK School</div>
+        <div class="ard-school-tab" id="ard-tab-lab" onclick="ardSelectSchool('GHK Lab School')">🔬 GHK Lab School</div>
+        <div class="ard-school-tab" id="ard-tab-both" onclick="ardSelectSchool('both')">🏛️ Both Schools</div>
+      </div>
+      <div class="ard-report-selector" id="ard-report-selector"></div>
+      <div class="dash-kpi-row" id="ard-kpi-row" style="display:none"></div>
+      <div id="ard-panels"></div>
+    </div>
+
+    <!-- View 6: COMPARISON VIEW -->
+    <div class="view" id="comparison-view">
+      <div class="back-btn" onclick="goHome()">&#8592; Home</div>
+      <div class="cmp-header">
+        <h1>⚖️ Period Comparison Tool</h1>
+        <p>Compare attendance & report data across any two date ranges — monthly, weekly, or custom</p>
+      </div>
+      <div class="cmp-setup">
+        <h3>⚙️ Setup Comparison</h3>
+        <div class="cmp-field" style="margin-bottom:14px;">
+          <label>School</label>
+          <select id="cmp-school" onchange="cmpUpdateReportTypes()">
+            <option value="GHK School">GHK School</option>
+            <option value="GHK Lab School">GHK Lab School</option>
+          </select>
+        </div>
+        <div class="cmp-field" style="margin-bottom:14px;">
+          <label>Report Type</label>
+          <select id="cmp-report-type"></select>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-period">
+            <h4><span class="period-dot a"></span>Period A (baseline)</h4>
+            <div class="cmp-field"><label>From</label><input type="date" id="cmp-a-from"></div>
+            <div class="cmp-field"><label>To</label><input type="date" id="cmp-a-to"></div>
+          </div>
+          <div class="cmp-period">
+            <h4><span class="period-dot b"></span>Period B (compare)</h4>
+            <div class="cmp-field"><label>From</label><input type="date" id="cmp-b-from"></div>
+            <div class="cmp-field"><label>To</label><input type="date" id="cmp-b-to"></div>
+          </div>
+        </div>
+        <button class="cmp-run-btn" onclick="runComparison()">⚖️ Run Comparison</button>
+      </div>
+      <div id="cmp-results-container"></div>
     </div>
 
   </main>
@@ -423,8 +579,29 @@
 // ═══════════════════════════════════════════════════════
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz537pG7DTHeqCyBeJ7JG455zEDoeQnUqt-g0a-Ctgn2ZqZe8Oj-pH9_8wE0c0ixc_4/exec';
 
+// Sheet IDs from Sheet2 — maps school → report type → spreadsheet ID + sheet name.
+// NOTE: actual sheet *data* is now read server-side (Code.gs / SHEET_DATA_MAP) using
+// the script owner's permissions, so the sheets no longer need to be public. This
+// client-side copy is kept only for: (a) building the report-type option lists, and
+// (b) the "Open Source Sheet ↗" links, which need the spreadsheet ID.
+const SHEET_DATA_MAP = {
+  'GHK Lab School': {
+    'Students Attendance': { id:'1TI3PY1e6P27-7BX8QIwSuxuNq1rev9hsDE2U7xYkMsU', sheet:'Students attendence' },
+    'Team Attendance':     { id:'1B0YdYjfzpudy-hAVgTx9eoQ768orlFpjaDqa7-TjPV4', sheet:'Staff attendence' },
+    'Inventory Report':    { id:'1bRyUP7CSSOukvPdqGuQAVlszTsrmtJ8KTv6jLwQSafI', sheet:'inventory manager' },
+    'Supervisor Report':   { id:'1ATTKIXeSiCrarN2EZuOOH4dkI4BvvUwJ38lR1m5vqdc', sheet:'supervisor report' }
+  },
+  'GHK School': {
+    'Students Attendance': { id:'1l4KZ-NfSyetFxl6uX2WDNeEroLTvtXKtRcmwUwouIRU', sheet:'Students attendence' },
+    'Team Attendance':     { id:'1oaMMbOPys5fRRkOpuu4a2RzeY3POaHKW3BuC8VT2PZk', sheet:'Staff attendence' },
+    'Behaviour Report':    { id:'1alImYbGhuxyqp3QVde4WaxGFr2pGYkTKQ3OzyRFyJSs', sheet:'behaviour tracker' },
+    'Supervisor Report':   { id:'1ATTKIXeSiCrarN2EZuOOH4dkI4BvvUwJ38lR1m5vqdc', sheet:'supervisor report' },
+    'Lesson Plan Tracker': { id:'1OIlYQFjfk7UtLTy2rWTw6qYjM52M9J4m2Ue3FTm6iCw', sheet:'lessonplan tracker' }
+  }
+};
+
 // ═══════════════════════════════════════════════════════
-//  FOLDERS
+//  FOLDERS (Drive)
 // ═══════════════════════════════════════════════════════
 const FOLDERS = {
   'GHK Lab School': {
@@ -513,9 +690,9 @@ function showApp(){
 //  STATE
 // ═══════════════════════════════════════════════════════
 let state={school:null,reportType:null,frequency:null,view:'home'};
-let currentFile=null; // file object open in viewer
-let pdfData=null;     // base64 PDF data after conversion
-let analysisMatches=[]; // results from the most recent date-analysis run
+let currentFile=null;
+let pdfData=null;
+let analysisMatches=[];
 
 // ═══════════════════════════════════════════════════════
 //  HELPERS
@@ -535,6 +712,10 @@ function updateBreadcrumb(){
   p.push(`<span onclick="goHome()">Home</span>`);
   if(state.view==='dashboard'&&state.school){
     p.push(`<span class="sep">›</span><span class="active">📊 ${state.school} Dashboard</span>`);
+  } else if(state.view==='all-reports'){
+    p.push(`<span class="sep">›</span><span class="active">📈 All Reports Dashboard</span>`);
+  } else if(state.view==='comparison'){
+    p.push(`<span class="sep">›</span><span class="active">⚖️ Period Comparison</span>`);
   } else {
     if(state.school){
       p.push(`<span class="sep">›</span>`);
@@ -572,6 +753,113 @@ function getDriveUrl(id,mime,name){
   if(mime.includes('document'))    return `https://docs.google.com/document/d/${id}/edit`;
   if(mime.includes('presentation'))return `https://docs.google.com/presentation/d/${id}/edit`;
   return `https://drive.google.com/file/d/${id}/view`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  LIVE SHEET DATA — now served by the Apps Script backend
+//  (Code.gs reads via SpreadsheetApp using the script owner's
+//  permissions, so the sheets don't need to be public anymore).
+//  A small client-side cache avoids re-fetching the same sheet
+//  from several dashboard panels within a few seconds of each other.
+// ═══════════════════════════════════════════════════════
+let sheetDataCache = {}; // key: "School::ReportType" -> {rows, sheetName, ts}
+const SHEET_CACHE_TTL_MS = 90 * 1000;
+
+function sheetCacheKey(school, reportType){ return school+'::'+reportType; }
+
+async function getSheetRows(school, reportType, forceRefresh){
+  const key = sheetCacheKey(school, reportType);
+  const cached = sheetDataCache[key];
+  if(!forceRefresh && cached && (Date.now()-cached.ts) < SHEET_CACHE_TTL_MS) return cached;
+  try{
+    const data = await apiFetch(`sheetSchool=${encodeURIComponent(school)}&sheetReportType=${encodeURIComponent(reportType)}`);
+    if(data.error){ return { rows:null, error: data.message||data.error }; }
+    const entry = { rows:data.rows, sheetName:data.sheetName, ts:Date.now() };
+    sheetDataCache[key] = entry;
+    return entry;
+  }catch(e){ return { rows:null, error:e.message }; }
+}
+
+// One round trip → every report type for a school (or 'both' schools).
+// Fire this before a batch of panels render so they all read from cache.
+async function preloadSheetsBatch(schoolParam){
+  try{
+    const data = await apiFetch(`sheetsBatch=${encodeURIComponent(schoolParam)}`);
+    if(data.error||!data.data) return;
+    Object.entries(data.data).forEach(([school,rts])=>{
+      Object.entries(rts).forEach(([rt,res])=>{
+        if(res&&res.success){
+          sheetDataCache[sheetCacheKey(school,rt)] = { rows:res.rows, sheetName:res.sheetName, ts:Date.now() };
+        }
+      });
+    });
+  }catch(e){ /* individual getSheetRows calls will fall back on their own */ }
+}
+
+// Parse sheet rows into structured stats based on common column patterns
+function analyzeSheetRows(rows, fromDate, toDate) {
+  if (!rows || rows.length < 2) return null;
+  const headers = rows[0].map(h => h.toLowerCase().trim());
+  
+  // Find key column indices
+  const dateCol    = headers.findIndex(h => h.includes('date'));
+  const statusCol  = headers.findIndex(h => h.includes('status') || h.includes('attendance'));
+  const nameCol    = headers.findIndex(h => h.includes('name') || h.includes('student') || h.includes('staff') || h.includes('teacher'));
+  const classCol   = headers.findIndex(h => h.includes('class') || h.includes('section') || h.includes('grade'));
+  const remarkCol  = headers.findIndex(h => h.includes('remark') || h.includes('note') || h.includes('comment'));
+
+  let stats = { present:0, absent:0, late:0, leave:0, total:0, rows:[], headers };
+  const from = fromDate ? new Date(fromDate+'T00:00:00') : null;
+  const to   = toDate   ? new Date(toDate+'T00:00:00')   : null;
+
+  rows.slice(1).forEach(row => {
+    if (!row.some(c => c)) return;
+
+    // Date filter
+    if (dateCol >= 0 && from && to) {
+      const cellDate = parseAnyDate(row[dateCol]);
+      if (cellDate) {
+        const t = cellDate.getTime();
+        if (t < from.getTime() || t > to.getTime()) return;
+      }
+    }
+
+    stats.total++;
+    const statusVal = statusCol >= 0 ? (row[statusCol]||'').trim().toLowerCase() : '';
+    if (/^p(resent)?$/.test(statusVal)||statusVal==='p') stats.present++;
+    else if (/^a(bsent)?$/.test(statusVal)||statusVal==='a') stats.absent++;
+    else if (/^l(ate)?$/.test(statusVal)||statusVal==='l') stats.late++;
+    else if (statusVal.includes('leave')||statusVal==='lv') stats.leave++;
+    else if (statusVal) { /* unknown status */ }
+    else stats.present++; // blank status = present in some sheets
+
+    stats.rows.push(row);
+  });
+
+  stats.percentage = stats.total > 0 ? ((stats.present / stats.total) * 100).toFixed(1) : null;
+  stats.dateCol = dateCol; stats.statusCol = statusCol;
+  stats.nameCol = nameCol; stats.classCol = classCol; stats.remarkCol = remarkCol;
+  return stats;
+}
+
+function parseAnyDate(str) {
+  if (!str) return null;
+  str = str.trim();
+  // DD/MM/YYYY or DD-MM-YYYY
+  let m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (m) return new Date(+m[3], +m[2]-1, +m[1]);
+  // YYYY-MM-DD
+  m = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (m) return new Date(+m[1], +m[2]-1, +m[3]);
+  // Spreadsheet date serial (number)
+  const n = parseFloat(str);
+  if (!isNaN(n) && n > 40000 && n < 60000) {
+    // Google Sheets date serial
+    return new Date(Date.UTC(1899,11,30) + n*86400000);
+  }
+  const d = new Date(str);
+  if (!isNaN(d)) return d;
+  return null;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -631,7 +919,6 @@ function renderFreqTabs(){
     t.addEventListener('click',()=>selectFrequency(freq));
     tabs.appendChild(t);
   }
-  // NEW: extra tab that opens the date-based analysis panel
   const analyzeTab=document.createElement('div');
   analyzeTab.className='freq-tab analyze-tab'+(state.frequency==='__analyze__'?' active '+cls:'');
   analyzeTab.textContent='📅 Analyze by Date';
@@ -676,12 +963,8 @@ async function loadFiles(freq){
 }
 
 // ═══════════════════════════════════════════════════════
-//  ANALYZE BY DATE  (new feature)
-//  Scans every frequency folder of the current report type
-//  for a file matching the chosen date, opens any HTML
-//  report found, and parses out attendance-style stats.
+//  ANALYZE BY DATE
 // ═══════════════════════════════════════════════════════
-
 function renderAnalyzePanel(){
   const cls=sClass(state.school);
   const container=document.getElementById('file-list-container');
@@ -699,16 +982,13 @@ function renderAnalyzePanel(){
     <div id="analyze-results"></div>`;
 }
 
-// Try to pull an actual calendar date out of a filename (handles most common
-// naming conventions). Falls back to the file's Drive "modified" date,
-// corrected to IST, if nothing is found in the name.
 function extractDateFromFilename(name){
   const months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
   const patterns=[
-    {re:/(\d{4})[-_.](\d{2})[-_.](\d{2})/, order:'ymd'},          // 2026-06-19
-    {re:/(\d{2})[-_.](\d{2})[-_.](\d{4})/, order:'dmy'},          // 19-06-2026
-    {re:/(\d{4})(\d{2})(\d{2})(?!\d)/,    order:'ymd'},           // 20260619
-    {re:/(\d{1,2})[-_ ]([A-Za-z]{3,9})[-_ ](\d{4})/, order:'dMony'} // 19-Jun-2026
+    {re:/(\d{4})[-_.](\d{2})[-_.](\d{2})/, order:'ymd'},
+    {re:/(\d{2})[-_.](\d{2})[-_.](\d{4})/, order:'dmy'},
+    {re:/(\d{4})(\d{2})(\d{2})(?!\d)/,    order:'ymd'},
+    {re:/(\d{1,2})[-_ ]([A-Za-z]{3,9})[-_ ](\d{4})/, order:'dMony'}
   ];
   for(const p of patterns){
     const m=name.match(p.re);
@@ -728,7 +1008,7 @@ function getFileEffectiveDate(file){
   const fromName=extractDateFromFilename(file.name);
   if(fromName) return fromName;
   try{
-    const istStr=new Date(file.modified).toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'}); // YYYY-MM-DD
+    const istStr=new Date(file.modified).toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});
     const[y,m,d]=istStr.split('-').map(Number);
     return new Date(y,m-1,d);
   }catch(e){ return null; }
@@ -740,46 +1020,27 @@ function dateInRange(d,from,to){
   return t>=from.getTime() && t<=to.getTime();
 }
 
-// Generic parser: works across report types without knowing the exact template.
-// Returns THREE things so data is never silently hidden:
-//   1) stats         — best-effort Present/Absent/Late/Leave/Total/% (for KPI totals)
-//   2) tables         — actual table data pulled straight from the file, for direct display
-//   3) summaryLines   — any "Label: number" style lines found anywhere on the page
 function parseReportHTML(htmlString){
-  const result={
-    stats:{present:null,absent:null,late:null,leave:null,total:null,percentage:null},
-    tables:[],
-    summaryLines:[]
-  };
+  const result={stats:{present:null,absent:null,late:null,leave:null,total:null,percentage:null},tables:[],summaryLines:[]};
   let doc;
-  try{ doc=new DOMParser().parseFromString(htmlString,'text/html'); }
-  catch(e){ return result; }
-
+  try{ doc=new DOMParser().parseFromString(htmlString,'text/html'); }catch(e){ return result; }
   const bodyText=(doc.body?(doc.body.innerText||doc.body.textContent):'')||'';
-
   const patterns=[
-    {key:'present',    re:/present[^0-9%]{0,15}(\d+)/i},
-    {key:'absent',     re:/absent[^0-9%]{0,15}(\d+)/i},
-    {key:'late',       re:/late[^0-9%]{0,15}(\d+)/i},
-    {key:'leave',      re:/leave[^0-9%]{0,15}(\d+)/i},
-    {key:'total',      re:/total[^0-9%]{0,20}(\d+)/i},
-    {key:'percentage', re:/(\d{1,3}(?:\.\d+)?)\s*%/}
+    {key:'present',re:/present[^0-9%]{0,15}(\d+)/i},
+    {key:'absent',re:/absent[^0-9%]{0,15}(\d+)/i},
+    {key:'late',re:/late[^0-9%]{0,15}(\d+)/i},
+    {key:'leave',re:/leave[^0-9%]{0,15}(\d+)/i},
+    {key:'total',re:/total[^0-9%]{0,20}(\d+)/i},
+    {key:'percentage',re:/(\d{1,3}(?:\.\d+)?)\s*%/}
   ];
   patterns.forEach(p=>{
     const m=bodyText.match(p.re);
-    if(m) result.stats[p.key]= p.key==='percentage' ? parseFloat(m[1]) : parseInt(m[1],10);
+    if(m) result.stats[p.key]=p.key==='percentage'?parseFloat(m[1]):parseInt(m[1],10);
   });
-
-  // Grab short "Label: number" style lines anywhere on the page for direct display
   bodyText.split(/\n+/).map(s=>s.trim()).filter(Boolean).forEach(line=>{
     if(result.summaryLines.length>=10) return;
-    if(/^[A-Za-z][A-Za-z\s%/]{1,35}[:\-]\s*[\d.]+/.test(line) && line.length<70){
-      result.summaryLines.push(line);
-    }
+    if(/^[A-Za-z][A-Za-z\s%/]{1,35}[:\-]\s*[\d.]+/.test(line)&&line.length<70) result.summaryLines.push(line);
   });
-
-  // Pull every table's actual rows/cells so the real data is always visible,
-  // even if the keyword stats above didn't find anything.
   const allTables=Array.from(doc.querySelectorAll('table'));
   allTables.slice(0,4).forEach(table=>{
     const rows=Array.from(table.querySelectorAll('tr')).slice(0,16);
@@ -787,8 +1048,6 @@ function parseReportHTML(htmlString){
     const grid=rows.map(r=>Array.from(r.querySelectorAll('th,td')).map(c=>c.textContent.trim()));
     if(grid.some(r=>r.length>0)) result.tables.push(grid);
   });
-
-  // Cross-check / fallback: tally a "Status" column across ALL tables (not just the first 4)
   let tally={present:0,absent:0,late:0,leave:0,rows:0};
   allTables.forEach(table=>{
     const headerRow=table.querySelector('tr');
@@ -808,15 +1067,14 @@ function parseReportHTML(htmlString){
     });
   });
   if(tally.rows>0){
-    if(result.stats.total==null)   result.stats.total=tally.rows;
-    if(result.stats.present==null) result.stats.present=tally.present;
-    if(result.stats.absent==null)  result.stats.absent=tally.absent;
-    if(result.stats.late==null)    result.stats.late=tally.late;
-    if(result.stats.leave==null)   result.stats.leave=tally.leave;
+    if(result.stats.total==null)result.stats.total=tally.rows;
+    if(result.stats.present==null)result.stats.present=tally.present;
+    if(result.stats.absent==null)result.stats.absent=tally.absent;
+    if(result.stats.late==null)result.stats.late=tally.late;
+    if(result.stats.leave==null)result.stats.leave=tally.leave;
   }
-  if(result.stats.percentage==null && result.stats.total && result.stats.present!=null){
+  if(result.stats.percentage==null&&result.stats.total&&result.stats.present!=null)
     result.stats.percentage=parseFloat(((result.stats.present/result.stats.total)*100).toFixed(1));
-  }
   return result;
 }
 
@@ -825,20 +1083,12 @@ async function runDateAnalysis(){
   const toStr=document.getElementById('analyze-to').value;
   const resultsEl=document.getElementById('analyze-results');
   if(!fromStr||!toStr){ resultsEl.innerHTML=`<div class="state-box"><p>Please pick both a "from" and a "to" date.</p></div>`; return; }
-
   const from=new Date(fromStr+'T00:00:00');
   const to=new Date(toStr+'T00:00:00');
-  if(from.getTime()>to.getTime()){
-    resultsEl.innerHTML=`<div class="state-box"><p>"From" date must be before "To" date.</p></div>`;
-    return;
-  }
-
-  resultsEl.innerHTML=`<div class="state-box"><div class="spinner"></div><p>Scanning all frequency folders & extracting data for this range…</p></div>`;
-
+  if(from.getTime()>to.getTime()){ resultsEl.innerHTML=`<div class="state-box"><p>"From" date must be before "To" date.</p></div>`; return; }
+  resultsEl.innerHTML=`<div class="state-box"><div class="spinner"></div><p>Scanning all frequency folders & extracting data…</p></div>`;
   const sd=FOLDERS[state.school][state.reportType].folders;
   const matches=[];
-
-  // Step 1: list every folder once, keep every file whose effective date falls in range
   const candidateFiles=[];
   await Promise.all(Object.entries(sd).map(async ([freq,folderId])=>{
     try{
@@ -848,10 +1098,8 @@ async function runDateAnalysis(){
         const eff=getFileEffectiveDate(f);
         if(dateInRange(eff,from,to)) candidateFiles.push({freq,file:f,effDate:eff});
       });
-    }catch(e){ /* skip this frequency on error */ }
+    }catch(e){}
   }));
-
-  // Step 2: fetch + parse each matched HTML file (cap to avoid hammering Drive on huge ranges)
   const capped=candidateFiles.slice(0,40);
   await Promise.all(capped.map(async c=>{
     if(!isHtmlFile(c.file.mimeType,c.file.name)){
@@ -863,9 +1111,8 @@ async function runDateAnalysis(){
       if(htmlData.error) return;
       const parsed=parseReportHTML(htmlData.html);
       matches.push({freq:c.freq,file:c.file,effDate:c.effDate,stats:parsed.stats,tables:parsed.tables,summaryLines:parsed.summaryLines});
-    }catch(e){ /* skip this file on error */ }
+    }catch(e){}
   }));
-
   matches.sort((a,b)=>(a.effDate&&b.effDate)?(a.effDate-b.effDate):0);
   renderAnalysisResults(fromStr,toStr,matches,candidateFiles.length);
 }
@@ -873,107 +1120,57 @@ async function runDateAnalysis(){
 function renderAnalysisResults(fromStr,toStr,matches,totalCandidates){
   analysisMatches=matches;
   const resultsEl=document.getElementById('analyze-results');
-  const rangeLabel = fromStr===toStr
-    ? formatDate(fromStr+'T00:00:00')
-    : formatDate(fromStr+'T00:00:00')+' – '+formatDate(toStr+'T00:00:00');
-
+  const rangeLabel=fromStr===toStr?formatDate(fromStr+'T00:00:00'):formatDate(fromStr+'T00:00:00')+' – '+formatDate(toStr+'T00:00:00');
   if(matches.length===0){
-    resultsEl.innerHTML=`<div class="state-box"><div class="icon">📭</div>
-      <p>No reports found between <b>${rangeLabel}</b> in any frequency folder for ${state.reportType}.<br>
-      <small>Either no files were created in this window, or the filenames/modified-dates don't match it. Try a wider range, or open the folder directly via the frequency tabs.</small></p></div>`;
+    resultsEl.innerHTML=`<div class="state-box"><div class="icon">📭</div><p>No reports found between <b>${rangeLabel}</b>. Try a wider range.</p></div>`;
     return;
   }
-
   const cls=sClass(state.school);
   let totalPresent=0,totalAbsent=0,totalLate=0,totalLeave=0,totalRecords=0,statsFound=0;
   matches.forEach(m=>{
-    if(m.stats && m.stats.total!=null){
-      totalPresent += m.stats.present||0;
-      totalAbsent  += m.stats.absent||0;
-      totalLate    += m.stats.late||0;
-      totalLeave   += m.stats.leave||0;
-      totalRecords += m.stats.total||0;
-      statsFound++;
-    }
+    if(m.stats&&m.stats.total!=null){ totalPresent+=m.stats.present||0; totalAbsent+=m.stats.absent||0; totalLate+=m.stats.late||0; totalLeave+=m.stats.leave||0; totalRecords+=m.stats.total||0; statsFound++; }
   });
-  const avgPct = totalRecords>0 ? ((totalPresent/totalRecords)*100).toFixed(1) : null;
-
-  let html=`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Found <b>${matches.length}</b> report(s) between <b>${rangeLabel}</b>${totalCandidates>matches.length?` (showing first ${matches.length} of ${totalCandidates})`:''}.</p>`;
-
+  const avgPct=totalRecords>0?((totalPresent/totalRecords)*100).toFixed(1):null;
+  let html=`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Found <b>${matches.length}</b> report(s) for <b>${rangeLabel}</b>${totalCandidates>matches.length?` (showing first ${matches.length} of ${totalCandidates})`:''}</p>`;
   html+=`<div class="dash-kpi-row" style="margin-bottom:24px;">
     <div class="kpi-card k-blue"><div class="kpi-icon">📄</div><div class="kpi-value">${matches.length}</div><div class="kpi-label">Reports Found</div></div>
-    <div class="kpi-card k-green"><div class="kpi-icon">✅</div><div class="kpi-value">${statsFound?totalPresent:'—'}</div><div class="kpi-label">Present (total)</div></div>
-    <div class="kpi-card k-red"><div class="kpi-icon">❌</div><div class="kpi-value">${statsFound?totalAbsent:'—'}</div><div class="kpi-label">Absent (total)</div></div>
-    <div class="kpi-card k-orange"><div class="kpi-icon">⏰</div><div class="kpi-value">${statsFound?totalLate:'—'}</div><div class="kpi-label">Late (total)</div></div>
+    <div class="kpi-card k-green"><div class="kpi-icon">✅</div><div class="kpi-value">${statsFound?totalPresent:'—'}</div><div class="kpi-label">Present</div></div>
+    <div class="kpi-card k-red"><div class="kpi-icon">❌</div><div class="kpi-value">${statsFound?totalAbsent:'—'}</div><div class="kpi-label">Absent</div></div>
+    <div class="kpi-card k-orange"><div class="kpi-icon">⏰</div><div class="kpi-value">${statsFound?totalLate:'—'}</div><div class="kpi-label">Late</div></div>
     <div class="kpi-card k-purple"><div class="kpi-icon">📊</div><div class="kpi-value">${avgPct!=null?avgPct+'%':'—'}</div><div class="kpi-label">Attendance %</div></div>
-  </div>
-  <p class="section-title">Reports in this range (click any to expand the actual data)</p>`;
-
+  </div><p class="section-title">Reports in range</p>`;
   matches.forEach((m,idx)=>{
-    const dateLabel = m.effDate ? m.effDate.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
-
+    const dateLabel=m.effDate?m.effDate.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
     if(m.nonHtml){
-      html+=`<div class="analyze-result-card">
-        <div class="analyze-result-summary" onclick="openAnalysisFile(${idx})">
-          <span class="arc-icon">${getFileIcon(m.file.mimeType,m.file.name)}</span>
-          <div class="arc-meta"><h4>${m.file.name}</h4><div class="sub">${m.freq} · ${dateLabel} · non-HTML file — click to open</div></div>
-        </div>
-      </div>`;
+      html+=`<div class="analyze-result-card"><div class="analyze-result-summary" onclick="openAnalysisFile(${idx})"><span class="arc-icon">${getFileIcon(m.file.mimeType,m.file.name)}</span><div class="arc-meta"><h4>${m.file.name}</h4><div class="sub">${m.freq} · ${dateLabel}</div></div></div></div>`;
       return;
     }
-
     const s=m.stats||{};
     const badgeParts=[];
     if(s.total!=null) badgeParts.push(s.total+' records');
     if(s.present!=null) badgeParts.push('✅ '+s.present);
     if(s.absent!=null)  badgeParts.push('❌ '+s.absent);
-    if(s.late!=null)    badgeParts.push('⏰ '+s.late);
     if(s.percentage!=null) badgeParts.push(s.percentage+'%');
-    const badgeText = badgeParts.length ? badgeParts.join(' · ') : 'click to view extracted data';
-
     html+=`<details class="analyze-result-card">
-      <summary class="analyze-result-summary">
-        <span class="arc-icon">${getFileIcon(m.file.mimeType,m.file.name)}</span>
-        <div class="arc-meta"><h4>${m.file.name}</h4><div class="sub">${m.freq} · ${dateLabel} · ${badgeText}</div></div>
-      </summary>
+      <summary class="analyze-result-summary"><span class="arc-icon">${getFileIcon(m.file.mimeType,m.file.name)}</span><div class="arc-meta"><h4>${m.file.name}</h4><div class="sub">${m.freq} · ${dateLabel} · ${badgeParts.join(' · ')||'click to expand'}</div></div></summary>
       <div class="arc-body">`;
-
-    if(m.summaryLines && m.summaryLines.length){
-      html+=`<div class="arc-section-label">Summary lines found in file</div>
-        <div class="arc-summary-lines">${m.summaryLines.map(l=>`<div>${l.replace(/</g,'&lt;')}</div>`).join('')}</div>`;
-    }
-
-    if(m.tables && m.tables.length){
-      m.tables.forEach((grid,ti)=>{
-        html+=`<div class="arc-section-label">Table ${ti+1} (first ${grid.length} rows)</div><div class="arc-table-wrap"><table class="arc-table">`;
-        grid.forEach(row=>{
-          html+='<tr>'+row.map(cell=>`<td>${(cell||'').replace(/</g,'&lt;')}</td>`).join('')+'</tr>';
-        });
-        html+='</table></div>';
-      });
-    }
-
-    if((!m.summaryLines||m.summaryLines.length===0) && (!m.tables||m.tables.length===0)){
-      html+=`<p class="analyze-note">Couldn't find any tables or "Label: number" lines in this file automatically — it likely uses a layout (e.g. cards/divs without a &lt;table&gt;) this parser doesn't recognize yet. Open it directly below to see the real content.</p>`;
-    }
-
+    if(m.summaryLines&&m.summaryLines.length) html+=`<div class="arc-section-label">Summary</div><div class="arc-summary-lines">${m.summaryLines.map(l=>`<div>${l.replace(/</g,'&lt;')}</div>`).join('')}</div>`;
+    if(m.tables&&m.tables.length) m.tables.forEach((grid,ti)=>{
+      html+=`<div class="arc-section-label">Table ${ti+1}</div><div class="arc-table-wrap"><table class="arc-table">${grid.map(row=>'<tr>'+row.map(cell=>`<td>${(cell||'').replace(/</g,'&lt;')}</td>`).join('')+'</tr>').join('')}</table></div>`;
+    });
+    if((!m.summaryLines||!m.summaryLines.length)&&(!m.tables||!m.tables.length)) html+=`<p class="analyze-note">No tables found automatically — open the full report below.</p>`;
     html+=`<button class="arc-open-btn" onclick="openAnalysisFile(${idx})">↗ Open full report</button></div></details>`;
   });
-
   resultsEl.innerHTML=html;
 }
 
-function openAnalysisFile(idx){
-  const m=analysisMatches[idx];
-  if(m && m.file) openViewer(m.file);
-}
+function openAnalysisFile(idx){ const m=analysisMatches[idx]; if(m&&m.file) openViewer(m.file); }
 
 // ═══════════════════════════════════════════════════════
-//  VIEWER  — renders HTML visually via blob URL
+//  VIEWER
 // ═══════════════════════════════════════════════════════
 async function openViewer(file){
-  currentFile=file;
-  pdfData=null;
+  currentFile=file; pdfData=null;
   document.getElementById('viewer-title').textContent=file.name;
   document.getElementById('viewer-open').href=getDriveUrl(file.id,file.mimeType,file.name);
   document.getElementById('pdf-share-btn').disabled=false;
@@ -981,24 +1178,18 @@ async function openViewer(file){
   document.getElementById('main-content').style.display='none';
   document.getElementById('viewer-view').classList.add('active');
   window.scrollTo(0,0);
-
   const frame=document.getElementById('report-frame');
-
   if(isHtmlFile(file.mimeType,file.name)){
-    // Show spinner via srcdoc — no src= conflict, no sandbox needed
     frame.removeAttribute('src');
-    frame.srcdoc='<!DOCTYPE html><html><head><style>body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#f9fafb;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#1a56db;border-radius:50%;animation:s .7s linear infinite;margin:0 auto 14px;}@keyframes s{to{transform:rotate(360deg)}}p{color:#6b7280;font-size:14px;margin:0}</style></head><body><div style="text-align:center"><div class="sp"></div><p>Loading report…</p></div></body></html>';
-
+    frame.srcdoc='<!DOCTYPE html><html><head><style>body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#f9fafb;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#1a56db;border-radius:50%;animation:s .7s linear infinite;margin:0 auto 14px;}@keyframes s{to{transform:rotate(360deg)}}p{color:#6b7280;font-size:14px;}</style></head><body><div style="text-align:center"><div class="sp"></div><p>Loading report…</p></div></body></html>';
     try{
       const data=await apiFetch('fileId='+file.id);
       if(data.error) throw new Error(data.error);
-      // Inject HTML directly via srcdoc — renders fully styled with all CSS/images
-      frame.srcdoc = data.html;
+      frame.srcdoc=data.html;
     }catch(err){
-      frame.srcdoc='<!DOCTYPE html><html><body style="font-family:sans-serif;padding:32px;color:#dc2626;background:#fff"><h2>Could not load report</h2><p style="color:#6b7280;margin-top:8px">'+err.message+'</p><p style="margin-top:16px;font-size:13px;color:#9ca3af">Try the Open in Drive button above.</p></body></html>';
+      frame.srcdoc='<!DOCTYPE html><html><body style="font-family:sans-serif;padding:32px;color:#dc2626"><h2>Could not load report</h2><p style="color:#6b7280">'+err.message+'</p></body></html>';
     }
   } else {
-    // PDFs / Sheets / Docs — use Drive preview
     if(file.mimeType&&file.mimeType.includes('spreadsheet')) frame.src=`https://docs.google.com/spreadsheets/d/${file.id}/preview`;
     else if(file.mimeType&&file.mimeType.includes('document')) frame.src=`https://docs.google.com/document/d/${file.id}/preview`;
     else if(file.mimeType&&file.mimeType.includes('presentation')) frame.src=`https://docs.google.com/presentation/d/${file.id}/preview`;
@@ -1027,48 +1218,22 @@ function sharePdf(){
   document.getElementById('pdf-modal').classList.add('show');
   startPdfConversion();
 }
-
 async function startPdfConversion(){
   const bar=document.getElementById('pdf-bar');
   const status=document.getElementById('pdf-status');
   const dlBtn=document.getElementById('pdf-download-btn');
-
   try{
-    bar.style.width='20%';
-    status.textContent='Uploading HTML to Google Drive…';
-
+    bar.style.width='20%'; status.textContent='Uploading HTML to Google Drive…';
     const data=await apiFetch(`exportPdf=${currentFile.id}`);
-
-    bar.style.width='80%';
-    status.textContent='Exporting to PDF…';
-
+    bar.style.width='80%'; status.textContent='Exporting to PDF…';
     await new Promise(r=>setTimeout(r,400));
-
     if(data.error) throw new Error(data.error);
-
-    if(data.pdf){
-      // base64 PDF returned
-      pdfData={b64:data.pdf, name:data.name||currentFile.name.replace(/\.html?$/i,'.pdf')};
-      bar.style.width='100%';
-      status.textContent='✅ PDF ready! Click Download to save.';
-      dlBtn.disabled=false;
-    } else if(data.driveUrl){
-      // For non-HTML files, just open the Drive download URL
-      bar.style.width='100%';
-      status.textContent='✅ Redirecting to Drive download…';
-      window.open(data.driveUrl,'_blank');
-      setTimeout(closePdfModal,1200);
-    }
-  }catch(err){
-    bar.style.width='100%';
-    bar.style.background='var(--red)';
-    status.textContent='❌ Error: '+err.message;
-  }
+    if(data.pdf){ pdfData={b64:data.pdf,name:data.name||currentFile.name.replace(/\.html?$/i,'.pdf')}; bar.style.width='100%'; status.textContent='✅ PDF ready! Click Download to save.'; dlBtn.disabled=false; }
+    else if(data.driveUrl){ bar.style.width='100%'; status.textContent='✅ Redirecting to Drive download…'; window.open(data.driveUrl,'_blank'); setTimeout(closePdfModal,1200); }
+  }catch(err){ bar.style.width='100%'; bar.style.background='var(--red)'; status.textContent='❌ Error: '+err.message; }
 }
-
 function downloadPdf(){
   if(!pdfData) return;
-  // Convert base64 to blob and trigger download
   const byteChars=atob(pdfData.b64);
   const bytes=new Uint8Array(byteChars.length);
   for(let i=0;i<byteChars.length;i++) bytes[i]=byteChars.charCodeAt(i);
@@ -1079,15 +1244,10 @@ function downloadPdf(){
   URL.revokeObjectURL(url);
   closePdfModal();
 }
-
-function closePdfModal(){
-  document.getElementById('pdf-modal').classList.remove('show');
-  document.getElementById('pdf-bar').style.background='';
-  pdfData=null;
-}
+function closePdfModal(){ document.getElementById('pdf-modal').classList.remove('show'); document.getElementById('pdf-bar').style.background=''; pdfData=null; }
 
 // ═══════════════════════════════════════════════════════
-//  API FETCH helper
+//  API FETCH
 // ═══════════════════════════════════════════════════════
 async function apiFetch(params){
   const url=`${APPS_SCRIPT_URL}?${params}&token=${encodeURIComponent(AUTH.token)}`;
@@ -1098,54 +1258,52 @@ async function apiFetch(params){
 }
 
 // ═══════════════════════════════════════════════════════
-//  DASHBOARD
+//  CLASSIC DASHBOARD
 // ═══════════════════════════════════════════════════════
 async function openDashboard(school){
   state.school=school; state.view='dashboard'; state.reportType=null; state.frequency=null;
   updateBreadcrumb();
-
   const cls=sClass(school);
   const sd=FOLDERS[school];
   const rts=Object.keys(sd);
   const totalFolders=rts.reduce((s,rt)=>s+Object.keys(sd[rt].folders).length,0);
-
-  // Header
   const pill=document.getElementById('dash-pill');
   pill.textContent=school==='GHK Lab School'?'LAB SCHOOL':'SCHOOL';
   pill.className='dash-school-pill '+cls;
   document.getElementById('dash-title').textContent=school+' — Report Dashboard';
-  document.getElementById('dash-sub').textContent='Live overview of all '+rts.length+' report types · '+totalFolders+' folders';
+  document.getElementById('dash-sub').textContent='Live overview · '+rts.length+' report types · '+totalFolders+' folders';
   document.getElementById('dash-refreshed').textContent='Loading…';
-
-  // KPI defaults
   document.getElementById('kpi-types').textContent=rts.length;
   document.getElementById('kpi-folders').textContent=totalFolders;
   document.getElementById('kpi-files').textContent='…';
   document.getElementById('kpi-today').textContent='…';
   document.getElementById('kpi-empty').textContent='…';
-
-  // Build section skeletons
   const sectionsEl=document.getElementById('dash-sections');
   sectionsEl.innerHTML='';
+
+  // Single backend round trip for every "Live Sheet Data" panel on this
+  // page, instead of one call per report type. Sections await this before
+  // rendering their sheet panel, so they read straight from cache.
+  const sheetsPreload = SHEET_DATA_MAP[school] ? preloadSheetsBatch(school) : Promise.resolve();
+
   for(const rt of rts){
     const freqKeys=Object.keys(sd[rt].folders);
     const sec=document.createElement('div');
     sec.className='dash-sec';
     sec.id='ds-'+rt.replace(/\s+/g,'_');
-
-    const chips=freqKeys.map(f=>`<span class="freq-status-chip ${cls}" id="chip-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}" onclick="dashOpenFreq('${esc(rt)}','${esc(f)}')" title="Click to open">
-      <span class="dot grey" id="dot-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}"></span>${f}
-    </span>`).join('');
+    const chips=freqKeys.map(f=>`<span class="freq-status-chip ${cls}" id="chip-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}" onclick="dashOpenFreq('${esc(rt)}','${esc(f)}')" title="Click to open"><span class="dot grey" id="dot-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}"></span>${f}</span>`).join('');
+    
+    // Check if we have live sheet data for this report type
+    const hasSheetData = !!(SHEET_DATA_MAP[school] && SHEET_DATA_MAP[school][rt]);
+    const sheetDataSection = hasSheetData ? `<div id="sdp-${rt.replace(/\s+/g,'_')}" class="sheet-data-panel"><div class="dash-loading"><div class="mini-spin"></div> Loading live data from Google Sheets…</div></div>` : '';
 
     sec.innerHTML=`
       <div class="dash-sec-head">
-        <div class="dash-sec-head-left">
-          <span class="dash-sec-head-icon">${sd[rt].icon}</span>
-          <h3>${rt}</h3>
-        </div>
+        <div class="dash-sec-head-left"><span class="dash-sec-head-icon">${sd[rt].icon}</span><h3>${rt}</h3>${hasSheetData?'<span class="tag-chip" style="margin-left:8px">📊 Live Sheet Data</span>':''}</div>
         <span class="browse-link ${cls}" onclick="dashOpenReport('${esc(school)}','${esc(rt)}')">Browse all ›</span>
       </div>
       <div class="dash-freq-bar" id="fbar-${rt.replace(/\s+/g,'_')}">${chips}</div>
+      ${sheetDataSection}
       <div id="dlat-${rt.replace(/\s+/g,'_')}"><div class="dash-loading"><div class="mini-spin"></div> Loading latest files…</div></div>`;
     sectionsEl.appendChild(sec);
   }
@@ -1153,88 +1311,373 @@ async function openDashboard(school){
   showView('dashboard-view');
   window.scrollTo(0,0);
 
-  // Load data in parallel
   let totalFiles=0, updatedToday=0, emptyFolders=0;
   const today=new Date().toDateString();
 
   await Promise.all(rts.map(async rt=>{
     const freqEntries=Object.entries(sd[rt].folders);
     const latEl=document.getElementById('dlat-'+rt.replace(/\s+/g,'_'));
-
-    // Load each frequency folder to get counts + latest file
     let allLatest=[];
+
+    // Live sheet data panel for this report type — waits on the single
+    // batched fetch kicked off above, then renders from cache.
+    if(SHEET_DATA_MAP[school] && SHEET_DATA_MAP[school][rt]){
+      sheetsPreload.then(()=>loadDashSheetData(school, rt, cls));
+    }
+
     await Promise.all(freqEntries.map(async ([freq,folderId])=>{
       try{
         const data=await apiFetch(`folderId=${folderId}`);
-        if(data.error||!data.files){
-          setFreqDot(rt,freq,'red'); emptyFolders++; return;
-        }
+        if(data.error||!data.files){setFreqDot(rt,freq,'red');emptyFolders++;return;}
         const count=data.files.length;
         totalFiles+=count;
         data.files.forEach(f=>{if(new Date(f.modified).toDateString()===today)updatedToday++;});
-
-        // Dot color: green=has files updated today or recently, orange=has files but older, red=empty
-        if(count===0){ setFreqDot(rt,freq,'red'); emptyFolders++; }
+        if(count===0){setFreqDot(rt,freq,'red');emptyFolders++;}
         else{
           const latestDate=new Date(data.files[0].modified);
           const daysDiff=(Date.now()-latestDate)/(1000*60*60*24);
           setFreqDot(rt,freq,daysDiff<1?'green':daysDiff<7?'orange':'red');
-          // Add latest file from this freq to the combined list
           if(data.files[0]) allLatest.push({...data.files[0],_freq:freq});
         }
-        // Update KPI live
         document.getElementById('kpi-files').textContent=totalFiles;
         document.getElementById('kpi-today').textContent=updatedToday;
         document.getElementById('kpi-empty').textContent=emptyFolders;
-      }catch(e){ setFreqDot(rt,freq,'grey'); }
+      }catch(e){setFreqDot(rt,freq,'grey');}
     }));
 
-    // Show top 4 latest files across all freqs for this report type
     allLatest.sort((a,b)=>new Date(b.modified)-new Date(a.modified));
     const top=allLatest.slice(0,4);
-    if(top.length===0){
-      latEl.innerHTML=`<div class="no-files-note">No files found across any folder.</div>`;
-    } else {
-      latEl.innerHTML=`<div class="dash-latest-files">
-        <div class="dash-latest-label">Most recent files</div>
-        ${top.map(f=>`
-          <div class="dash-file-row" onclick="openViewerFromDash(${JSON.stringify(f).replace(/"/g,'&quot;')})">
-            <span class="dfi-icon">${getFileIcon(f.mimeType,f.name)}</span>
-            <span class="dfi-name">${f.name}</span>
-            <span class="dfi-freq-tag ${cls}">${f._freq}</span>
-            <span class="dfi-date">${formatDate(f.modified)}</span>
-          </div>`).join('')}
-      </div>`;
+    if(top.length===0){ latEl.innerHTML=`<div class="no-files-note">No files found across any folder.</div>`; }
+    else{
+      latEl.innerHTML=`<div class="dash-latest-files"><div class="dash-latest-label">Most recent files</div>${top.map(f=>`<div class="dash-file-row" onclick="openViewerFromDash(${JSON.stringify(f).replace(/"/g,'&quot;')})"><span class="dfi-icon">${getFileIcon(f.mimeType,f.name)}</span><span class="dfi-name">${f.name}</span><span class="dfi-freq-tag ${cls}">${f._freq}</span><span class="dfi-date">${formatDate(f.modified)}</span></div>`).join('')}</div>`;
     }
   }));
 
   document.getElementById('dash-refreshed').textContent='Refreshed '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
 }
 
+async function loadDashSheetData(school, rt, cls) {
+  const cfg = SHEET_DATA_MAP[school][rt];
+  const panelId = 'sdp-'+rt.replace(/\s+/g,'_');
+  const panelEl = document.getElementById(panelId);
+  if (!panelEl) return;
+
+  const result = await getSheetRows(school, rt);
+  if (!result.rows) {
+    panelEl.innerHTML = `<div class="no-files-note" style="color:var(--muted);font-size:12px;">⚠️ Could not load live sheet data${result.error?(': '+result.error):''}.</div>`;
+    return;
+  }
+
+  const stats = analyzeSheetRows(result.rows, null, null);
+  if (!stats) { panelEl.innerHTML=''; return; }
+
+  const pctColor = stats.percentage >= 90 ? 'green' : stats.percentage >= 75 ? 'orange' : 'red';
+
+  panelEl.innerHTML = `
+    <div class="sheet-data-panel">
+      <div class="sheet-data-label">📊 Live Sheet Data — ${result.sheetName||cfg.sheet} <span style="font-size:10px;font-weight:400;text-transform:none;">(${result.rows.length-1} total records)</span></div>
+      <div class="sheet-kpi-row">
+        <div class="sheet-kpi green"><div class="sv">${stats.present}</div><div class="sl">Present</div></div>
+        <div class="sheet-kpi red"><div class="sv">${stats.absent}</div><div class="sl">Absent</div></div>
+        <div class="sheet-kpi orange"><div class="sv">${stats.late}</div><div class="sl">Late</div></div>
+        <div class="sheet-kpi purple"><div class="sv">${stats.leave}</div><div class="sl">Leave</div></div>
+        <div class="sheet-kpi ${pctColor}"><div class="sv">${stats.percentage || '—'}%</div><div class="sl">Attendance</div></div>
+        <div class="sheet-kpi blue"><div class="sv">${stats.total}</div><div class="sl">Total Records</div></div>
+      </div>
+      <a href="https://docs.google.com/spreadsheets/d/${cfg.id}/edit#gid=0" target="_blank" style="font-size:12px;color:var(--blue);text-decoration:none;">↗ Open Source Sheet</a>
+    </div>`;
+}
+
 function esc(s){ return String(s).replace(/'/g,"\\'"); }
+function setFreqDot(rt,freq,color){ const id='dot-'+rt.replace(/\s+/g,'_')+'-'+freq.replace(/[\s()]+/g,'_'); const el=document.getElementById(id); if(el) el.className='dot '+color; }
+function dashOpenFreq(rt,freq){ state.school=state.school; state.reportType=rt; state.frequency=freq; state.view='files'; updateBreadcrumb(); renderFilesView(); showView('files-view'); setTimeout(()=>selectFrequency(freq),60); window.scrollTo(0,0); }
+function dashOpenReport(school,rt){ state.school=school; state.reportType=rt; state.frequency=null; state.view='files'; updateBreadcrumb(); renderFilesView(); showView('files-view'); window.scrollTo(0,0); }
+function openViewerFromDash(file){ openViewer(file); }
 
-function setFreqDot(rt,freq,color){
-  const id='dot-'+rt.replace(/\s+/g,'_')+'-'+freq.replace(/[\s()]+/g,'_');
-  const el=document.getElementById(id);
-  if(el){ el.className='dot '+color; }
-}
+// ═══════════════════════════════════════════════════════
+//  ALL REPORTS DASHBOARD
+// ═══════════════════════════════════════════════════════
+let ardState = { school: 'GHK School', reportType: null };
 
-function dashOpenFreq(rt,freq){
-  state.school=state.school; // already set
-  state.reportType=rt; state.frequency=freq; state.view='files';
-  updateBreadcrumb(); renderFilesView(); showView('files-view');
-  setTimeout(()=>selectFrequency(freq),60);
+function openAllReportsDashboard() {
+  state.view = 'all-reports';
+  updateBreadcrumb();
+  showView('all-reports-view');
+  ardSelectSchool('GHK School');
   window.scrollTo(0,0);
 }
 
-function dashOpenReport(school,rt){
-  state.school=school; state.reportType=rt; state.frequency=null; state.view='files';
-  updateBreadcrumb(); renderFilesView(); showView('files-view');
+function ardSelectSchool(school) {
+  ardState.school = school;
+  ardState.reportType = null;
+
+  // Update tabs
+  document.getElementById('ard-tab-ghk').className = 'ard-school-tab'+(school==='GHK School'?' active blue':'');
+  document.getElementById('ard-tab-lab').className = 'ard-school-tab'+(school==='GHK Lab School'?' active purple':'');
+  document.getElementById('ard-tab-both').className = 'ard-school-tab'+(school==='both'?' active blue':'');
+
+  // Pre-warm the cache for whichever school(s) were just selected, so
+  // whatever report type the user clicks next renders instantly.
+  preloadSheetsBatch(school);
+
+  // Build report type selector
+  const selectorEl = document.getElementById('ard-report-selector');
+  const kpiRow = document.getElementById('ard-kpi-row');
+  kpiRow.style.display = 'none';
+  
+  let reportTypes = [];
+  if (school === 'both') {
+    const all = new Set([...Object.keys(SHEET_DATA_MAP['GHK School'] || {}), ...Object.keys(SHEET_DATA_MAP['GHK Lab School'] || {})]);
+    reportTypes = [...all];
+  } else {
+    reportTypes = Object.keys(SHEET_DATA_MAP[school] || {});
+  }
+
+  selectorEl.innerHTML = '<span style="font-size:13px;color:var(--muted);margin-right:6px;line-height:32px;">Report Type:</span>' +
+    reportTypes.map(rt => `<button class="ard-rtype-btn" onclick="ardSelectReport('${esc(rt)}')">${rt}</button>`).join('') +
+    `<button class="ard-rtype-btn" style="font-weight:700;" onclick="ardSelectReport('__all__')">📋 All Types</button>`;
+
+  document.getElementById('ard-panels').innerHTML = '<div style="color:var(--muted);font-size:14px;padding:20px 0;">Select a report type above to load live data.</div>';
+}
+
+async function ardSelectReport(rt) {
+  ardState.reportType = rt;
+  const school = ardState.school;
+  const cls = school === 'GHK Lab School' ? 'purple' : 'blue';
+
+  // Highlight active button
+  document.querySelectorAll('.ard-rtype-btn').forEach(b => {
+    b.className = 'ard-rtype-btn' + (b.textContent.trim().replace('📋 ','')===rt||b.textContent.trim()===rt?' active '+cls:'');
+  });
+
+  const panelsEl = document.getElementById('ard-panels');
+  panelsEl.innerHTML = '<div class="ard-loading"><div class="mini-spin"></div> Loading live data from Google Sheets…</div>';
+
+  // Which schools + report types to load
+  let tasks = [];
+  if (rt === '__all__') {
+    if (school === 'both') {
+      for (const [s, rts] of Object.entries(SHEET_DATA_MAP)) {
+        for (const [r, cfg] of Object.entries(rts)) tasks.push({school:s, rt:r, cfg});
+      }
+    } else {
+      for (const [r, cfg] of Object.entries(SHEET_DATA_MAP[school]||{})) tasks.push({school, rt:r, cfg});
+    }
+  } else {
+    if (school === 'both') {
+      for (const [s, rts] of Object.entries(SHEET_DATA_MAP)) {
+        if (rts[rt]) tasks.push({school:s, rt, cfg:rts[rt]});
+      }
+    } else {
+      const cfg = (SHEET_DATA_MAP[school]||{})[rt];
+      if (cfg) tasks.push({school, rt, cfg});
+    }
+  }
+
+  if (tasks.length === 0) {
+    panelsEl.innerHTML = '<div class="state-box"><div class="icon">📭</div><p>No sheet data configured for this selection.</p></div>';
+    return;
+  }
+
+  // Load all in parallel — each call hits the cache if preloadSheetsBatch
+  // already warmed it, otherwise it fetches that single sheet on demand.
+  const results = await Promise.all(tasks.map(async t => {
+    const result = await getSheetRows(t.school, t.rt);
+    return { ...t, rows: result.rows, sheetName: result.sheetName, error: result.error };
+  }));
+
+  // KPI totals
+  let totalPresent=0, totalAbsent=0, totalLate=0, totalLeave=0, totalRecords=0;
+  results.forEach(r => {
+    if (!r.rows) return;
+    const s = analyzeSheetRows(r.rows, null, null);
+    if (!s) return;
+    totalPresent += s.present; totalAbsent += s.absent; totalLate += s.late; totalLeave += s.leave; totalRecords += s.total;
+  });
+  const overallPct = totalRecords > 0 ? ((totalPresent/totalRecords)*100).toFixed(1) : null;
+
+  const kpiRow = document.getElementById('ard-kpi-row');
+  kpiRow.style.display = 'grid';
+  kpiRow.innerHTML = `
+    <div class="kpi-card k-green"><div class="kpi-icon">✅</div><div class="kpi-value">${totalPresent}</div><div class="kpi-label">Total Present</div></div>
+    <div class="kpi-card k-red"><div class="kpi-icon">❌</div><div class="kpi-value">${totalAbsent}</div><div class="kpi-label">Total Absent</div></div>
+    <div class="kpi-card k-orange"><div class="kpi-icon">⏰</div><div class="kpi-value">${totalLate}</div><div class="kpi-label">Total Late</div></div>
+    <div class="kpi-card k-purple"><div class="kpi-icon">🏖️</div><div class="kpi-value">${totalLeave}</div><div class="kpi-label">Total Leave</div></div>
+    <div class="kpi-card k-blue"><div class="kpi-icon">📊</div><div class="kpi-value">${overallPct!=null?overallPct+'%':'—'}</div><div class="kpi-label">Overall Attendance</div></div>
+    <div class="kpi-card k-teal"><div class="kpi-icon">📋</div><div class="kpi-value">${totalRecords}</div><div class="kpi-label">Total Records</div></div>`;
+
+  // Render each panel
+  panelsEl.innerHTML = results.map((r, idx) => {
+    const panelCls = r.school === 'GHK Lab School' ? 'purple' : 'blue';
+    if (!r.rows) {
+      return `<div class="ard-panel"><div class="ard-panel-head"><h3>${FOLDERS[r.school]?.[r.rt]?.icon||'📄'} ${r.rt} <span class="tag-chip">${r.school}</span></h3></div><div class="ard-panel-body"><p style="color:var(--muted);font-size:13px;">⚠️ Could not load data${r.error?(': '+r.error):''}. <a href="https://docs.google.com/spreadsheets/d/${r.cfg.id}/edit" target="_blank" style="color:var(--blue)">Open Sheet ↗</a></p></div></div>`;
+    }
+    const stats = analyzeSheetRows(r.rows, null, null);
+    if (!stats) return '';
+    const pctColor = stats.percentage >= 90 ? 'var(--green)' : stats.percentage >= 75 ? 'var(--orange)' : 'var(--red)';
+    const headers = r.rows[0] || [];
+    const previewRows = r.rows.slice(1, 11);
+
+    return `<div class="ard-panel">
+      <div class="ard-panel-head">
+        <h3>${FOLDERS[r.school]?.[r.rt]?.icon||'📄'} ${r.rt} <span class="tag-chip">${r.school}</span></h3>
+        <a href="https://docs.google.com/spreadsheets/d/${r.cfg.id}/edit" target="_blank" class="browse-link ${panelCls}">Open Sheet ↗</a>
+      </div>
+      <div class="ard-panel-body">
+        <div class="sheet-kpi-row" style="margin-bottom:16px;">
+          <div class="sheet-kpi green"><div class="sv">${stats.present}</div><div class="sl">Present</div></div>
+          <div class="sheet-kpi red"><div class="sv">${stats.absent}</div><div class="sl">Absent</div></div>
+          <div class="sheet-kpi orange"><div class="sv">${stats.late}</div><div class="sl">Late</div></div>
+          <div class="sheet-kpi purple"><div class="sv">${stats.leave}</div><div class="sl">Leave</div></div>
+          <div class="sheet-kpi" style=""><div class="sv" style="color:${pctColor}">${stats.percentage||'—'}%</div><div class="sl">Attendance</div></div>
+          <div class="sheet-kpi blue"><div class="sv">${stats.total}</div><div class="sl">Total</div></div>
+        </div>
+        <div class="ard-table-wrap">
+          <table class="ard-table">
+            <tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr>
+            ${previewRows.map(row=>`<tr>${row.map((cell,ci)=>{
+              const h=(headers[ci]||'').toLowerCase();
+              const isStatus=h.includes('status')||h.includes('attendance');
+              const v=(cell||'').toLowerCase().trim();
+              let badge='';
+              if(isStatus&&v){
+                const cls2=v.startsWith('p')?'present':v.startsWith('a')?'absent':v.startsWith('l')&&!v.includes('leave')?'late':'leave';
+                badge=`<span class="status-badge ${cls2}">${cell}</span>`;
+              }
+              return `<td>${badge||cell}</td>`;
+            }).join('')}</tr>`).join('')}
+          </table>
+        </div>
+        ${r.rows.length > 11 ? `<p style="font-size:12px;color:var(--muted);margin-top:8px;">Showing 10 of ${r.rows.length-1} records. <a href="https://docs.google.com/spreadsheets/d/${r.cfg.id}/edit" target="_blank" style="color:var(--blue);">View all ↗</a></p>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  PERIOD COMPARISON
+// ═══════════════════════════════════════════════════════
+function openComparisonView() {
+  state.view = 'comparison';
+  updateBreadcrumb();
+  showView('comparison-view');
+  cmpUpdateReportTypes();
+  // Set default dates: last month vs this month
+  const now = new Date();
+  const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0,10);
+  const thisMonthEnd = now.toISOString().slice(0,10);
+  const lastMonthStart = new Date(now.getFullYear(), now.getMonth()-1, 1).toISOString().slice(0,10);
+  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0).toISOString().slice(0,10);
+  document.getElementById('cmp-a-from').value = lastMonthStart;
+  document.getElementById('cmp-a-to').value = lastMonthEnd;
+  document.getElementById('cmp-b-from').value = thisMonthStart;
+  document.getElementById('cmp-b-to').value = thisMonthEnd;
   window.scrollTo(0,0);
 }
 
-function openViewerFromDash(file){
-  openViewer(file);
+function cmpUpdateReportTypes() {
+  const school = document.getElementById('cmp-school').value;
+  const sel = document.getElementById('cmp-report-type');
+  const types = Object.keys(SHEET_DATA_MAP[school] || {});
+  sel.innerHTML = types.map(t=>`<option value="${t}">${t}</option>`).join('');
+}
+
+async function runComparison() {
+  const school = document.getElementById('cmp-school').value;
+  const rt = document.getElementById('cmp-report-type').value;
+  const aFrom = document.getElementById('cmp-a-from').value;
+  const aTo   = document.getElementById('cmp-a-to').value;
+  const bFrom = document.getElementById('cmp-b-from').value;
+  const bTo   = document.getElementById('cmp-b-to').value;
+  const container = document.getElementById('cmp-results-container');
+
+  if (!aFrom||!aTo||!bFrom||!bTo) { container.innerHTML='<div class="state-box"><p>Please fill in all four date fields.</p></div>'; return; }
+
+  const cfg = (SHEET_DATA_MAP[school]||{})[rt];
+  if (!cfg) { container.innerHTML='<div class="state-box"><p>No sheet data found for this combination.</p></div>'; return; }
+
+  container.innerHTML = '<div class="dash-loading"><div class="mini-spin"></div> Loading sheet data for both periods…</div>';
+
+  const result = await getSheetRows(school, rt);
+  if (!result.rows) {
+    container.innerHTML = `<div class="state-box"><p>⚠️ Could not load sheet data${result.error?(': '+result.error):''}.</p></div>`;
+    return;
+  }
+  const rows = result.rows;
+
+  const statsA = analyzeSheetRows(rows, aFrom, aTo);
+  const statsB = analyzeSheetRows(rows, bFrom, bTo);
+
+  const fmtRange = (f,t) => formatDate(f+'T00:00:00') + ' – ' + formatDate(t+'T00:00:00');
+  const aLabel = fmtRange(aFrom, aTo);
+  const bLabel = fmtRange(bFrom, bTo);
+
+  const diff = (a,b) => {
+    if(a==null||b==null) return null;
+    const d = b - a;
+    return { val: d, pct: a>0?((d/a)*100).toFixed(1):null };
+  };
+
+  const metrics = [
+    { label:'Total Records', a:statsA.total, b:statsB.total },
+    { label:'Present', a:statsA.present, b:statsB.present },
+    { label:'Absent', a:statsA.absent, b:statsB.absent },
+    { label:'Late', a:statsA.late, b:statsB.late },
+    { label:'Leave', a:statsA.leave, b:statsB.leave },
+    { label:'Attendance %', a:statsA.percentage?parseFloat(statsA.percentage):null, b:statsB.percentage?parseFloat(statsB.percentage):null, suffix:'%' }
+  ];
+
+  // Bar chart max value
+  const maxVal = Math.max(statsA.total||0, statsB.total||0, 1);
+
+  let html = `
+    <div class="cmp-results">
+      <div class="cmp-result-card a">
+        <h4 class="a">🔵 Period A — ${aLabel}</h4>
+        ${metrics.map(m=>`<div class="cmp-stat-row"><span class="cmp-stat-label">${m.label}</span><span class="cmp-stat-value">${m.a!=null?m.a+(m.suffix||''):'—'}</span></div>`).join('')}
+      </div>
+      <div class="cmp-result-card b">
+        <h4 class="b">🟠 Period B — ${bLabel}</h4>
+        ${metrics.map(m=>`<div class="cmp-stat-row"><span class="cmp-stat-label">${m.label}</span><span class="cmp-stat-value">${m.b!=null?m.b+(m.suffix||''):'—'}</span></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="cmp-diff-card">
+      <h3>📊 Changes: Period A → Period B</h3>
+      ${metrics.map(m=>{
+        const d = diff(m.a, m.b);
+        if(!d) return `<div class="cmp-diff-row"><span class="cmp-diff-label">${m.label}</span><span class="cmp-diff-change neutral">No data</span></div>`;
+        const up = d.val > 0;
+        const down = d.val < 0;
+        // For Absent/Late/Leave, up is bad; for others up is good
+        const isBad = ['Absent','Late','Leave'].includes(m.label);
+        const cls2 = d.val===0 ? 'neutral' : (up===isBad ? 'down' : 'up');
+        const arrow = d.val===0 ? '→' : up ? '↑' : '↓';
+        const sign = d.val>0?'+':'';
+        return `<div class="cmp-diff-row">
+          <span class="cmp-diff-label">${m.label}</span>
+          <span class="cmp-diff-change ${cls2}">${arrow} ${sign}${d.val}${m.suffix||''}${d.pct?' ('+sign+d.pct+'%)':''}</span>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="cmp-diff-card">
+      <h3>📉 Visual Comparison</h3>
+      <div style="display:flex;gap:14px;margin-bottom:12px;font-size:12px;">
+        <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:var(--blue);display:inline-block;"></span>Period A</span>
+        <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:var(--orange);display:inline-block;"></span>Period B</span>
+      </div>
+      <div class="cmp-bar-wrap">
+        ${[{l:'Present',a:statsA.present,b:statsB.present},{l:'Absent',a:statsA.absent,b:statsB.absent},{l:'Late',a:statsA.late,b:statsB.late},{l:'Leave',a:statsA.leave,b:statsB.leave}].map(item=>`
+          <div class="cmp-bar-row"><span class="cmp-bar-label">${item.l}</span><div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+            <div class="cmp-bar-track"><div class="cmp-bar-fill a" style="width:${maxVal>0?Math.round((item.a||0)/maxVal*100):0}%"></div></div>
+            <div class="cmp-bar-track"><div class="cmp-bar-fill b" style="width:${maxVal>0?Math.round((item.b||0)/maxVal*100):0}%"></div></div>
+          </div><span class="cmp-bar-val" style="color:var(--blue)">${item.a||0}</span><span style="color:var(--muted);font-size:11px;">/</span><span class="cmp-bar-val" style="color:var(--orange)">${item.b||0}</span></div>
+        `).join('')}
+      </div>
+    </div>`;
+
+  container.innerHTML = html;
 }
 
 // ═══════════════════════════════════════════════════════
