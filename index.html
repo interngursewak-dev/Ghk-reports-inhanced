@@ -1,0 +1,2387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GHK Reports</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:        #1<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GHK Reports</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:        #1a56db;
+      --blue-dark:   #1340a8;
+      --blue-light:  #e8f0fe;
+      --purple:      #7c3aed;
+      --purple-light:#ede9fe;
+      --green:       #059669;
+      --green-light: #d1fae5;
+      --orange:      #d97706;
+      --orange-light:#fef3c7;
+      --red:         #dc2626;
+      --red-light:   #fee2e2;
+      --text:        #111827;
+      --muted:       #6b7280;
+      --border:      #e5e7eb;
+      --bg:          #f9fafb;
+      --white:       #ffffff;
+      --radius:      12px;
+      --shadow:      0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
+      --shadow-lg:   0 4px 16px rgba(0,0,0,.10),0 8px 32px rgba(0,0,0,.08);
+    }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1340a8 0%,#7c3aed 100%); padding:20px; }
+    #login-screen.hidden { display:none; }
+    .login-card { background:var(--white); border-radius:20px; padding:44px 40px 40px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.25); }
+    @media(max-width:440px){.login-card{padding:32px 24px 28px;}}
+    .login-logo { display:flex; align-items:center; gap:12px; margin-bottom:28px; }
+    .login-logo-icon { width:44px;height:44px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;font-weight:800;flex-shrink:0; }
+    .login-logo-text h1{font-size:18px;font-weight:700;line-height:1.2;}
+    .login-logo-text p{font-size:12px;color:var(--muted);margin-top:2px;}
+    .login-heading{font-size:22px;font-weight:700;margin-bottom:6px;}
+    .login-sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
+    .field-group{margin-bottom:18px;}
+    .field-group label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;}
+    .field-group .input-wrap{position:relative;}
+    .field-group input{width:100%;padding:11px 40px 11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;outline:none;transition:border-color .18s,box-shadow .18s;}
+    .field-group input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+    .field-group input.error-field{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.1);}
+    .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:16px;user-select:none;}
+    .login-error{background:var(--red-light);border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:18px;display:none;}
+    .login-error.show{display:block;}
+    .login-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;border:none;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .18s,transform .12s;}
+    .login-btn:hover:not(:disabled){opacity:.92;transform:translateY(-1px);}
+    .login-btn:disabled{opacity:.6;cursor:not-allowed;}
+    .btn-spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto;}
+    .btn-spinner.show{display:block;}
+    .btn-text.hide{display:none;}
+    .login-footer{margin-top:22px;text-align:center;font-size:12px;color:var(--muted);}
+    .security-badge{display:inline-flex;align-items:center;gap:5px;background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:500;}
+
+    /* ── APP SHELL ── */
+    #app-shell{display:none;}
+    #app-shell.visible{display:block;}
+    header{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+    .logo{font-size:17px;font-weight:600;display:flex;align-items:center;gap:10px;}
+    .logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:800;}
+    .header-right{display:flex;align-items:center;gap:14px;}
+    .breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);overflow-x:auto;white-space:nowrap;}
+    .breadcrumb span{cursor:pointer;}
+    .breadcrumb span:hover{color:var(--text);}
+    .breadcrumb .sep{color:var(--border);}
+    .breadcrumb .active{color:var(--text);font-weight:500;}
+    .user-avatar{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;}
+    .logout-btn{font-size:12px;color:var(--muted);cursor:pointer;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--white);transition:color .15s,border-color .15s;}
+    .logout-btn:hover{color:var(--red);border-color:#fca5a5;}
+    main{max-width:960px;margin:0 auto;padding:28px 20px 60px;}
+    .section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:14px;}
+
+    /* ── HOME ── */
+    .school-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px;}
+    @media(max-width:560px){.school-grid{grid-template-columns:1fr;}}
+    .school-card{background:var(--white);border-radius:var(--radius);border:2px solid var(--border);padding:28px 24px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .12s;}
+    .school-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+    .school-card.blue::before{background:var(--blue);}
+    .school-card.purple::before{background:var(--purple);}
+    .school-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+    .school-card.blue:hover{border-color:var(--blue);}
+    .school-card.purple:hover{border-color:var(--purple);}
+    .school-card .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;margin-bottom:12px;}
+    .school-card.blue .tag{background:var(--blue-light);color:var(--blue);}
+    .school-card.purple .tag{background:var(--purple-light);color:var(--purple);}
+    .school-card h2{font-size:20px;font-weight:700;margin-bottom:8px;}
+    .school-card p{font-size:14px;color:var(--muted);line-height:1.5;}
+    .school-card .count{margin-top:18px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+    .dash-btn{display:inline-flex;align-items:center;gap:5px;margin-top:12px;padding:6px 12px;font-size:12px;font-weight:600;border-radius:7px;border:none;cursor:pointer;transition:opacity .15s;}
+    .school-card.blue .dash-btn{background:var(--blue-light);color:var(--blue);}
+    .school-card.purple .dash-btn{background:var(--purple-light);color:var(--purple);}
+    .dash-btn:hover{opacity:.75;}
+
+    /* ── REPORT TYPES ── */
+    .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);cursor:pointer;margin-bottom:22px;padding:6px 0;}
+    .back-btn:hover{color:var(--text);}
+    .school-banner{padding:18px 22px;border-radius:var(--radius);margin-bottom:24px;display:flex;align-items:center;gap:14px;}
+    .school-banner.blue{background:var(--blue-light);}
+    .school-banner.purple{background:var(--purple-light);}
+    .school-banner h1{font-size:20px;font-weight:700;}
+    .school-banner.blue h1{color:var(--blue);}
+    .school-banner.purple h1{color:var(--purple);}
+    .school-banner p{font-size:13px;color:var(--muted);margin-top:2px;}
+    .report-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+    .report-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .12s;}
+    .report-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+    .report-card.blue:hover{border-color:var(--blue);}
+    .report-card.purple:hover{border-color:var(--purple);}
+    .report-card .icon{font-size:26px;margin-bottom:10px;}
+    .report-card h3{font-size:15px;font-weight:600;}
+    .report-card .freq-count{font-size:12px;color:var(--muted);margin-top:5px;}
+
+    /* ── FILES VIEW ── */
+    .freq-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+    .freq-tab{padding:7px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;}
+    .freq-tab:hover{border-color:#9ca3af;color:var(--text);}
+    .freq-tab.active.blue{background:var(--blue);color:white;border-color:var(--blue);}
+    .freq-tab.active.purple{background:var(--purple);color:white;border-color:var(--purple);}
+    .freq-tab.analyze-tab{border-style:dashed;font-weight:600;}
+    .freq-tab.analyze-tab.active.blue{background:var(--blue);border-style:solid;}
+    .freq-tab.analyze-tab.active.purple{background:var(--purple);border-style:solid;}
+    .files-list{display:flex;flex-direction:column;gap:8px;}
+    .file-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
+    .file-card:hover{box-shadow:var(--shadow);}
+    .file-card.blue:hover{border-color:var(--blue);}
+    .file-card.purple:hover{border-color:var(--purple);}
+    .file-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+    .file-icon.blue{background:var(--blue-light);}
+    .file-icon.purple{background:var(--purple-light);}
+    .file-meta{flex:1;min-width:0;}
+    .file-meta h4{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .file-meta .date{font-size:12px;color:var(--muted);margin-top:2px;}
+    .file-arrow{color:var(--muted);font-size:16px;flex-shrink:0;}
+    .state-box{text-align:center;padding:48px 24px;color:var(--muted);}
+    .state-box .icon{font-size:36px;margin-bottom:12px;}
+    .state-box p{font-size:14px;line-height:1.6;}
+    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* ── VIEWER ── */
+    #viewer-view{display:none;flex-direction:column;height:calc(100vh - 56px);}
+    #viewer-view.active{display:flex;}
+    .viewer-topbar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+    .viewer-topbar .back{cursor:pointer;font-size:20px;color:var(--muted);flex-shrink:0;}
+    .viewer-topbar .back:hover{color:var(--text);}
+    .viewer-topbar .title{font-size:15px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .viewer-btn{font-size:13px;padding:6px 12px;border-radius:6px;white-space:nowrap;flex-shrink:0;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none;transition:background .15s;}
+    .viewer-btn.open{color:var(--blue);border:1px solid var(--blue);background:var(--white);}
+    .viewer-btn.open:hover{background:var(--blue-light);}
+    .viewer-btn.pdf{color:var(--white);border:1px solid var(--red);background:var(--red);}
+    .viewer-btn.pdf:hover{opacity:.88;}
+    .viewer-btn.pdf:disabled{opacity:.5;cursor:not-allowed;}
+    #report-frame{flex:1;border:none;background:#f0f0f0;}
+
+    /* ── VIEWS ── */
+    .view{display:none;}
+    .view.active{display:block;}
+
+    /* ══════════════════════════════════════════════════════
+       DASHBOARD
+    ══════════════════════════════════════════════════════ */
+    .dash-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+    .dash-topbar-title{display:flex;align-items:center;gap:12px;}
+    .dash-school-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
+    .dash-school-pill.blue{background:var(--blue-light);color:var(--blue);}
+    .dash-school-pill.purple{background:var(--purple-light);color:var(--purple);}
+    .dash-topbar h1{font-size:22px;font-weight:800;}
+    .dash-topbar p{font-size:13px;color:var(--muted);margin-top:3px;}
+
+    /* Stat cards */
+    .dash-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:28px;}
+    .kpi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;position:relative;overflow:hidden;}
+    .kpi-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px;}
+    .kpi-card.k-blue::after{background:var(--blue);}
+    .kpi-card.k-purple::after{background:var(--purple);}
+    .kpi-card.k-green::after{background:var(--green);}
+    .kpi-card.k-orange::after{background:var(--orange);}
+    .kpi-card.k-red::after{background:var(--red);}
+    .kpi-icon{font-size:18px;margin-bottom:8px;}
+    .kpi-value{font-size:28px;font-weight:800;line-height:1;}
+    .kpi-label{font-size:12px;color:var(--muted);margin-top:5px;}
+    .kpi-card.k-blue .kpi-value{color:var(--blue);}
+    .kpi-card.k-purple .kpi-value{color:var(--purple);}
+    .kpi-card.k-green .kpi-value{color:var(--green);}
+    .kpi-card.k-orange .kpi-value{color:var(--orange);}
+    .kpi-card.k-red .kpi-value{color:var(--red);}
+
+    /* Report type sections */
+    .dash-sections{display:flex;flex-direction:column;gap:20px;}
+    .dash-sec{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+    .dash-sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);}
+    .dash-sec-head-left{display:flex;align-items:center;gap:10px;}
+    .dash-sec-head-icon{font-size:20px;}
+    .dash-sec-head h3{font-size:16px;font-weight:700;}
+    .browse-link{font-size:12px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:var(--bg);transition:all .15s;text-decoration:none;}
+    .browse-link.blue:hover{color:var(--blue);border-color:var(--blue);background:var(--blue-light);}
+    .browse-link.purple:hover{color:var(--purple);border-color:var(--purple);background:var(--purple-light);}
+
+    /* Frequency status bar */
+    .dash-freq-bar{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+    .freq-status-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 11px;border-radius:20px;border:1px solid var(--border);cursor:pointer;transition:all .15s;background:var(--bg);}
+    .freq-status-chip .dot{width:7px;height:7px;border-radius:50%;}
+    .freq-status-chip .dot.green{background:var(--green);}
+    .freq-status-chip .dot.orange{background:var(--orange);}
+    .freq-status-chip .dot.red{background:#ef4444;}
+    .freq-status-chip .dot.grey{background:#9ca3af;}
+    .freq-status-chip:hover{border-color:#9ca3af;}
+    .freq-status-chip.blue:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
+    .freq-status-chip.purple:hover{background:var(--purple-light);border-color:var(--purple);color:var(--purple);}
+
+    /* Latest files in each section */
+    .dash-latest-files{padding:0 20px 16px;}
+    .dash-latest-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding-top:14px;margin-bottom:8px;}
+    .dash-file-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);cursor:pointer;transition:background .1s;}
+    .dash-file-row:last-child{border-bottom:none;}
+    .dash-file-row:hover .dfi-name{text-decoration:underline;}
+    .dfi-icon{font-size:15px;flex-shrink:0;}
+    .dfi-name{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .dfi-freq-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+    .dfi-freq-tag.blue{background:var(--blue-light);color:var(--blue);}
+    .dfi-freq-tag.purple{background:var(--purple-light);color:var(--purple);}
+    .dfi-date{font-size:11px;color:var(--muted);flex-shrink:0;min-width:70px;text-align:right;}
+    .dash-loading{padding:16px 20px;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;}
+    .mini-spin{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+    .no-files-note{padding:12px 20px 16px;font-size:13px;color:var(--muted);}
+
+    /* ── Analyze-by-date panel (inside Files view) ── */
+    .analyze-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
+    .analyze-controls{display:flex;gap:10px;align-items:center;margin-bottom:6px;flex-wrap:wrap;}
+    .analyze-date-input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;}
+    .analyze-date-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+    .analyze-run-btn{padding:9px 18px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:white;transition:opacity .15s;}
+    .analyze-run-btn.blue{background:var(--blue);}
+    .analyze-run-btn.purple{background:var(--purple);}
+    .analyze-run-btn:hover{opacity:.88;}
+    .analyze-hint{font-size:12px;color:var(--muted);margin-bottom:18px;}
+    .analyze-note{font-size:12px;color:var(--muted);margin-top:14px;}
+    .analyze-range-sep{font-size:13px;color:var(--muted);}
+    .analyze-result-card{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;}
+    .analyze-result-summary{padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;list-style:none;}
+    .analyze-result-summary::-webkit-details-marker{display:none;}
+    .analyze-result-summary .arc-icon{font-size:17px;flex-shrink:0;}
+    .analyze-result-summary .arc-meta{flex:1;min-width:0;}
+    .analyze-result-summary .arc-meta h4{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .analyze-result-summary .arc-meta .sub{font-size:12px;color:var(--muted);margin-top:2px;}
+    .arc-body{padding:0 16px 16px;border-top:1px solid var(--border);}
+    .arc-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:14px 0 8px;}
+    .arc-summary-lines{display:flex;flex-direction:column;gap:4px;}
+    .arc-summary-lines div{font-size:13px;background:var(--bg);padding:6px 10px;border-radius:6px;}
+    .arc-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px;margin-bottom:10px;}
+    table.arc-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+    table.arc-table th,table.arc-table td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+    table.arc-table tr:first-child{background:var(--bg);font-weight:600;}
+    .arc-open-btn{font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg);cursor:pointer;margin-top:4px;}
+
+    /* ── PDF share modal overlay ── */
+    #pdf-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+    #pdf-modal.show{display:flex;}
+    .pdf-modal-card{background:var(--white);border-radius:16px;padding:28px 28px 24px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+    .pdf-modal-card h3{font-size:17px;font-weight:700;margin-bottom:6px;}
+    .pdf-modal-card p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+    .pdf-progress{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:16px;}
+    .pdf-progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:3px;width:0%;transition:width .4s;}
+    .pdf-status{font-size:13px;color:var(--muted);margin-bottom:18px;min-height:18px;}
+    .pdf-modal-btns{display:flex;gap:8px;justify-content:flex-end;}
+    .pdf-modal-btn{padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity .15s;}
+    .pdf-modal-btn.cancel{background:var(--bg);border:1px solid var(--border);color:var(--text);}
+    .pdf-modal-btn.cancel:hover{border-color:#9ca3af;}
+    .pdf-modal-btn.download{background:var(--red);color:white;}
+    .pdf-modal-btn.download:hover{opacity:.88;}
+    .pdf-modal-btn:disabled{opacity:.5;cursor:not-allowed;}
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">G</div>
+      <div class="login-logo-text"><h1>GHK Reports</h1><p>School Management Portal</p></div>
+    </div>
+    <h2 class="login-heading">Welcome back</h2>
+    <p class="login-sub">Sign in to access school reports</p>
+    <div class="login-error" id="login-error"></div>
+    <div class="field-group">
+      <label for="username">Username</label>
+      <div class="input-wrap">
+        <input type="text" id="username" placeholder="Enter your username" autocomplete="username" autocapitalize="none" spellcheck="false" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="password">Password</label>
+      <div class="input-wrap">
+        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" />
+        <span class="toggle-pw" id="toggle-pw">👁</span>
+      </div>
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">
+      <span class="btn-text" id="btn-text">Sign In</span>
+      <div class="btn-spinner" id="btn-spinner"></div>
+    </button>
+    <div class="login-footer"><span class="security-badge">🔒 Credentials stored securely in Google Sheets</span></div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app-shell">
+  <header>
+    <div class="logo"><div class="logo-icon">G</div>GHK Reports</div>
+    <div class="header-right">
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div class="user-avatar" id="user-avatar">?</div>
+      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- Viewer -->
+  <div id="viewer-view">
+    <div class="viewer-topbar">
+      <span class="back" onclick="closeViewer()">&#8592;</span>
+      <span class="title" id="viewer-title">Report</span>
+      <button class="viewer-btn pdf" id="pdf-share-btn" onclick="sharePdf()">📥 Share as PDF</button>
+      <a class="viewer-btn open" id="viewer-open" href="#" target="_blank">Open in Drive ↗</a>
+    </div>
+    <iframe id="report-frame" src="about:blank" allowfullscreen></iframe>
+  </div>
+
+  <main id="main-content">
+
+    <!-- View 1: Home -->
+    <div class="view active" id="home-view">
+      <p class="section-title">Select School</p>
+      <div class="school-grid">
+        <div class="school-card blue" onclick="selectSchool('GHK School')">
+          <div class="tag">SCHOOL</div>
+          <h2>GHK School</h2>
+          <p>Student &amp; team attendance, behaviour, supervisor &amp; lesson plan reports</p>
+          <div class="count">📂 5 report types &nbsp;·&nbsp; 26 folders</div>
+          <button class="dash-btn" onclick="event.stopPropagation();openDashboard('GHK School')">📊 View Dashboard</button>
+        </div>
+        <div class="school-card purple" onclick="selectSchool('GHK Lab School')">
+          <div class="tag">LAB SCHOOL</div>
+          <h2>GHK Lab School</h2>
+          <p>Student &amp; team attendance, inventory &amp; supervisor reports</p>
+          <div class="count">📂 4 report types &nbsp;·&nbsp; 21 folders</div>
+          <button class="dash-btn" onclick="event.stopPropagation();openDashboard('GHK Lab School')">📊 View Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View 2: Report types -->
+    <div class="view" id="reports-view">
+      <div class="back-btn" onclick="goHome()">&#8592; All Schools</div>
+      <div class="school-banner" id="school-banner">
+        <div><h1 id="school-banner-title">School</h1><p id="school-banner-sub">Select a report type</p></div>
+      </div>
+      <p class="section-title">Report Types</p>
+      <div class="report-grid" id="report-grid"></div>
+    </div>
+
+    <!-- View 3: Files -->
+    <div class="view" id="files-view">
+      <div class="back-btn" onclick="goReports()">&#8592; <span id="back-school-name">School</span></div>
+      <p style="font-size:20px;font-weight:700;margin-bottom:16px" id="report-type-heading"></p>
+      <div class="freq-tabs" id="freq-tabs"></div>
+      <div id="file-list-container">
+        <div class="state-box"><div class="icon">📂</div><p>Select a frequency tab above to load reports.</p></div>
+      </div>
+    </div>
+
+    <!-- View 4: Dashboard -->
+    <div class="view" id="dashboard-view">
+      <div class="back-btn" onclick="goHome()">&#8592; All Schools</div>
+      <div class="dash-topbar">
+        <div class="dash-topbar-title">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <span class="dash-school-pill" id="dash-pill">SCHOOL</span>
+            </div>
+            <h1 id="dash-title">Dashboard</h1>
+            <p id="dash-sub">Live overview · all report types</p>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted)" id="dash-refreshed"></div>
+      </div>
+      <div class="dash-kpi-row" id="dash-kpi-row">
+        <div class="kpi-card k-blue"><div class="kpi-icon">📂</div><div class="kpi-value" id="kpi-types">—</div><div class="kpi-label">Report Types</div></div>
+        <div class="kpi-card k-purple"><div class="kpi-icon">🗂️</div><div class="kpi-value" id="kpi-folders">—</div><div class="kpi-label">Total Folders</div></div>
+        <div class="kpi-card k-green"><div class="kpi-icon">📄</div><div class="kpi-value" id="kpi-files">—</div><div class="kpi-label">Total Files</div></div>
+        <div class="kpi-card k-orange"><div class="kpi-icon">🕐</div><div class="kpi-value" id="kpi-today">—</div><div class="kpi-label">Updated Today</div></div>
+        <div class="kpi-card k-red"><div class="kpi-icon">⚠️</div><div class="kpi-value" id="kpi-empty">—</div><div class="kpi-label">Empty Folders</div></div>
+      </div>
+      <div class="dash-sections" id="dash-sections"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PDF SHARE MODAL -->
+<div id="pdf-modal">
+  <div class="pdf-modal-card">
+    <h3>📥 Share as PDF</h3>
+    <p>Converting this HTML report to PDF via Google Drive. This may take 15–30 seconds.</p>
+    <div class="pdf-progress"><div class="pdf-progress-bar" id="pdf-bar"></div></div>
+    <div class="pdf-status" id="pdf-status">Starting conversion…</div>
+    <div class="pdf-modal-btns">
+      <button class="pdf-modal-btn cancel" id="pdf-cancel-btn" onclick="closePdfModal()">Cancel</button>
+      <button class="pdf-modal-btn download" id="pdf-download-btn" disabled onclick="downloadPdf()">Download PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymgpKUSZtF_FPU4aLjMaB2Y1tGzTyU7c2127F7MjGrsn1hXVSd0g22v0x0zAvvFOo/exec';
+
+// ═══════════════════════════════════════════════════════
+//  FOLDERS
+// ═══════════════════════════════════════════════════════
+const FOLDERS = {
+  'GHK Lab School': {
+    'Students Attendance': { icon:'🎒', folders:{ 'Daily':'1IF84PQeMl5p7Dp8jH4x06ZslC5Nmdfhk','Weekly':'1ZeI796zOfEhwM09fNn3IEGn_MsihjIz2','Monthly':'1rOglixTNGNfthB7B04eIsQLx_CXdispb','Quarterly':'1GvwdrLGABlNN-_LmdIYvO-zhvRH4bhjd','Yearly':'1f4dLVt7LH9Xlw5o_o4JaNqoNliQ3vyJu' }},
+    'Team Attendance':     { icon:'👥', folders:{ 'Daily (Evening)':'1ZlbtIDZPHlOvhKAZtsHxxN3DvJRgMIuH','Daily (Morning)':'1htbu-8Ei2b18Se6H153kYQuDVr9AHpH0','Weekly':'1q-Ikc0Uji1mC5ra2qfUZhkHslcOkxJnx','Monthly':'1MDPmxqkysoEIS7E9gdeY9lii4pOol11C','Quarterly':'1b0OYvmNxECMblwgxKqH8s48ofJsANgPn','Yearly':'1IxDzA716fuSx1kqBSLp6e4dtVs5xQ4I4' }},
+    'Inventory Report':    { icon:'📦', folders:{ 'Daily':'1euyF5BdxEk12EN5GVXxqDVz6cTl_YFkc','Weekly':'1ZXcRvsMluYZTNRBUz5BRji7TQU_61jkF','Monthly':'1z-xCafxEK-6_qnnMpuP1vDoZEYwnOhvo','Quarterly':'1-QhPGFj6v5OkDgcu0a0qEV3eFksQPJQ3','Yearly':'1HiXXxEt4hu_FbfPPoi-imuMWXG2kMA6I' }},
+    'Supervisor Report':   { icon:'📋', folders:{ 'Daily':'1awWGh9lUyEg-cdYynoWRVN2ebihoj10r','Weekly':'18bG51EnkGfMFbmSth9XiGsiS5XPts8Cy','Monthly':'1ytnwW3icoi4gBx_bfpTmOUd5J6qU9NGh','Quarterly':'1zJFKYrKwbAJrbYO49kv3GeR7zyxEFb3V','Yearly':'1psbPLucmjIUNsTV-j6yI4353dgR5d7rb' }}
+  },
+  'GHK School': {
+    'Students Attendance': { icon:'🎒', folders:{ 'Daily':'1GDcjP3kpWsEwSBs8ctsiXInpfrUrdZmb','Weekly':'1V57BNmXQHGSdtsiwxuU48P3f6KFKGwit','Monthly':'1_ZgnhQ9f_Q6rW3xx-LMtvwc6sycbQsmu','Quarterly':'1BJtYX2QD_2aNYXxRyzYaIDY_wPdJ-loe','Yearly':'1kTwP3gaUkZGJ-yLBDKXDB0l_g4TnvKwC' }},
+    'Team Attendance':     { icon:'👥', folders:{ 'Daily (Morning)':'1MibE5Y-UFWyOR-tB7JFz2Kpqv8YaCJW4','Daily (Evening)':'17LFByVgjyUx8ViNudTmBtgRLfFLzh5yp','Weekly':'1_lhbmlNhQubkcV0B2nSqmSxpAVV0hyRl','Monthly':'1sAvNeWZZqaZtzeTa7KYaEeoTEvw55ay2','Quarterly':'1l9ZJiSiB-Ay5rrrW3L0dp2Wv5kOcbp8k','Yearly':'1dtwJZaXdROOb0-Kwk64OFaRiWCrx3Rdo' }},
+    'Behaviour Report':    { icon:'📊', folders:{ 'Daily':'1aCw-v3JuYtXjhqxt1IDMLxhCBXW9wyZs','Weekly':'1Exbh-AYLSm9oEolPTOsfsPXSAMDIiVrd','Monthly':'1DtzEzJN2wQZgMzXwB-SS7K_lti0ijC9K','Quarterly':'1VKpgYOY-ScyCeTowCOkqUDjTBC4k1yNg','Yearly':'15SGyoe-g2ONQVRE2WN_ErNpvGyBMaUQW' }},
+    'Supervisor Report':   { icon:'📋', folders:{ 'Daily':'16E_3EAOHBd9K-1njP6wfrNMDXCoSFQEK','Weekly':'1NUGGc7UBbfmF_Ia34GNq4hlCiCJ5oH0e','Monthly':'1QuX8Sjy4rw1K83R5HoojZn0PjGXqhz_d','Quarterly':'1U-Y_AvyQWbb8GzfwWRRBNMIhzpxEhHIx','Yearly':'1IL-bsdV9lKa34rKB78P_zVeWvoHhpVw-' }},
+    'Lesson Plan Tracker': { icon:'📝', folders:{ 'Daily':'12R8W77tdPvSSXgz6ctvu6lzzUm3q_Ifz','Weekly':'1kYpLmf_KLPhrPZYW6-zOC5GptxDfBnzW','Monthly':'1BbkDMs4kZDtvLdkoOiNBqFkVf7JD3qp5','Quarterly':'1ki79V9hQsumRbuox5QHSiuWVSSsoQUc6','Yearly':'1lAFNo7goQjLOEASOCYq04OwM5RGqT0a0' }}
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════════════
+const AUTH = {
+  get token()    { return sessionStorage.getItem('ghk_token'); },
+  get username() { return sessionStorage.getItem('ghk_user'); },
+  set(t,u){ sessionStorage.setItem('ghk_token',t); sessionStorage.setItem('ghk_user',u); },
+  clear(){ sessionStorage.removeItem('ghk_token'); sessionStorage.removeItem('ghk_user'); },
+  isLoggedIn(){ return !!this.token; }
+};
+
+// ═══════════════════════════════════════════════════════
+//  LOGIN
+// ═══════════════════════════════════════════════════════
+document.getElementById('toggle-pw').addEventListener('click', function(){
+  const i=document.getElementById('password');
+  i.type = i.type==='password' ? 'text' : 'password';
+  this.textContent = i.type==='password' ? '👁' : '🙈';
+});
+document.getElementById('username').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('password').focus();});
+document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+async function doLogin(){
+  const username=document.getElementById('username').value.trim();
+  const password=document.getElementById('password').value;
+  const errEl=document.getElementById('login-error');
+  const btn=document.getElementById('login-btn');
+  errEl.classList.remove('show');
+  ['username','password'].forEach(id=>document.getElementById(id).classList.remove('error-field'));
+  if(!username||!password){
+    showLoginError('Please enter both username and password.');
+    if(!username)document.getElementById('username').classList.add('error-field');
+    if(!password)document.getElementById('password').classList.add('error-field');
+    return;
+  }
+  btn.disabled=true;
+  document.getElementById('btn-text').classList.add('hide');
+  document.getElementById('btn-spinner').classList.add('show');
+  try{
+    const res=await fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'login',username,password})});
+    const data=await res.json();
+    if(data.success){ AUTH.set(data.token,data.username); showApp(); }
+    else{ showLoginError(data.message||'Login failed.'); document.getElementById('password').classList.add('error-field'); }
+  }catch(err){ showLoginError('Could not connect. Check your internet connection.'); }
+  finally{
+    btn.disabled=false;
+    document.getElementById('btn-text').classList.remove('hide');
+    document.getElementById('btn-spinner').classList.remove('show');
+  }
+}
+function showLoginError(msg){ const el=document.getElementById('login-error'); el.textContent=msg; el.classList.add('show'); }
+function doLogout(){
+  AUTH.clear(); state={school:null,reportType:null,frequency:null,view:'home'};
+  document.getElementById('app-shell').classList.remove('visible');
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('username').value='';
+  document.getElementById('password').value='';
+  document.getElementById('login-error').classList.remove('show');
+}
+function showApp(){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app-shell').classList.add('visible');
+  const u=AUTH.username||'?';
+  document.getElementById('user-avatar').textContent=u[0].toUpperCase();
+  updateBreadcrumb(); showView('home-view');
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let state={school:null,reportType:null,frequency:null,view:'home'};
+let currentFile=null; // file object open in viewer
+let pdfData=null;     // base64 PDF data after conversion
+let analysisMatches=[]; // results from the most recent date-analysis run
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+const sClass = s => s==='GHK Lab School'?'purple':'blue';
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('main-content').style.display='block';
+  document.getElementById('viewer-view').classList.remove('active');
+}
+
+function updateBreadcrumb(){
+  const bc=document.getElementById('breadcrumb');
+  const p=[];
+  p.push(`<span onclick="goHome()">Home</span>`);
+  if(state.view==='dashboard'&&state.school){
+    p.push(`<span class="sep">›</span><span class="active">📊 ${state.school} Dashboard</span>`);
+  } else {
+    if(state.school){
+      p.push(`<span class="sep">›</span>`);
+      p.push(state.reportType?`<span onclick="goReports()">${state.school}</span>`:`<span class="active">${state.school}</span>`);
+    }
+    if(state.reportType){
+      p.push(`<span class="sep">›</span>`);
+      p.push(state.frequency?`<span onclick="goFiles()">${state.reportType}</span>`:`<span class="active">${state.reportType}</span>`);
+    }
+    if(state.frequency) p.push(`<span class="sep">›</span><span class="active">${state.frequency==='__analyze__'?'Analyze by Date':state.frequency}</span>`);
+  }
+  bc.innerHTML=p.join('');
+}
+
+function formatDate(iso){ return new Date(iso).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+function formatDateTime(iso){ return new Date(iso).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+
+function isHtmlFile(mime,name){
+  return mime==='text/html'||mime==='application/xhtml+xml'||(name&&/\.html?$/i.test(name));
+}
+function getFileIcon(mime,name){
+  if(isHtmlFile(mime,name)) return '🌐';
+  if(!mime) return '📄';
+  if(mime.includes('spreadsheet')||mime.includes('excel')) return '📊';
+  if(mime.includes('document')||mime.includes('word'))     return '📝';
+  if(mime.includes('presentation')||mime.includes('powerpoint')) return '📑';
+  if(mime.includes('pdf'))   return '📕';
+  if(mime.includes('image')) return '🖼️';
+  return '📄';
+}
+function getDriveUrl(id,mime,name){
+  if(isHtmlFile(mime,name)) return `https://drive.google.com/file/d/${id}/view`;
+  if(!mime) return `https://drive.google.com/file/d/${id}/view`;
+  if(mime.includes('spreadsheet')) return `https://docs.google.com/spreadsheets/d/${id}/edit`;
+  if(mime.includes('document'))    return `https://docs.google.com/document/d/${id}/edit`;
+  if(mime.includes('presentation'))return `https://docs.google.com/presentation/d/${id}/edit`;
+  return `https://drive.google.com/file/d/${id}/view`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+function goHome(){state={school:null,reportType:null,frequency:null,view:'home'};updateBreadcrumb();showView('home-view');window.scrollTo(0,0);}
+function selectSchool(s){state.school=s;state.reportType=null;state.frequency=null;state.view='reports';updateBreadcrumb();renderReportTypes();showView('reports-view');window.scrollTo(0,0);}
+function goReports(){state.reportType=null;state.frequency=null;state.view='reports';updateBreadcrumb();renderReportTypes();showView('reports-view');window.scrollTo(0,0);}
+function selectReport(rt){state.reportType=rt;state.frequency=null;state.view='files';updateBreadcrumb();renderFilesView();showView('files-view');window.scrollTo(0,0);}
+function goFiles(){state.frequency=null;state.view='files';updateBreadcrumb();renderFilesView();showView('files-view');window.scrollTo(0,0);}
+
+function selectFrequency(f){
+  state.frequency=f;
+  updateBreadcrumb();
+  renderFreqTabs();
+  if(f==='__analyze__'){ renderAnalyzePanel(); }
+  else { loadFiles(f); }
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER REPORT TYPES
+// ═══════════════════════════════════════════════════════
+function renderReportTypes(){
+  const cls=sClass(state.school);
+  const sd=FOLDERS[state.school];
+  const banner=document.getElementById('school-banner');
+  banner.className='school-banner '+cls;
+  document.getElementById('school-banner-title').textContent=state.school;
+  document.getElementById('school-banner-sub').textContent=Object.keys(sd).length+' report types';
+  const grid=document.getElementById('report-grid');
+  grid.innerHTML='';
+  for(const [type,data] of Object.entries(sd)){
+    const card=document.createElement('div');
+    card.className='report-card '+cls;
+    card.innerHTML=`<div class="icon">${data.icon}</div><h3>${type}</h3><div class="freq-count">${Object.keys(data.folders).length} frequency folders</div>`;
+    card.addEventListener('click',()=>selectReport(type));
+    grid.appendChild(card);
+  }
+  document.getElementById('back-school-name').textContent=state.school;
+}
+
+function renderFilesView(){
+  document.getElementById('report-type-heading').textContent=state.reportType;
+  document.getElementById('back-school-name').textContent=state.school;
+  renderFreqTabs();
+  document.getElementById('file-list-container').innerHTML=`<div class="state-box"><div class="icon">📂</div><p>Select a frequency tab above to load reports.</p></div>`;
+}
+
+function renderFreqTabs(){
+  const cls=sClass(state.school);
+  const tabs=document.getElementById('freq-tabs');
+  tabs.innerHTML='';
+  for(const freq of Object.keys(FOLDERS[state.school][state.reportType].folders)){
+    const t=document.createElement('div');
+    t.className='freq-tab'+(state.frequency===freq?' active '+cls:'');
+    t.textContent=freq;
+    t.addEventListener('click',()=>selectFrequency(freq));
+    tabs.appendChild(t);
+  }
+  // NEW: extra tab that opens the date-based analysis panel
+  const analyzeTab=document.createElement('div');
+  analyzeTab.className='freq-tab analyze-tab'+(state.frequency==='__analyze__'?' active '+cls:'');
+  analyzeTab.textContent='📅 Analyze by Date';
+  analyzeTab.addEventListener('click',()=>selectFrequency('__analyze__'));
+  tabs.appendChild(analyzeTab);
+}
+
+// ═══════════════════════════════════════════════════════
+//  LOAD FILES
+// ═══════════════════════════════════════════════════════
+async function loadFiles(freq){
+  const cls=sClass(state.school);
+  const folderId=FOLDERS[state.school][state.reportType].folders[freq];
+  const container=document.getElementById('file-list-container');
+  if(!AUTH.isLoggedIn()){doLogout();return;}
+  container.innerHTML=`<div class="state-box"><div class="spinner"></div><p>Loading reports…</p></div>`;
+  try{
+    const data=await apiFetch(`folderId=${folderId}`);
+    if(data.error==='UNAUTHORIZED'){AUTH.clear();doLogout();return;}
+    if(data.error) throw new Error(data.error);
+    if(!data.files||data.files.length===0){
+      container.innerHTML=`<div class="state-box"><div class="icon">📭</div><p>No reports found in this folder yet.</p></div>`;
+      return;
+    }
+    const list=document.createElement('div');
+    list.className='files-list';
+    for(const file of data.files){
+      const card=document.createElement('div');
+      card.className='file-card '+cls;
+      card.innerHTML=`
+        <div class="file-icon ${cls}">${getFileIcon(file.mimeType,file.name)}</div>
+        <div class="file-meta"><h4>${file.name}</h4><div class="date">Modified: ${formatDate(file.modified)}</div></div>
+        <div class="file-arrow">›</div>`;
+      card.addEventListener('click',()=>openViewer(file));
+      list.appendChild(card);
+    }
+    container.innerHTML=`<p style="font-size:13px;color:var(--muted);margin-bottom:12px">${data.files.length} report${data.files.length!==1?'s':''}</p>`;
+    container.appendChild(list);
+  }catch(err){
+    container.innerHTML=`<div class="state-box"><div class="icon">⚠️</div><p>Could not load files.<br><small>${err.message}</small></p></div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  ANALYZE BY DATE  (new feature)
+//  Scans every frequency folder of the current report type
+//  for a file matching the chosen date, opens any HTML
+//  report found, and parses out attendance-style stats.
+// ═══════════════════════════════════════════════════════
+
+function renderAnalyzePanel(){
+  const cls=sClass(state.school);
+  const container=document.getElementById('file-list-container');
+  const today=new Date().toISOString().slice(0,10);
+  container.innerHTML=`
+    <div class="analyze-panel">
+      <p class="analyze-hint">Pick a date range — this checks every frequency folder under <b>${state.reportType}</b> for every report that falls inside it, extracts the actual data from each one, and totals it up.</p>
+      <div class="analyze-controls">
+        <input type="date" id="analyze-from" class="analyze-date-input" value="${today}">
+        <span class="analyze-range-sep">to</span>
+        <input type="date" id="analyze-to" class="analyze-date-input" value="${today}">
+        <button class="analyze-run-btn ${cls}" onclick="runDateAnalysis()">🔍 Analyze Range</button>
+      </div>
+    </div>
+    <div id="analyze-results"></div>`;
+}
+
+// Try to pull an actual calendar date out of a filename (handles most common
+// naming conventions). Falls back to the file's Drive "modified" date,
+// corrected to IST, if nothing is found in the name.
+function extractDateFromFilename(name){
+  const months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  const patterns=[
+    {re:/(\d{4})[-_.](\d{2})[-_.](\d{2})/, order:'ymd'},          // 2026-06-19
+    {re:/(\d{2})[-_.](\d{2})[-_.](\d{4})/, order:'dmy'},          // 19-06-2026
+    {re:/(\d{4})(\d{2})(\d{2})(?!\d)/,    order:'ymd'},           // 20260619
+    {re:/(\d{1,2})[-_ ]([A-Za-z]{3,9})[-_ ](\d{4})/, order:'dMony'} // 19-Jun-2026
+  ];
+  for(const p of patterns){
+    const m=name.match(p.re);
+    if(!m) continue;
+    let d,mo,y;
+    if(p.order==='ymd'){ y=+m[1]; mo=+m[2]-1; d=+m[3]; }
+    else if(p.order==='dmy'){ d=+m[1]; mo=+m[2]-1; y=+m[3]; }
+    else { d=+m[1]; mo=months[m[2].toLowerCase().slice(0,3)]; y=+m[3]; }
+    if(mo==null||isNaN(mo)||isNaN(d)||isNaN(y)) continue;
+    const dt=new Date(y,mo,d);
+    if(!isNaN(dt.getTime())) return dt;
+  }
+  return null;
+}
+
+function getFileEffectiveDate(file){
+  const fromName=extractDateFromFilename(file.name);
+  if(fromName) return fromName;
+  try{
+    const istStr=new Date(file.modified).toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'}); // YYYY-MM-DD
+    const[y,m,d]=istStr.split('-').map(Number);
+    return new Date(y,m-1,d);
+  }catch(e){ return null; }
+}
+
+function dateInRange(d,from,to){
+  if(!d) return false;
+  const t=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();
+  return t>=from.getTime() && t<=to.getTime();
+}
+
+// Generic parser: works across report types without knowing the exact template.
+// Returns THREE things so data is never silently hidden:
+//   1) stats         — best-effort Present/Absent/Late/Leave/Total/% (for KPI totals)
+//   2) tables         — actual table data pulled straight from the file, for direct display
+//   3) summaryLines   — any "Label: number" style lines found anywhere on the page
+function parseReportHTML(htmlString){
+  const result={
+    stats:{present:null,absent:null,late:null,leave:null,total:null,percentage:null},
+    tables:[],
+    summaryLines:[]
+  };
+  let doc;
+  try{ doc=new DOMParser().parseFromString(htmlString,'text/html'); }
+  catch(e){ return result; }
+
+  const bodyText=(doc.body?(doc.body.innerText||doc.body.textContent):'')||'';
+
+  const patterns=[
+    {key:'present',    re:/present[^0-9%]{0,15}(\d+)/i},
+    {key:'absent',     re:/absent[^0-9%]{0,15}(\d+)/i},
+    {key:'late',       re:/late[^0-9%]{0,15}(\d+)/i},
+    {key:'leave',      re:/leave[^0-9%]{0,15}(\d+)/i},
+    {key:'total',      re:/total[^0-9%]{0,20}(\d+)/i},
+    {key:'percentage', re:/(\d{1,3}(?:\.\d+)?)\s*%/}
+  ];
+  patterns.forEach(p=>{
+    const m=bodyText.match(p.re);
+    if(m) result.stats[p.key]= p.key==='percentage' ? parseFloat(m[1]) : parseInt(m[1],10);
+  });
+
+  // Grab short "Label: number" style lines anywhere on the page for direct display
+  bodyText.split(/\n+/).map(s=>s.trim()).filter(Boolean).forEach(line=>{
+    if(result.summaryLines.length>=10) return;
+    if(/^[A-Za-z][A-Za-z\s%/]{1,35}[:\-]\s*[\d.]+/.test(line) && line.length<70){
+      result.summaryLines.push(line);
+    }
+  });
+
+  // Pull every table's actual rows/cells so the real data is always visible,
+  // even if the keyword stats above didn't find anything.
+  const allTables=Array.from(doc.querySelectorAll('table'));
+  allTables.slice(0,4).forEach(table=>{
+    const rows=Array.from(table.querySelectorAll('tr')).slice(0,16);
+    if(rows.length===0) return;
+    const grid=rows.map(r=>Array.from(r.querySelectorAll('th,td')).map(c=>c.textContent.trim()));
+    if(grid.some(r=>r.length>0)) result.tables.push(grid);
+  });
+
+  // Cross-check / fallback: tally a "Status" column across ALL tables (not just the first 4)
+  let tally={present:0,absent:0,late:0,leave:0,rows:0};
+  allTables.forEach(table=>{
+    const headerRow=table.querySelector('tr');
+    if(!headerRow) return;
+    const headers=Array.from(headerRow.querySelectorAll('th,td')).map(c=>c.textContent.trim().toLowerCase());
+    const statusIdx=headers.findIndex(h=>h.includes('status'));
+    if(statusIdx===-1) return;
+    Array.from(table.querySelectorAll('tr')).slice(1).forEach(row=>{
+      const cells=row.querySelectorAll('td');
+      if(!cells[statusIdx]) return;
+      const val=cells[statusIdx].textContent.trim().toLowerCase();
+      tally.rows++;
+      if(/^p(resent)?$/.test(val)) tally.present++;
+      else if(/^a(bsent)?$/.test(val)) tally.absent++;
+      else if(/^l(ate)?$/.test(val)) tally.late++;
+      else if(val.includes('leave')) tally.leave++;
+    });
+  });
+  if(tally.rows>0){
+    if(result.stats.total==null)   result.stats.total=tally.rows;
+    if(result.stats.present==null) result.stats.present=tally.present;
+    if(result.stats.absent==null)  result.stats.absent=tally.absent;
+    if(result.stats.late==null)    result.stats.late=tally.late;
+    if(result.stats.leave==null)   result.stats.leave=tally.leave;
+  }
+  if(result.stats.percentage==null && result.stats.total && result.stats.present!=null){
+    result.stats.percentage=parseFloat(((result.stats.present/result.stats.total)*100).toFixed(1));
+  }
+  return result;
+}
+
+async function runDateAnalysis(){
+  const fromStr=document.getElementById('analyze-from').value;
+  const toStr=document.getElementById('analyze-to').value;
+  const resultsEl=document.getElementById('analyze-results');
+  if(!fromStr||!toStr){ resultsEl.innerHTML=`<div class="state-box"><p>Please pick both a "from" and a "to" date.</p></div>`; return; }
+
+  const from=new Date(fromStr+'T00:00:00');
+  const to=new Date(toStr+'T00:00:00');
+  if(from.getTime()>to.getTime()){
+    resultsEl.innerHTML=`<div class="state-box"><p>"From" date must be before "To" date.</p></div>`;
+    return;
+  }
+
+  resultsEl.innerHTML=`<div class="state-box"><div class="spinner"></div><p>Scanning all frequency folders & extracting data for this range…</p></div>`;
+
+  const sd=FOLDERS[state.school][state.reportType].folders;
+  const matches=[];
+
+  // Step 1: list every folder once, keep every file whose effective date falls in range
+  const candidateFiles=[];
+  await Promise.all(Object.entries(sd).map(async ([freq,folderId])=>{
+    try{
+      const data=await apiFetch(`folderId=${folderId}`);
+      if(data.error||!data.files) return;
+      data.files.forEach(f=>{
+        const eff=getFileEffectiveDate(f);
+        if(dateInRange(eff,from,to)) candidateFiles.push({freq,file:f,effDate:eff});
+      });
+    }catch(e){ /* skip this frequency on error */ }
+  }));
+
+  // Step 2: fetch + parse each matched HTML file (cap to avoid hammering Drive on huge ranges)
+  const capped=candidateFiles.slice(0,40);
+  await Promise.all(capped.map(async c=>{
+    if(!isHtmlFile(c.file.mimeType,c.file.name)){
+      matches.push({freq:c.freq,file:c.file,effDate:c.effDate,nonHtml:true});
+      return;
+    }
+    try{
+      const htmlData=await apiFetch(`fileId=${c.file.id}`);
+      if(htmlData.error) return;
+      const parsed=parseReportHTML(htmlData.html);
+      matches.push({freq:c.freq,file:c.file,effDate:c.effDate,stats:parsed.stats,tables:parsed.tables,summaryLines:parsed.summaryLines});
+    }catch(e){ /* skip this file on error */ }
+  }));
+
+  matches.sort((a,b)=>(a.effDate&&b.effDate)?(a.effDate-b.effDate):0);
+  renderAnalysisResults(fromStr,toStr,matches,candidateFiles.length);
+}
+
+function renderAnalysisResults(fromStr,toStr,matches,totalCandidates){
+  analysisMatches=matches;
+  const resultsEl=document.getElementById('analyze-results');
+  const rangeLabel = fromStr===toStr
+    ? formatDate(fromStr+'T00:00:00')
+    : formatDate(fromStr+'T00:00:00')+' – '+formatDate(toStr+'T00:00:00');
+
+  if(matches.length===0){
+    resultsEl.innerHTML=`<div class="state-box"><div class="icon">📭</div>
+      <p>No reports found between <b>${rangeLabel}</b> in any frequency folder for ${state.reportType}.<br>
+      <small>Either no files were created in this window, or the filenames/modified-dates don't match it. Try a wider range, or open the folder directly via the frequency tabs.</small></p></div>`;
+    return;
+  }
+
+  const cls=sClass(state.school);
+  let totalPresent=0,totalAbsent=0,totalLate=0,totalLeave=0,totalRecords=0,statsFound=0;
+  matches.forEach(m=>{
+    if(m.stats && m.stats.total!=null){
+      totalPresent += m.stats.present||0;
+      totalAbsent  += m.stats.absent||0;
+      totalLate    += m.stats.late||0;
+      totalLeave   += m.stats.leave||0;
+      totalRecords += m.stats.total||0;
+      statsFound++;
+    }
+  });
+  const avgPct = totalRecords>0 ? ((totalPresent/totalRecords)*100).toFixed(1) : null;
+
+  let html=`<p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Found <b>${matches.length}</b> report(s) between <b>${rangeLabel}</b>${totalCandidates>matches.length?` (showing first ${matches.length} of ${totalCandidates})`:''}.</p>`;
+
+  html+=`<div class="dash-kpi-row" style="margin-bottom:24px;">
+    <div class="kpi-card k-blue"><div class="kpi-icon">📄</div><div class="kpi-value">${matches.length}</div><div class="kpi-label">Reports Found</div></div>
+    <div class="kpi-card k-green"><div class="kpi-icon">✅</div><div class="kpi-value">${statsFound?totalPresent:'—'}</div><div class="kpi-label">Present (total)</div></div>
+    <div class="kpi-card k-red"><div class="kpi-icon">❌</div><div class="kpi-value">${statsFound?totalAbsent:'—'}</div><div class="kpi-label">Absent (total)</div></div>
+    <div class="kpi-card k-orange"><div class="kpi-icon">⏰</div><div class="kpi-value">${statsFound?totalLate:'—'}</div><div class="kpi-label">Late (total)</div></div>
+    <div class="kpi-card k-purple"><div class="kpi-icon">📊</div><div class="kpi-value">${avgPct!=null?avgPct+'%':'—'}</div><div class="kpi-label">Attendance %</div></div>
+  </div>
+  <p class="section-title">Reports in this range (click any to expand the actual data)</p>`;
+
+  matches.forEach((m,idx)=>{
+    const dateLabel = m.effDate ? m.effDate.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+
+    if(m.nonHtml){
+      html+=`<div class="analyze-result-card">
+        <div class="analyze-result-summary" onclick="openAnalysisFile(${idx})">
+          <span class="arc-icon">${getFileIcon(m.file.mimeType,m.file.name)}</span>
+          <div class="arc-meta"><h4>${m.file.name}</h4><div class="sub">${m.freq} · ${dateLabel} · non-HTML file — click to open</div></div>
+        </div>
+      </div>`;
+      return;
+    }
+
+    const s=m.stats||{};
+    const badgeParts=[];
+    if(s.total!=null) badgeParts.push(s.total+' records');
+    if(s.present!=null) badgeParts.push('✅ '+s.present);
+    if(s.absent!=null)  badgeParts.push('❌ '+s.absent);
+    if(s.late!=null)    badgeParts.push('⏰ '+s.late);
+    if(s.percentage!=null) badgeParts.push(s.percentage+'%');
+    const badgeText = badgeParts.length ? badgeParts.join(' · ') : 'click to view extracted data';
+
+    html+=`<details class="analyze-result-card">
+      <summary class="analyze-result-summary">
+        <span class="arc-icon">${getFileIcon(m.file.mimeType,m.file.name)}</span>
+        <div class="arc-meta"><h4>${m.file.name}</h4><div class="sub">${m.freq} · ${dateLabel} · ${badgeText}</div></div>
+      </summary>
+      <div class="arc-body">`;
+
+    if(m.summaryLines && m.summaryLines.length){
+      html+=`<div class="arc-section-label">Summary lines found in file</div>
+        <div class="arc-summary-lines">${m.summaryLines.map(l=>`<div>${l.replace(/</g,'&lt;')}</div>`).join('')}</div>`;
+    }
+
+    if(m.tables && m.tables.length){
+      m.tables.forEach((grid,ti)=>{
+        html+=`<div class="arc-section-label">Table ${ti+1} (first ${grid.length} rows)</div><div class="arc-table-wrap"><table class="arc-table">`;
+        grid.forEach(row=>{
+          html+='<tr>'+row.map(cell=>`<td>${(cell||'').replace(/</g,'&lt;')}</td>`).join('')+'</tr>';
+        });
+        html+='</table></div>';
+      });
+    }
+
+    if((!m.summaryLines||m.summaryLines.length===0) && (!m.tables||m.tables.length===0)){
+      html+=`<p class="analyze-note">Couldn't find any tables or "Label: number" lines in this file automatically — it likely uses a layout (e.g. cards/divs without a &lt;table&gt;) this parser doesn't recognize yet. Open it directly below to see the real content.</p>`;
+    }
+
+    html+=`<button class="arc-open-btn" onclick="openAnalysisFile(${idx})">↗ Open full report</button></div></details>`;
+  });
+
+  resultsEl.innerHTML=html;
+}
+
+function openAnalysisFile(idx){
+  const m=analysisMatches[idx];
+  if(m && m.file) openViewer(m.file);
+}
+
+// ═══════════════════════════════════════════════════════
+//  VIEWER  — renders HTML visually via blob URL
+// ═══════════════════════════════════════════════════════
+async function openViewer(file){
+  currentFile=file;
+  pdfData=null;
+  document.getElementById('viewer-title').textContent=file.name;
+  document.getElementById('viewer-open').href=getDriveUrl(file.id,file.mimeType,file.name);
+  document.getElementById('pdf-share-btn').disabled=false;
+  document.getElementById('pdf-share-btn').textContent='📥 Share as PDF';
+  document.getElementById('main-content').style.display='none';
+  document.getElementById('viewer-view').classList.add('active');
+  window.scrollTo(0,0);
+
+  const frame=document.getElementById('report-frame');
+
+  if(isHtmlFile(file.mimeType,file.name)){
+    // Show spinner via srcdoc — no src= conflict, no sandbox needed
+    frame.removeAttribute('src');
+    frame.srcdoc='<!DOCTYPE html><html><head><style>body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#f9fafb;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#1a56db;border-radius:50%;animation:s .7s linear infinite;margin:0 auto 14px;}@keyframes s{to{transform:rotate(360deg)}}p{color:#6b7280;font-size:14px;margin:0}</style></head><body><div style="text-align:center"><div class="sp"></div><p>Loading report…</p></div></body></html>';
+
+    try{
+      const data=await apiFetch('fileId='+file.id);
+      if(data.error) throw new Error(data.error);
+      // Inject HTML directly via srcdoc — renders fully styled with all CSS/images
+      frame.srcdoc = data.html;
+    }catch(err){
+      frame.srcdoc='<!DOCTYPE html><html><body style="font-family:sans-serif;padding:32px;color:#dc2626;background:#fff"><h2>Could not load report</h2><p style="color:#6b7280;margin-top:8px">'+err.message+'</p><p style="margin-top:16px;font-size:13px;color:#9ca3af">Try the Open in Drive button above.</p></body></html>';
+    }
+  } else {
+    // PDFs / Sheets / Docs — use Drive preview
+    if(file.mimeType&&file.mimeType.includes('spreadsheet')) frame.src=`https://docs.google.com/spreadsheets/d/${file.id}/preview`;
+    else if(file.mimeType&&file.mimeType.includes('document')) frame.src=`https://docs.google.com/document/d/${file.id}/preview`;
+    else if(file.mimeType&&file.mimeType.includes('presentation')) frame.src=`https://docs.google.com/presentation/d/${file.id}/preview`;
+    else frame.src=`https://drive.google.com/file/d/${file.id}/preview`;
+  }
+}
+
+function closeViewer(){
+  const frame=document.getElementById('report-frame');
+  frame.srcdoc=''; frame.src='about:blank';
+  document.getElementById('main-content').style.display='block';
+  document.getElementById('viewer-view').classList.remove('active');
+  pdfData=null; currentFile=null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  PDF SHARE
+// ═══════════════════════════════════════════════════════
+function sharePdf(){
+  if(!currentFile) return;
+  pdfData=null;
+  document.getElementById('pdf-bar').style.width='0%';
+  document.getElementById('pdf-status').textContent='Connecting to Google Drive…';
+  document.getElementById('pdf-download-btn').disabled=true;
+  document.getElementById('pdf-cancel-btn').disabled=false;
+  document.getElementById('pdf-modal').classList.add('show');
+  startPdfConversion();
+}
+
+async function startPdfConversion(){
+  const bar=document.getElementById('pdf-bar');
+  const status=document.getElementById('pdf-status');
+  const dlBtn=document.getElementById('pdf-download-btn');
+
+  try{
+    bar.style.width='20%';
+    status.textContent='Uploading HTML to Google Drive…';
+
+    const data=await apiFetch(`exportPdf=${currentFile.id}`);
+
+    bar.style.width='80%';
+    status.textContent='Exporting to PDF…';
+
+    await new Promise(r=>setTimeout(r,400));
+
+    if(data.error) throw new Error(data.error);
+
+    if(data.pdf){
+      // base64 PDF returned
+      pdfData={b64:data.pdf, name:data.name||currentFile.name.replace(/\.html?$/i,'.pdf')};
+      bar.style.width='100%';
+      status.textContent='✅ PDF ready! Click Download to save.';
+      dlBtn.disabled=false;
+    } else if(data.driveUrl){
+      // For non-HTML files, just open the Drive download URL
+      bar.style.width='100%';
+      status.textContent='✅ Redirecting to Drive download…';
+      window.open(data.driveUrl,'_blank');
+      setTimeout(closePdfModal,1200);
+    }
+  }catch(err){
+    bar.style.width='100%';
+    bar.style.background='var(--red)';
+    status.textContent='❌ Error: '+err.message;
+  }
+}
+
+function downloadPdf(){
+  if(!pdfData) return;
+  // Convert base64 to blob and trigger download
+  const byteChars=atob(pdfData.b64);
+  const bytes=new Uint8Array(byteChars.length);
+  for(let i=0;i<byteChars.length;i++) bytes[i]=byteChars.charCodeAt(i);
+  const blob=new Blob([bytes],{type:'application/pdf'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=pdfData.name; a.click();
+  URL.revokeObjectURL(url);
+  closePdfModal();
+}
+
+function closePdfModal(){
+  document.getElementById('pdf-modal').classList.remove('show');
+  document.getElementById('pdf-bar').style.background='';
+  pdfData=null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  API FETCH helper
+// ═══════════════════════════════════════════════════════
+async function apiFetch(params){
+  const url=`${APPS_SCRIPT_URL}?${params}&token=${encodeURIComponent(AUTH.token)}`;
+  const res=await fetch(url);
+  const data=await res.json();
+  if(data.error==='UNAUTHORIZED'){AUTH.clear();doLogout();throw new Error('Session expired');}
+  return data;
+}
+
+// ═══════════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════════
+async function openDashboard(school){
+  state.school=school; state.view='dashboard'; state.reportType=null; state.frequency=null;
+  updateBreadcrumb();
+
+  const cls=sClass(school);
+  const sd=FOLDERS[school];
+  const rts=Object.keys(sd);
+  const totalFolders=rts.reduce((s,rt)=>s+Object.keys(sd[rt].folders).length,0);
+
+  // Header
+  const pill=document.getElementById('dash-pill');
+  pill.textContent=school==='GHK Lab School'?'LAB SCHOOL':'SCHOOL';
+  pill.className='dash-school-pill '+cls;
+  document.getElementById('dash-title').textContent=school+' — Report Dashboard';
+  document.getElementById('dash-sub').textContent='Live overview of all '+rts.length+' report types · '+totalFolders+' folders';
+  document.getElementById('dash-refreshed').textContent='Loading…';
+
+  // KPI defaults
+  document.getElementById('kpi-types').textContent=rts.length;
+  document.getElementById('kpi-folders').textContent=totalFolders;
+  document.getElementById('kpi-files').textContent='…';
+  document.getElementById('kpi-today').textContent='…';
+  document.getElementById('kpi-empty').textContent='…';
+
+  // Build section skeletons
+  const sectionsEl=document.getElementById('dash-sections');
+  sectionsEl.innerHTML='';
+  for(const rt of rts){
+    const freqKeys=Object.keys(sd[rt].folders);
+    const sec=document.createElement('div');
+    sec.className='dash-sec';
+    sec.id='ds-'+rt.replace(/\s+/g,'_');
+
+    const chips=freqKeys.map(f=>`<span class="freq-status-chip ${cls}" id="chip-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}" onclick="dashOpenFreq('${esc(rt)}','${esc(f)}')" title="Click to open">
+      <span class="dot grey" id="dot-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}"></span>${f}
+    </span>`).join('');
+
+    sec.innerHTML=`
+      <div class="dash-sec-head">
+        <div class="dash-sec-head-left">
+          <span class="dash-sec-head-icon">${sd[rt].icon}</span>
+          <h3>${rt}</h3>
+        </div>
+        <span class="browse-link ${cls}" onclick="dashOpenReport('${esc(school)}','${esc(rt)}')">Browse all ›</span>
+      </div>
+      <div class="dash-freq-bar" id="fbar-${rt.replace(/\s+/g,'_')}">${chips}</div>
+      <div id="dlat-${rt.replace(/\s+/g,'_')}"><div class="dash-loading"><div class="mini-spin"></div> Loading latest files…</div></div>`;
+    sectionsEl.appendChild(sec);
+  }
+
+  showView('dashboard-view');
+  window.scrollTo(0,0);
+
+  // Load data in parallel
+  let totalFiles=0, updatedToday=0, emptyFolders=0;
+  const today=new Date().toDateString();
+
+  await Promise.all(rts.map(async rt=>{
+    const freqEntries=Object.entries(sd[rt].folders);
+    const latEl=document.getElementById('dlat-'+rt.replace(/\s+/g,'_'));
+
+    // Load each frequency folder to get counts + latest file
+    let allLatest=[];
+    await Promise.all(freqEntries.map(async ([freq,folderId])=>{
+      try{
+        const data=await apiFetch(`folderId=${folderId}`);
+        if(data.error||!data.files){
+          setFreqDot(rt,freq,'red'); emptyFolders++; return;
+        }
+        const count=data.files.length;
+        totalFiles+=count;
+        data.files.forEach(f=>{if(new Date(f.modified).toDateString()===today)updatedToday++;});
+
+        // Dot color: green=has files updated today or recently, orange=has files but older, red=empty
+        if(count===0){ setFreqDot(rt,freq,'red'); emptyFolders++; }
+        else{
+          const latestDate=new Date(data.files[0].modified);
+          const daysDiff=(Date.now()-latestDate)/(1000*60*60*24);
+          setFreqDot(rt,freq,daysDiff<1?'green':daysDiff<7?'orange':'red');
+          // Add latest file from this freq to the combined list
+          if(data.files[0]) allLatest.push({...data.files[0],_freq:freq});
+        }
+        // Update KPI live
+        document.getElementById('kpi-files').textContent=totalFiles;
+        document.getElementById('kpi-today').textContent=updatedToday;
+        document.getElementById('kpi-empty').textContent=emptyFolders;
+      }catch(e){ setFreqDot(rt,freq,'grey'); }
+    }));
+
+    // Show top 4 latest files across all freqs for this report type
+    allLatest.sort((a,b)=>new Date(b.modified)-new Date(a.modified));
+    const top=allLatest.slice(0,4);
+    if(top.length===0){
+      latEl.innerHTML=`<div class="no-files-note">No files found across any folder.</div>`;
+    } else {
+      latEl.innerHTML=`<div class="dash-latest-files">
+        <div class="dash-latest-label">Most recent files</div>
+        ${top.map(f=>`
+          <div class="dash-file-row" onclick="openViewerFromDash(${JSON.stringify(f).replace(/"/g,'&quot;')})">
+            <span class="dfi-icon">${getFileIcon(f.mimeType,f.name)}</span>
+            <span class="dfi-name">${f.name}</span>
+            <span class="dfi-freq-tag ${cls}">${f._freq}</span>
+            <span class="dfi-date">${formatDate(f.modified)}</span>
+          </div>`).join('')}
+      </div>`;
+    }
+  }));
+
+  document.getElementById('dash-refreshed').textContent='Refreshed '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+}
+
+function esc(s){ return String(s).replace(/'/g,"\\'"); }
+
+function setFreqDot(rt,freq,color){
+  const id='dot-'+rt.replace(/\s+/g,'_')+'-'+freq.replace(/[\s()]+/g,'_');
+  const el=document.getElementById(id);
+  if(el){ el.className='dot '+color; }
+}
+
+function dashOpenFreq(rt,freq){
+  state.school=state.school; // already set
+  state.reportType=rt; state.frequency=freq; state.view='files';
+  updateBreadcrumb(); renderFilesView(); showView('files-view');
+  setTimeout(()=>selectFrequency(freq),60);
+  window.scrollTo(0,0);
+}
+
+function dashOpenReport(school,rt){
+  state.school=school; state.reportType=rt; state.frequency=null; state.view='files';
+  updateBreadcrumb(); renderFilesView(); showView('files-view');
+  window.scrollTo(0,0);
+}
+
+function openViewerFromDash(file){
+  openViewer(file);
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+if(AUTH.isLoggedIn()) showApp();
+else updateBreadcrumb();
+</script>
+</body>
+</html>a56db;
+      --blue-dark:   #1340a8;
+      --blue-light:  #e8f0fe;
+      --purple:      #7c3aed;
+      --purple-light:#ede9fe;
+      --green:       #059669;
+      --green-light: #d1fae5;
+      --orange:      #d97706;
+      --orange-light:#fef3c7;
+      --red:         #dc2626;
+      --red-light:   #fee2e2;
+      --text:        #111827;
+      --muted:       #6b7280;
+      --border:      #e5e7eb;
+      --bg:          #f9fafb;
+      --white:       #ffffff;
+      --radius:      12px;
+      --shadow:      0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
+      --shadow-lg:   0 4px 16px rgba(0,0,0,.10),0 8px 32px rgba(0,0,0,.08);
+    }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1340a8 0%,#7c3aed 100%); padding:20px; }
+    #login-screen.hidden { display:none; }
+    .login-card { background:var(--white); border-radius:20px; padding:44px 40px 40px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.25); }
+    @media(max-width:440px){.login-card{padding:32px 24px 28px;}}
+    .login-logo { display:flex; align-items:center; gap:12px; margin-bottom:28px; }
+    .login-logo-icon { width:44px;height:44px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;font-weight:800;flex-shrink:0; }
+    .login-logo-text h1{font-size:18px;font-weight:700;line-height:1.2;}
+    .login-logo-text p{font-size:12px;color:var(--muted);margin-top:2px;}
+    .login-heading{font-size:22px;font-weight:700;margin-bottom:6px;}
+    .login-sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
+    .field-group{margin-bottom:18px;}
+    .field-group label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;}
+    .field-group .input-wrap{position:relative;}
+    .field-group input{width:100%;padding:11px 40px 11px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;outline:none;transition:border-color .18s,box-shadow .18s;}
+    .field-group input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+    .field-group input.error-field{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.1);}
+    .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:16px;user-select:none;}
+    .login-error{background:var(--red-light);border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:18px;display:none;}
+    .login-error.show{display:block;}
+    .login-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;border:none;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .18s,transform .12s;}
+    .login-btn:hover:not(:disabled){opacity:.92;transform:translateY(-1px);}
+    .login-btn:disabled{opacity:.6;cursor:not-allowed;}
+    .btn-spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto;}
+    .btn-spinner.show{display:block;}
+    .btn-text.hide{display:none;}
+    .login-footer{margin-top:22px;text-align:center;font-size:12px;color:var(--muted);}
+    .security-badge{display:inline-flex;align-items:center;gap:5px;background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:500;}
+
+    /* ── APP SHELL ── */
+    #app-shell{display:none;}
+    #app-shell.visible{display:block;}
+    header{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+    .logo{font-size:17px;font-weight:600;display:flex;align-items:center;gap:10px;}
+    .logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:800;}
+    .header-right{display:flex;align-items:center;gap:14px;}
+    .breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);overflow-x:auto;white-space:nowrap;}
+    .breadcrumb span{cursor:pointer;}
+    .breadcrumb span:hover{color:var(--text);}
+    .breadcrumb .sep{color:var(--border);}
+    .breadcrumb .active{color:var(--text);font-weight:500;}
+    .user-avatar{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;}
+    .logout-btn{font-size:12px;color:var(--muted);cursor:pointer;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--white);transition:color .15s,border-color .15s;}
+    .logout-btn:hover{color:var(--red);border-color:#fca5a5;}
+    main{max-width:960px;margin:0 auto;padding:28px 20px 60px;}
+    .section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:14px;}
+
+    /* ── HOME ── */
+    .school-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px;}
+    @media(max-width:560px){.school-grid{grid-template-columns:1fr;}}
+    .school-card{background:var(--white);border-radius:var(--radius);border:2px solid var(--border);padding:28px 24px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .12s;}
+    .school-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+    .school-card.blue::before{background:var(--blue);}
+    .school-card.purple::before{background:var(--purple);}
+    .school-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+    .school-card.blue:hover{border-color:var(--blue);}
+    .school-card.purple:hover{border-color:var(--purple);}
+    .school-card .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;margin-bottom:12px;}
+    .school-card.blue .tag{background:var(--blue-light);color:var(--blue);}
+    .school-card.purple .tag{background:var(--purple-light);color:var(--purple);}
+    .school-card h2{font-size:20px;font-weight:700;margin-bottom:8px;}
+    .school-card p{font-size:14px;color:var(--muted);line-height:1.5;}
+    .school-card .count{margin-top:18px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+    .dash-btn{display:inline-flex;align-items:center;gap:5px;margin-top:12px;padding:6px 12px;font-size:12px;font-weight:600;border-radius:7px;border:none;cursor:pointer;transition:opacity .15s;}
+    .school-card.blue .dash-btn{background:var(--blue-light);color:var(--blue);}
+    .school-card.purple .dash-btn{background:var(--purple-light);color:var(--purple);}
+    .dash-btn:hover{opacity:.75;}
+
+    /* ── REPORT TYPES ── */
+    .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);cursor:pointer;margin-bottom:22px;padding:6px 0;}
+    .back-btn:hover{color:var(--text);}
+    .school-banner{padding:18px 22px;border-radius:var(--radius);margin-bottom:24px;display:flex;align-items:center;gap:14px;}
+    .school-banner.blue{background:var(--blue-light);}
+    .school-banner.purple{background:var(--purple-light);}
+    .school-banner h1{font-size:20px;font-weight:700;}
+    .school-banner.blue h1{color:var(--blue);}
+    .school-banner.purple h1{color:var(--purple);}
+    .school-banner p{font-size:13px;color:var(--muted);margin-top:2px;}
+    .report-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+    .report-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .12s;}
+    .report-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+    .report-card.blue:hover{border-color:var(--blue);}
+    .report-card.purple:hover{border-color:var(--purple);}
+    .report-card .icon{font-size:26px;margin-bottom:10px;}
+    .report-card h3{font-size:15px;font-weight:600;}
+    .report-card .freq-count{font-size:12px;color:var(--muted);margin-top:5px;}
+
+    /* ── FILES VIEW ── */
+    .freq-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+    .freq-tab{padding:7px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;}
+    .freq-tab:hover{border-color:#9ca3af;color:var(--text);}
+    .freq-tab.active.blue{background:var(--blue);color:white;border-color:var(--blue);}
+    .freq-tab.active.purple{background:var(--purple);color:white;border-color:var(--purple);}
+    .freq-tab.analyze-tab{border-style:dashed;font-weight:600;}
+    .freq-tab.analyze-tab.active.blue{background:var(--blue);border-style:solid;}
+    .freq-tab.analyze-tab.active.purple{background:var(--purple);border-style:solid;}
+    .files-list{display:flex;flex-direction:column;gap:8px;}
+    .file-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
+    .file-card:hover{box-shadow:var(--shadow);}
+    .file-card.blue:hover{border-color:var(--blue);}
+    .file-card.purple:hover{border-color:var(--purple);}
+    .file-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+    .file-icon.blue{background:var(--blue-light);}
+    .file-icon.purple{background:var(--purple-light);}
+    .file-meta{flex:1;min-width:0;}
+    .file-meta h4{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .file-meta .date{font-size:12px;color:var(--muted);margin-top:2px;}
+    .file-arrow{color:var(--muted);font-size:16px;flex-shrink:0;}
+    .state-box{text-align:center;padding:48px 24px;color:var(--muted);}
+    .state-box .icon{font-size:36px;margin-bottom:12px;}
+    .state-box p{font-size:14px;line-height:1.6;}
+    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* ── VIEWER ── */
+    #viewer-view{display:none;flex-direction:column;height:calc(100vh - 56px);}
+    #viewer-view.active{display:flex;}
+    .viewer-topbar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+    .viewer-topbar .back{cursor:pointer;font-size:20px;color:var(--muted);flex-shrink:0;}
+    .viewer-topbar .back:hover{color:var(--text);}
+    .viewer-topbar .title{font-size:15px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .viewer-btn{font-size:13px;padding:6px 12px;border-radius:6px;white-space:nowrap;flex-shrink:0;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:none;transition:background .15s;}
+    .viewer-btn.open{color:var(--blue);border:1px solid var(--blue);background:var(--white);}
+    .viewer-btn.open:hover{background:var(--blue-light);}
+    .viewer-btn.pdf{color:var(--white);border:1px solid var(--red);background:var(--red);}
+    .viewer-btn.pdf:hover{opacity:.88;}
+    .viewer-btn.pdf:disabled{opacity:.5;cursor:not-allowed;}
+    #report-frame{flex:1;border:none;background:#f0f0f0;}
+
+    /* ── VIEWS ── */
+    .view{display:none;}
+    .view.active{display:block;}
+
+    /* ══════════════════════════════════════════════════════
+       DASHBOARD
+    ══════════════════════════════════════════════════════ */
+    .dash-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+    .dash-topbar-title{display:flex;align-items:center;gap:12px;}
+    .dash-school-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
+    .dash-school-pill.blue{background:var(--blue-light);color:var(--blue);}
+    .dash-school-pill.purple{background:var(--purple-light);color:var(--purple);}
+    .dash-topbar h1{font-size:22px;font-weight:800;}
+    .dash-topbar p{font-size:13px;color:var(--muted);margin-top:3px;}
+
+    /* Stat cards */
+    .dash-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:28px;}
+    .kpi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;position:relative;overflow:hidden;}
+    .kpi-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px;}
+    .kpi-card.k-blue::after{background:var(--blue);}
+    .kpi-card.k-purple::after{background:var(--purple);}
+    .kpi-card.k-green::after{background:var(--green);}
+    .kpi-card.k-orange::after{background:var(--orange);}
+    .kpi-card.k-red::after{background:var(--red);}
+    .kpi-icon{font-size:18px;margin-bottom:8px;}
+    .kpi-value{font-size:28px;font-weight:800;line-height:1;}
+    .kpi-label{font-size:12px;color:var(--muted);margin-top:5px;}
+    .kpi-card.k-blue .kpi-value{color:var(--blue);}
+    .kpi-card.k-purple .kpi-value{color:var(--purple);}
+    .kpi-card.k-green .kpi-value{color:var(--green);}
+    .kpi-card.k-orange .kpi-value{color:var(--orange);}
+    .kpi-card.k-red .kpi-value{color:var(--red);}
+
+    /* Report type sections */
+    .dash-sections{display:flex;flex-direction:column;gap:20px;}
+    .dash-sec{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+    .dash-sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);}
+    .dash-sec-head-left{display:flex;align-items:center;gap:10px;}
+    .dash-sec-head-icon{font-size:20px;}
+    .dash-sec-head h3{font-size:16px;font-weight:700;}
+    .browse-link{font-size:12px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:var(--bg);transition:all .15s;text-decoration:none;}
+    .browse-link.blue:hover{color:var(--blue);border-color:var(--blue);background:var(--blue-light);}
+    .browse-link.purple:hover{color:var(--purple);border-color:var(--purple);background:var(--purple-light);}
+
+    /* Frequency status bar */
+    .dash-freq-bar{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+    .freq-status-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 11px;border-radius:20px;border:1px solid var(--border);cursor:pointer;transition:all .15s;background:var(--bg);}
+    .freq-status-chip .dot{width:7px;height:7px;border-radius:50%;}
+    .freq-status-chip .dot.green{background:var(--green);}
+    .freq-status-chip .dot.orange{background:var(--orange);}
+    .freq-status-chip .dot.red{background:#ef4444;}
+    .freq-status-chip .dot.grey{background:#9ca3af;}
+    .freq-status-chip:hover{border-color:#9ca3af;}
+    .freq-status-chip.blue:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
+    .freq-status-chip.purple:hover{background:var(--purple-light);border-color:var(--purple);color:var(--purple);}
+
+    /* Latest files in each section */
+    .dash-latest-files{padding:0 20px 16px;}
+    .dash-latest-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding-top:14px;margin-bottom:8px;}
+    .dash-file-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);cursor:pointer;transition:background .1s;}
+    .dash-file-row:last-child{border-bottom:none;}
+    .dash-file-row:hover .dfi-name{text-decoration:underline;}
+    .dfi-icon{font-size:15px;flex-shrink:0;}
+    .dfi-name{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .dfi-freq-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+    .dfi-freq-tag.blue{background:var(--blue-light);color:var(--blue);}
+    .dfi-freq-tag.purple{background:var(--purple-light);color:var(--purple);}
+    .dfi-date{font-size:11px;color:var(--muted);flex-shrink:0;min-width:70px;text-align:right;}
+    .dash-loading{padding:16px 20px;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;}
+    .mini-spin{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+    .no-files-note{padding:12px 20px 16px;font-size:13px;color:var(--muted);}
+
+    /* ── Analyze-by-date panel (inside Files view) ── */
+    .analyze-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
+    .analyze-controls{display:flex;gap:10px;align-items:center;margin-bottom:6px;flex-wrap:wrap;}
+    .analyze-date-input{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;}
+    .analyze-date-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+    .analyze-run-btn{padding:9px 18px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:white;transition:opacity .15s;}
+    .analyze-run-btn.blue{background:var(--blue);}
+    .analyze-run-btn.purple{background:var(--purple);}
+    .analyze-run-btn:hover{opacity:.88;}
+    .analyze-hint{font-size:12px;color:var(--muted);margin-bottom:18px;}
+    .analyze-note{font-size:12px;color:var(--muted);margin-top:14px;}
+
+    /* ── PDF share modal overlay ── */
+    #pdf-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+    #pdf-modal.show{display:flex;}
+    .pdf-modal-card{background:var(--white);border-radius:16px;padding:28px 28px 24px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+    .pdf-modal-card h3{font-size:17px;font-weight:700;margin-bottom:6px;}
+    .pdf-modal-card p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+    .pdf-progress{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:16px;}
+    .pdf-progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:3px;width:0%;transition:width .4s;}
+    .pdf-status{font-size:13px;color:var(--muted);margin-bottom:18px;min-height:18px;}
+    .pdf-modal-btns{display:flex;gap:8px;justify-content:flex-end;}
+    .pdf-modal-btn{padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity .15s;}
+    .pdf-modal-btn.cancel{background:var(--bg);border:1px solid var(--border);color:var(--text);}
+    .pdf-modal-btn.cancel:hover{border-color:#9ca3af;}
+    .pdf-modal-btn.download{background:var(--red);color:white;}
+    .pdf-modal-btn.download:hover{opacity:.88;}
+    .pdf-modal-btn:disabled{opacity:.5;cursor:not-allowed;}
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">G</div>
+      <div class="login-logo-text"><h1>GHK Reports</h1><p>School Management Portal</p></div>
+    </div>
+    <h2 class="login-heading">Welcome back</h2>
+    <p class="login-sub">Sign in to access school reports</p>
+    <div class="login-error" id="login-error"></div>
+    <div class="field-group">
+      <label for="username">Username</label>
+      <div class="input-wrap">
+        <input type="text" id="username" placeholder="Enter your username" autocomplete="username" autocapitalize="none" spellcheck="false" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="password">Password</label>
+      <div class="input-wrap">
+        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" />
+        <span class="toggle-pw" id="toggle-pw">👁</span>
+      </div>
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">
+      <span class="btn-text" id="btn-text">Sign In</span>
+      <div class="btn-spinner" id="btn-spinner"></div>
+    </button>
+    <div class="login-footer"><span class="security-badge">🔒 Credentials stored securely in Google Sheets</span></div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app-shell">
+  <header>
+    <div class="logo"><div class="logo-icon">G</div>GHK Reports</div>
+    <div class="header-right">
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div class="user-avatar" id="user-avatar">?</div>
+      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- Viewer -->
+  <div id="viewer-view">
+    <div class="viewer-topbar">
+      <span class="back" onclick="closeViewer()">&#8592;</span>
+      <span class="title" id="viewer-title">Report</span>
+      <button class="viewer-btn pdf" id="pdf-share-btn" onclick="sharePdf()">📥 Share as PDF</button>
+      <a class="viewer-btn open" id="viewer-open" href="#" target="_blank">Open in Drive ↗</a>
+    </div>
+    <iframe id="report-frame" src="about:blank" allowfullscreen></iframe>
+  </div>
+
+  <main id="main-content">
+
+    <!-- View 1: Home -->
+    <div class="view active" id="home-view">
+      <p class="section-title">Select School</p>
+      <div class="school-grid">
+        <div class="school-card blue" onclick="selectSchool('GHK School')">
+          <div class="tag">SCHOOL</div>
+          <h2>GHK School</h2>
+          <p>Student &amp; team attendance, behaviour, supervisor &amp; lesson plan reports</p>
+          <div class="count">📂 5 report types &nbsp;·&nbsp; 26 folders</div>
+          <button class="dash-btn" onclick="event.stopPropagation();openDashboard('GHK School')">📊 View Dashboard</button>
+        </div>
+        <div class="school-card purple" onclick="selectSchool('GHK Lab School')">
+          <div class="tag">LAB SCHOOL</div>
+          <h2>GHK Lab School</h2>
+          <p>Student &amp; team attendance, inventory &amp; supervisor reports</p>
+          <div class="count">📂 4 report types &nbsp;·&nbsp; 21 folders</div>
+          <button class="dash-btn" onclick="event.stopPropagation();openDashboard('GHK Lab School')">📊 View Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View 2: Report types -->
+    <div class="view" id="reports-view">
+      <div class="back-btn" onclick="goHome()">&#8592; All Schools</div>
+      <div class="school-banner" id="school-banner">
+        <div><h1 id="school-banner-title">School</h1><p id="school-banner-sub">Select a report type</p></div>
+      </div>
+      <p class="section-title">Report Types</p>
+      <div class="report-grid" id="report-grid"></div>
+    </div>
+
+    <!-- View 3: Files -->
+    <div class="view" id="files-view">
+      <div class="back-btn" onclick="goReports()">&#8592; <span id="back-school-name">School</span></div>
+      <p style="font-size:20px;font-weight:700;margin-bottom:16px" id="report-type-heading"></p>
+      <div class="freq-tabs" id="freq-tabs"></div>
+      <div id="file-list-container">
+        <div class="state-box"><div class="icon">📂</div><p>Select a frequency tab above to load reports.</p></div>
+      </div>
+    </div>
+
+    <!-- View 4: Dashboard -->
+    <div class="view" id="dashboard-view">
+      <div class="back-btn" onclick="goHome()">&#8592; All Schools</div>
+      <div class="dash-topbar">
+        <div class="dash-topbar-title">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <span class="dash-school-pill" id="dash-pill">SCHOOL</span>
+            </div>
+            <h1 id="dash-title">Dashboard</h1>
+            <p id="dash-sub">Live overview · all report types</p>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted)" id="dash-refreshed"></div>
+      </div>
+      <div class="dash-kpi-row" id="dash-kpi-row">
+        <div class="kpi-card k-blue"><div class="kpi-icon">📂</div><div class="kpi-value" id="kpi-types">—</div><div class="kpi-label">Report Types</div></div>
+        <div class="kpi-card k-purple"><div class="kpi-icon">🗂️</div><div class="kpi-value" id="kpi-folders">—</div><div class="kpi-label">Total Folders</div></div>
+        <div class="kpi-card k-green"><div class="kpi-icon">📄</div><div class="kpi-value" id="kpi-files">—</div><div class="kpi-label">Total Files</div></div>
+        <div class="kpi-card k-orange"><div class="kpi-icon">🕐</div><div class="kpi-value" id="kpi-today">—</div><div class="kpi-label">Updated Today</div></div>
+        <div class="kpi-card k-red"><div class="kpi-icon">⚠️</div><div class="kpi-value" id="kpi-empty">—</div><div class="kpi-label">Empty Folders</div></div>
+      </div>
+      <div class="dash-sections" id="dash-sections"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PDF SHARE MODAL -->
+<div id="pdf-modal">
+  <div class="pdf-modal-card">
+    <h3>📥 Share as PDF</h3>
+    <p>Converting this HTML report to PDF via Google Drive. This may take 15–30 seconds.</p>
+    <div class="pdf-progress"><div class="pdf-progress-bar" id="pdf-bar"></div></div>
+    <div class="pdf-status" id="pdf-status">Starting conversion…</div>
+    <div class="pdf-modal-btns">
+      <button class="pdf-modal-btn cancel" id="pdf-cancel-btn" onclick="closePdfModal()">Cancel</button>
+      <button class="pdf-modal-btn download" id="pdf-download-btn" disabled onclick="downloadPdf()">Download PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymgpKUSZtF_FPU4aLjMaB2Y1tGzTyU7c2127F7MjGrsn1hXVSd0g22v0x0zAvvFOo/exec';
+
+// ═══════════════════════════════════════════════════════
+//  FOLDERS
+// ═══════════════════════════════════════════════════════
+const FOLDERS = {
+  'GHK Lab School': {
+    'Students Attendance': { icon:'🎒', folders:{ 'Daily':'1IF84PQeMl5p7Dp8jH4x06ZslC5Nmdfhk','Weekly':'1ZeI796zOfEhwM09fNn3IEGn_MsihjIz2','Monthly':'1rOglixTNGNfthB7B04eIsQLx_CXdispb','Quarterly':'1GvwdrLGABlNN-_LmdIYvO-zhvRH4bhjd','Yearly':'1f4dLVt7LH9Xlw5o_o4JaNqoNliQ3vyJu' }},
+    'Team Attendance':     { icon:'👥', folders:{ 'Daily (Evening)':'1ZlbtIDZPHlOvhKAZtsHxxN3DvJRgMIuH','Daily (Morning)':'1htbu-8Ei2b18Se6H153kYQuDVr9AHpH0','Weekly':'1q-Ikc0Uji1mC5ra2qfUZhkHslcOkxJnx','Monthly':'1MDPmxqkysoEIS7E9gdeY9lii4pOol11C','Quarterly':'1b0OYvmNxECMblwgxKqH8s48ofJsANgPn','Yearly':'1IxDzA716fuSx1kqBSLp6e4dtVs5xQ4I4' }},
+    'Inventory Report':    { icon:'📦', folders:{ 'Daily':'1euyF5BdxEk12EN5GVXxqDVz6cTl_YFkc','Weekly':'1ZXcRvsMluYZTNRBUz5BRji7TQU_61jkF','Monthly':'1z-xCafxEK-6_qnnMpuP1vDoZEYwnOhvo','Quarterly':'1-QhPGFj6v5OkDgcu0a0qEV3eFksQPJQ3','Yearly':'1HiXXxEt4hu_FbfPPoi-imuMWXG2kMA6I' }},
+    'Supervisor Report':   { icon:'📋', folders:{ 'Daily':'1awWGh9lUyEg-cdYynoWRVN2ebihoj10r','Weekly':'18bG51EnkGfMFbmSth9XiGsiS5XPts8Cy','Monthly':'1ytnwW3icoi4gBx_bfpTmOUd5J6qU9NGh','Quarterly':'1zJFKYrKwbAJrbYO49kv3GeR7zyxEFb3V','Yearly':'1psbPLucmjIUNsTV-j6yI4353dgR5d7rb' }}
+  },
+  'GHK School': {
+    'Students Attendance': { icon:'🎒', folders:{ 'Daily':'1GDcjP3kpWsEwSBs8ctsiXInpfrUrdZmb','Weekly':'1V57BNmXQHGSdtsiwxuU48P3f6KFKGwit','Monthly':'1_ZgnhQ9f_Q6rW3xx-LMtvwc6sycbQsmu','Quarterly':'1BJtYX2QD_2aNYXxRyzYaIDY_wPdJ-loe','Yearly':'1kTwP3gaUkZGJ-yLBDKXDB0l_g4TnvKwC' }},
+    'Team Attendance':     { icon:'👥', folders:{ 'Daily (Morning)':'1MibE5Y-UFWyOR-tB7JFz2Kpqv8YaCJW4','Daily (Evening)':'17LFByVgjyUx8ViNudTmBtgRLfFLzh5yp','Weekly':'1_lhbmlNhQubkcV0B2nSqmSxpAVV0hyRl','Monthly':'1sAvNeWZZqaZtzeTa7KYaEeoTEvw55ay2','Quarterly':'1l9ZJiSiB-Ay5rrrW3L0dp2Wv5kOcbp8k','Yearly':'1dtwJZaXdROOb0-Kwk64OFaRiWCrx3Rdo' }},
+    'Behaviour Report':    { icon:'📊', folders:{ 'Daily':'1aCw-v3JuYtXjhqxt1IDMLxhCBXW9wyZs','Weekly':'1Exbh-AYLSm9oEolPTOsfsPXSAMDIiVrd','Monthly':'1DtzEzJN2wQZgMzXwB-SS7K_lti0ijC9K','Quarterly':'1VKpgYOY-ScyCeTowCOkqUDjTBC4k1yNg','Yearly':'15SGyoe-g2ONQVRE2WN_ErNpvGyBMaUQW' }},
+    'Supervisor Report':   { icon:'📋', folders:{ 'Daily':'16E_3EAOHBd9K-1njP6wfrNMDXCoSFQEK','Weekly':'1NUGGc7UBbfmF_Ia34GNq4hlCiCJ5oH0e','Monthly':'1QuX8Sjy4rw1K83R5HoojZn0PjGXqhz_d','Quarterly':'1U-Y_AvyQWbb8GzfwWRRBNMIhzpxEhHIx','Yearly':'1IL-bsdV9lKa34rKB78P_zVeWvoHhpVw-' }},
+    'Lesson Plan Tracker': { icon:'📝', folders:{ 'Daily':'12R8W77tdPvSSXgz6ctvu6lzzUm3q_Ifz','Weekly':'1kYpLmf_KLPhrPZYW6-zOC5GptxDfBnzW','Monthly':'1BbkDMs4kZDtvLdkoOiNBqFkVf7JD3qp5','Quarterly':'1ki79V9hQsumRbuox5QHSiuWVSSsoQUc6','Yearly':'1lAFNo7goQjLOEASOCYq04OwM5RGqT0a0' }}
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════════════
+const AUTH = {
+  get token()    { return sessionStorage.getItem('ghk_token'); },
+  get username() { return sessionStorage.getItem('ghk_user'); },
+  set(t,u){ sessionStorage.setItem('ghk_token',t); sessionStorage.setItem('ghk_user',u); },
+  clear(){ sessionStorage.removeItem('ghk_token'); sessionStorage.removeItem('ghk_user'); },
+  isLoggedIn(){ return !!this.token; }
+};
+
+// ═══════════════════════════════════════════════════════
+//  LOGIN
+// ═══════════════════════════════════════════════════════
+document.getElementById('toggle-pw').addEventListener('click', function(){
+  const i=document.getElementById('password');
+  i.type = i.type==='password' ? 'text' : 'password';
+  this.textContent = i.type==='password' ? '👁' : '🙈';
+});
+document.getElementById('username').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('password').focus();});
+document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+async function doLogin(){
+  const username=document.getElementById('username').value.trim();
+  const password=document.getElementById('password').value;
+  const errEl=document.getElementById('login-error');
+  const btn=document.getElementById('login-btn');
+  errEl.classList.remove('show');
+  ['username','password'].forEach(id=>document.getElementById(id).classList.remove('error-field'));
+  if(!username||!password){
+    showLoginError('Please enter both username and password.');
+    if(!username)document.getElementById('username').classList.add('error-field');
+    if(!password)document.getElementById('password').classList.add('error-field');
+    return;
+  }
+  btn.disabled=true;
+  document.getElementById('btn-text').classList.add('hide');
+  document.getElementById('btn-spinner').classList.add('show');
+  try{
+    const res=await fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'login',username,password})});
+    const data=await res.json();
+    if(data.success){ AUTH.set(data.token,data.username); showApp(); }
+    else{ showLoginError(data.message||'Login failed.'); document.getElementById('password').classList.add('error-field'); }
+  }catch(err){ showLoginError('Could not connect. Check your internet connection.'); }
+  finally{
+    btn.disabled=false;
+    document.getElementById('btn-text').classList.remove('hide');
+    document.getElementById('btn-spinner').classList.remove('show');
+  }
+}
+function showLoginError(msg){ const el=document.getElementById('login-error'); el.textContent=msg; el.classList.add('show'); }
+function doLogout(){
+  AUTH.clear(); state={school:null,reportType:null,frequency:null,view:'home'};
+  document.getElementById('app-shell').classList.remove('visible');
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('username').value='';
+  document.getElementById('password').value='';
+  document.getElementById('login-error').classList.remove('show');
+}
+function showApp(){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app-shell').classList.add('visible');
+  const u=AUTH.username||'?';
+  document.getElementById('user-avatar').textContent=u[0].toUpperCase();
+  updateBreadcrumb(); showView('home-view');
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let state={school:null,reportType:null,frequency:null,view:'home'};
+let currentFile=null; // file object open in viewer
+let pdfData=null;     // base64 PDF data after conversion
+let analysisMatches=[]; // results from the most recent date-analysis run
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+const sClass = s => s==='GHK Lab School'?'purple':'blue';
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('main-content').style.display='block';
+  document.getElementById('viewer-view').classList.remove('active');
+}
+
+function updateBreadcrumb(){
+  const bc=document.getElementById('breadcrumb');
+  const p=[];
+  p.push(`<span onclick="goHome()">Home</span>`);
+  if(state.view==='dashboard'&&state.school){
+    p.push(`<span class="sep">›</span><span class="active">📊 ${state.school} Dashboard</span>`);
+  } else {
+    if(state.school){
+      p.push(`<span class="sep">›</span>`);
+      p.push(state.reportType?`<span onclick="goReports()">${state.school}</span>`:`<span class="active">${state.school}</span>`);
+    }
+    if(state.reportType){
+      p.push(`<span class="sep">›</span>`);
+      p.push(state.frequency?`<span onclick="goFiles()">${state.reportType}</span>`:`<span class="active">${state.reportType}</span>`);
+    }
+    if(state.frequency) p.push(`<span class="sep">›</span><span class="active">${state.frequency==='__analyze__'?'Analyze by Date':state.frequency}</span>`);
+  }
+  bc.innerHTML=p.join('');
+}
+
+function formatDate(iso){ return new Date(iso).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+function formatDateTime(iso){ return new Date(iso).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+
+function isHtmlFile(mime,name){
+  return mime==='text/html'||mime==='application/xhtml+xml'||(name&&/\.html?$/i.test(name));
+}
+function getFileIcon(mime,name){
+  if(isHtmlFile(mime,name)) return '🌐';
+  if(!mime) return '📄';
+  if(mime.includes('spreadsheet')||mime.includes('excel')) return '📊';
+  if(mime.includes('document')||mime.includes('word'))     return '📝';
+  if(mime.includes('presentation')||mime.includes('powerpoint')) return '📑';
+  if(mime.includes('pdf'))   return '📕';
+  if(mime.includes('image')) return '🖼️';
+  return '📄';
+}
+function getDriveUrl(id,mime,name){
+  if(isHtmlFile(mime,name)) return `https://drive.google.com/file/d/${id}/view`;
+  if(!mime) return `https://drive.google.com/file/d/${id}/view`;
+  if(mime.includes('spreadsheet')) return `https://docs.google.com/spreadsheets/d/${id}/edit`;
+  if(mime.includes('document'))    return `https://docs.google.com/document/d/${id}/edit`;
+  if(mime.includes('presentation'))return `https://docs.google.com/presentation/d/${id}/edit`;
+  return `https://drive.google.com/file/d/${id}/view`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+function goHome(){state={school:null,reportType:null,frequency:null,view:'home'};updateBreadcrumb();showView('home-view');window.scrollTo(0,0);}
+function selectSchool(s){state.school=s;state.reportType=null;state.frequency=null;state.view='reports';updateBreadcrumb();renderReportTypes();showView('reports-view');window.scrollTo(0,0);}
+function goReports(){state.reportType=null;state.frequency=null;state.view='reports';updateBreadcrumb();renderReportTypes();showView('reports-view');window.scrollTo(0,0);}
+function selectReport(rt){state.reportType=rt;state.frequency=null;state.view='files';updateBreadcrumb();renderFilesView();showView('files-view');window.scrollTo(0,0);}
+function goFiles(){state.frequency=null;state.view='files';updateBreadcrumb();renderFilesView();showView('files-view');window.scrollTo(0,0);}
+
+function selectFrequency(f){
+  state.frequency=f;
+  updateBreadcrumb();
+  renderFreqTabs();
+  if(f==='__analyze__'){ renderAnalyzePanel(); }
+  else { loadFiles(f); }
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER REPORT TYPES
+// ═══════════════════════════════════════════════════════
+function renderReportTypes(){
+  const cls=sClass(state.school);
+  const sd=FOLDERS[state.school];
+  const banner=document.getElementById('school-banner');
+  banner.className='school-banner '+cls;
+  document.getElementById('school-banner-title').textContent=state.school;
+  document.getElementById('school-banner-sub').textContent=Object.keys(sd).length+' report types';
+  const grid=document.getElementById('report-grid');
+  grid.innerHTML='';
+  for(const [type,data] of Object.entries(sd)){
+    const card=document.createElement('div');
+    card.className='report-card '+cls;
+    card.innerHTML=`<div class="icon">${data.icon}</div><h3>${type}</h3><div class="freq-count">${Object.keys(data.folders).length} frequency folders</div>`;
+    card.addEventListener('click',()=>selectReport(type));
+    grid.appendChild(card);
+  }
+  document.getElementById('back-school-name').textContent=state.school;
+}
+
+function renderFilesView(){
+  document.getElementById('report-type-heading').textContent=state.reportType;
+  document.getElementById('back-school-name').textContent=state.school;
+  renderFreqTabs();
+  document.getElementById('file-list-container').innerHTML=`<div class="state-box"><div class="icon">📂</div><p>Select a frequency tab above to load reports.</p></div>`;
+}
+
+function renderFreqTabs(){
+  const cls=sClass(state.school);
+  const tabs=document.getElementById('freq-tabs');
+  tabs.innerHTML='';
+  for(const freq of Object.keys(FOLDERS[state.school][state.reportType].folders)){
+    const t=document.createElement('div');
+    t.className='freq-tab'+(state.frequency===freq?' active '+cls:'');
+    t.textContent=freq;
+    t.addEventListener('click',()=>selectFrequency(freq));
+    tabs.appendChild(t);
+  }
+  // NEW: extra tab that opens the date-based analysis panel
+  const analyzeTab=document.createElement('div');
+  analyzeTab.className='freq-tab analyze-tab'+(state.frequency==='__analyze__'?' active '+cls:'');
+  analyzeTab.textContent='📅 Analyze by Date';
+  analyzeTab.addEventListener('click',()=>selectFrequency('__analyze__'));
+  tabs.appendChild(analyzeTab);
+}
+
+// ═══════════════════════════════════════════════════════
+//  LOAD FILES
+// ═══════════════════════════════════════════════════════
+async function loadFiles(freq){
+  const cls=sClass(state.school);
+  const folderId=FOLDERS[state.school][state.reportType].folders[freq];
+  const container=document.getElementById('file-list-container');
+  if(!AUTH.isLoggedIn()){doLogout();return;}
+  container.innerHTML=`<div class="state-box"><div class="spinner"></div><p>Loading reports…</p></div>`;
+  try{
+    const data=await apiFetch(`folderId=${folderId}`);
+    if(data.error==='UNAUTHORIZED'){AUTH.clear();doLogout();return;}
+    if(data.error) throw new Error(data.error);
+    if(!data.files||data.files.length===0){
+      container.innerHTML=`<div class="state-box"><div class="icon">📭</div><p>No reports found in this folder yet.</p></div>`;
+      return;
+    }
+    const list=document.createElement('div');
+    list.className='files-list';
+    for(const file of data.files){
+      const card=document.createElement('div');
+      card.className='file-card '+cls;
+      card.innerHTML=`
+        <div class="file-icon ${cls}">${getFileIcon(file.mimeType,file.name)}</div>
+        <div class="file-meta"><h4>${file.name}</h4><div class="date">Modified: ${formatDate(file.modified)}</div></div>
+        <div class="file-arrow">›</div>`;
+      card.addEventListener('click',()=>openViewer(file));
+      list.appendChild(card);
+    }
+    container.innerHTML=`<p style="font-size:13px;color:var(--muted);margin-bottom:12px">${data.files.length} report${data.files.length!==1?'s':''}</p>`;
+    container.appendChild(list);
+  }catch(err){
+    container.innerHTML=`<div class="state-box"><div class="icon">⚠️</div><p>Could not load files.<br><small>${err.message}</small></p></div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  ANALYZE BY DATE  (new feature)
+//  Scans every frequency folder of the current report type
+//  for a file matching the chosen date, opens any HTML
+//  report found, and parses out attendance-style stats.
+// ═══════════════════════════════════════════════════════
+
+function renderAnalyzePanel(){
+  const cls=sClass(state.school);
+  const container=document.getElementById('file-list-container');
+  const today=new Date().toISOString().slice(0,10);
+  container.innerHTML=`
+    <div class="analyze-panel">
+      <p class="analyze-hint">Pick a date — this checks every frequency folder under <b>${state.reportType}</b> for a report covering that day and pulls out the key numbers automatically.</p>
+      <div class="analyze-controls">
+        <input type="date" id="analyze-date" class="analyze-date-input" value="${today}">
+        <button class="analyze-run-btn ${cls}" onclick="runDateAnalysis()">🔍 Analyze</button>
+      </div>
+    </div>
+    <div id="analyze-results"></div>`;
+}
+
+// Build a list of plausible filename substrings for a given yyyy-mm-dd date
+function dateCandidates(dateStr){
+  const d=new Date(dateStr+'T00:00:00');
+  const dd=String(d.getDate()).padStart(2,'0');
+  const mm=String(d.getMonth()+1).padStart(2,'0');
+  const yyyy=d.getFullYear();
+  const months=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  const mon=months[d.getMonth()];
+  return [
+    `${yyyy}-${mm}-${dd}`, `${dd}-${mm}-${yyyy}`, `${dd}_${mm}_${yyyy}`, `${dd}.${mm}.${yyyy}`,
+    `${dd}-${mon}-${yyyy}`, `${dd}_${mon}_${yyyy}`, `${dd} ${mon} ${yyyy}`, `${mon} ${dd} ${yyyy}`,
+    `${yyyy}${mm}${dd}`
+  ];
+}
+
+// True if a file's name OR its IST-corrected modified date matches the chosen date
+function fileMatchesDate(file,dateStr,candidates){
+  const nameLower=file.name.toLowerCase();
+  if(candidates.some(c=>nameLower.includes(c))) return true;
+  try{
+    const istDate=new Date(file.modified).toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});
+    return istDate===dateStr;
+  }catch(e){ return false; }
+}
+
+// Generic parser: works across report types without knowing the exact template.
+// 1) Looks for labeled summary numbers in the page text (Present: 40, Attendance: 88.9%, etc.)
+// 2) Falls back to tallying any table that has a "Status" column (P/A/L/Leave values per row).
+function parseReportHTML(htmlString){
+  const stats={present:null,absent:null,late:null,leave:null,total:null,percentage:null};
+  let doc;
+  try{
+    doc=new DOMParser().parseFromString(htmlString,'text/html');
+  }catch(e){ return stats; }
+
+  const bodyText=(doc.body?(doc.body.innerText||doc.body.textContent):'')||'';
+  const patterns=[
+    {key:'present',    re:/present[^0-9%]{0,15}(\d+)/i},
+    {key:'absent',     re:/absent[^0-9%]{0,15}(\d+)/i},
+    {key:'late',       re:/late[^0-9%]{0,15}(\d+)/i},
+    {key:'leave',      re:/leave[^0-9%]{0,15}(\d+)/i},
+    {key:'total',      re:/total[^0-9%]{0,20}(\d+)/i},
+    {key:'percentage', re:/(\d{1,3}(?:\.\d+)?)\s*%/}
+  ];
+  patterns.forEach(p=>{
+    const m=bodyText.match(p.re);
+    if(m) stats[p.key]= p.key==='percentage' ? parseFloat(m[1]) : parseInt(m[1],10);
+  });
+
+  // Fallback / cross-check: tally a Status column across all tables
+  let tally={present:0,absent:0,late:0,leave:0,rows:0};
+  doc.querySelectorAll('table').forEach(table=>{
+    const headerRow=table.querySelector('tr');
+    if(!headerRow) return;
+    const headers=Array.from(headerRow.querySelectorAll('th,td')).map(c=>c.textContent.trim().toLowerCase());
+    const statusIdx=headers.findIndex(h=>h.includes('status'));
+    if(statusIdx===-1) return;
+    Array.from(table.querySelectorAll('tr')).slice(1).forEach(row=>{
+      const cells=row.querySelectorAll('td');
+      if(!cells[statusIdx]) return;
+      const val=cells[statusIdx].textContent.trim().toLowerCase();
+      tally.rows++;
+      if(/^p(resent)?$/.test(val)) tally.present++;
+      else if(/^a(bsent)?$/.test(val)) tally.absent++;
+      else if(/^l(ate)?$/.test(val)) tally.late++;
+      else if(val.includes('leave')) tally.leave++;
+    });
+  });
+  if(tally.rows>0){
+    if(stats.total==null)   stats.total=tally.rows;
+    if(stats.present==null) stats.present=tally.present;
+    if(stats.absent==null)  stats.absent=tally.absent;
+    if(stats.late==null)    stats.late=tally.late;
+    if(stats.leave==null)   stats.leave=tally.leave;
+  }
+  if(stats.percentage==null && stats.total && stats.present!=null){
+    stats.percentage=parseFloat(((stats.present/stats.total)*100).toFixed(1));
+  }
+  return stats;
+}
+
+async function runDateAnalysis(){
+  const dateStr=document.getElementById('analyze-date').value;
+  const resultsEl=document.getElementById('analyze-results');
+  if(!dateStr){ resultsEl.innerHTML=`<div class="state-box"><p>Please pick a date.</p></div>`; return; }
+
+  resultsEl.innerHTML=`<div class="state-box"><div class="spinner"></div><p>Scanning all frequency folders & parsing reports for this date…</p></div>`;
+
+  const candidates=dateCandidates(dateStr).map(c=>c.toLowerCase());
+  const sd=FOLDERS[state.school][state.reportType].folders;
+  const matches=[];
+
+  await Promise.all(Object.entries(sd).map(async ([freq,folderId])=>{
+    try{
+      const data=await apiFetch(`folderId=${folderId}`);
+      if(data.error||!data.files) return;
+      const found=data.files.filter(f=>fileMatchesDate(f,dateStr,candidates));
+      if(found.length===0) return;
+      found.sort((a,b)=>new Date(b.modified)-new Date(a.modified));
+      const file=found[0];
+
+      if(!isHtmlFile(file.mimeType,file.name)){
+        matches.push({freq,file,stats:null,nonHtml:true});
+        return;
+      }
+      const htmlData=await apiFetch(`fileId=${file.id}`);
+      if(htmlData.error) return;
+      matches.push({freq,file,stats:parseReportHTML(htmlData.html)});
+    }catch(e){ /* skip this frequency on error */ }
+  }));
+
+  renderAnalysisResults(dateStr,matches);
+}
+
+function renderAnalysisResults(dateStr,matches){
+  analysisMatches=matches;
+  const resultsEl=document.getElementById('analyze-results');
+
+  if(matches.length===0){
+    resultsEl.innerHTML=`<div class="state-box"><div class="icon">📭</div>
+      <p>No reports found matching <b>${formatDate(dateStr+'T00:00:00')}</b> in any frequency folder for ${state.reportType}.<br>
+      <small>The report file name or its Drive "modified" date didn't match this day — try a nearby date, or open the folder directly via the frequency tabs.</small></p></div>`;
+    return;
+  }
+
+  const cls=sClass(state.school);
+  let totalPresent=0,totalAbsent=0,totalLate=0,totalLeave=0,totalRecords=0,statsFound=0;
+  matches.forEach(m=>{
+    if(m.stats && m.stats.total!=null){
+      totalPresent += m.stats.present||0;
+      totalAbsent  += m.stats.absent||0;
+      totalLate    += m.stats.late||0;
+      totalLeave   += m.stats.leave||0;
+      totalRecords += m.stats.total||0;
+      statsFound++;
+    }
+  });
+  const avgPct = totalRecords>0 ? ((totalPresent/totalRecords)*100).toFixed(1) : null;
+
+  let html=`<div class="dash-kpi-row" style="margin-bottom:24px;">
+    <div class="kpi-card k-blue"><div class="kpi-icon">📄</div><div class="kpi-value">${matches.length}</div><div class="kpi-label">Reports Found</div></div>
+    <div class="kpi-card k-green"><div class="kpi-icon">✅</div><div class="kpi-value">${statsFound?totalPresent:'—'}</div><div class="kpi-label">Present (total)</div></div>
+    <div class="kpi-card k-red"><div class="kpi-icon">❌</div><div class="kpi-value">${statsFound?totalAbsent:'—'}</div><div class="kpi-label">Absent (total)</div></div>
+    <div class="kpi-card k-orange"><div class="kpi-icon">⏰</div><div class="kpi-value">${statsFound?totalLate:'—'}</div><div class="kpi-label">Late (total)</div></div>
+    <div class="kpi-card k-purple"><div class="kpi-icon">📊</div><div class="kpi-value">${avgPct!=null?avgPct+'%':'—'}</div><div class="kpi-label">Attendance %</div></div>
+  </div>
+  <p class="section-title">Breakdown by Frequency</p>
+  <div class="files-list">`;
+
+  matches.forEach((m,idx)=>{
+    if(m.nonHtml){
+      html+=`<div class="file-card ${cls}" onclick="openAnalysisFile(${idx})">
+        <div class="file-icon ${cls}">${getFileIcon(m.file.mimeType,m.file.name)}</div>
+        <div class="file-meta"><h4>${m.file.name}</h4><div class="date">${m.freq} · Non-HTML file — open to view manually</div></div>
+        <div class="file-arrow">›</div></div>`;
+      return;
+    }
+    const s=m.stats||{};
+    const parts=[];
+    parts.push(s.total!=null ? s.total+' records' : 'no table data detected');
+    if(s.present!=null) parts.push('✅ '+s.present);
+    if(s.absent!=null)  parts.push('❌ '+s.absent);
+    if(s.late!=null)    parts.push('⏰ '+s.late);
+    if(s.percentage!=null) parts.push(s.percentage+'%');
+    html+=`<div class="file-card ${cls}" onclick="openAnalysisFile(${idx})">
+      <div class="file-icon ${cls}">${getFileIcon(m.file.mimeType,m.file.name)}</div>
+      <div class="file-meta"><h4>${m.file.name}</h4><div class="date">${m.freq} &nbsp;·&nbsp; ${parts.join(' · ')}</div></div>
+      <div class="file-arrow">›</div></div>`;
+  });
+  html+='</div>';
+
+  if(statsFound<matches.length){
+    html+=`<p class="analyze-note">⚠️ ${matches.length-statsFound} of ${matches.length} matched report(s) couldn't be auto-parsed (no recognizable "Status" column or summary text). Open them directly to view.</p>`;
+  }
+  resultsEl.innerHTML=html;
+}
+
+function openAnalysisFile(idx){
+  const m=analysisMatches[idx];
+  if(m && m.file) openViewer(m.file);
+}
+
+// ═══════════════════════════════════════════════════════
+//  VIEWER  — renders HTML visually via blob URL
+// ═══════════════════════════════════════════════════════
+async function openViewer(file){
+  currentFile=file;
+  pdfData=null;
+  document.getElementById('viewer-title').textContent=file.name;
+  document.getElementById('viewer-open').href=getDriveUrl(file.id,file.mimeType,file.name);
+  document.getElementById('pdf-share-btn').disabled=false;
+  document.getElementById('pdf-share-btn').textContent='📥 Share as PDF';
+  document.getElementById('main-content').style.display='none';
+  document.getElementById('viewer-view').classList.add('active');
+  window.scrollTo(0,0);
+
+  const frame=document.getElementById('report-frame');
+
+  if(isHtmlFile(file.mimeType,file.name)){
+    // Show spinner via srcdoc — no src= conflict, no sandbox needed
+    frame.removeAttribute('src');
+    frame.srcdoc='<!DOCTYPE html><html><head><style>body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#f9fafb;font-family:sans-serif;}.sp{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#1a56db;border-radius:50%;animation:s .7s linear infinite;margin:0 auto 14px;}@keyframes s{to{transform:rotate(360deg)}}p{color:#6b7280;font-size:14px;margin:0}</style></head><body><div style="text-align:center"><div class="sp"></div><p>Loading report…</p></div></body></html>';
+
+    try{
+      const data=await apiFetch('fileId='+file.id);
+      if(data.error) throw new Error(data.error);
+      // Inject HTML directly via srcdoc — renders fully styled with all CSS/images
+      frame.srcdoc = data.html;
+    }catch(err){
+      frame.srcdoc='<!DOCTYPE html><html><body style="font-family:sans-serif;padding:32px;color:#dc2626;background:#fff"><h2>Could not load report</h2><p style="color:#6b7280;margin-top:8px">'+err.message+'</p><p style="margin-top:16px;font-size:13px;color:#9ca3af">Try the Open in Drive button above.</p></body></html>';
+    }
+  } else {
+    // PDFs / Sheets / Docs — use Drive preview
+    if(file.mimeType&&file.mimeType.includes('spreadsheet')) frame.src=`https://docs.google.com/spreadsheets/d/${file.id}/preview`;
+    else if(file.mimeType&&file.mimeType.includes('document')) frame.src=`https://docs.google.com/document/d/${file.id}/preview`;
+    else if(file.mimeType&&file.mimeType.includes('presentation')) frame.src=`https://docs.google.com/presentation/d/${file.id}/preview`;
+    else frame.src=`https://drive.google.com/file/d/${file.id}/preview`;
+  }
+}
+
+function closeViewer(){
+  const frame=document.getElementById('report-frame');
+  frame.srcdoc=''; frame.src='about:blank';
+  document.getElementById('main-content').style.display='block';
+  document.getElementById('viewer-view').classList.remove('active');
+  pdfData=null; currentFile=null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  PDF SHARE
+// ═══════════════════════════════════════════════════════
+function sharePdf(){
+  if(!currentFile) return;
+  pdfData=null;
+  document.getElementById('pdf-bar').style.width='0%';
+  document.getElementById('pdf-status').textContent='Connecting to Google Drive…';
+  document.getElementById('pdf-download-btn').disabled=true;
+  document.getElementById('pdf-cancel-btn').disabled=false;
+  document.getElementById('pdf-modal').classList.add('show');
+  startPdfConversion();
+}
+
+async function startPdfConversion(){
+  const bar=document.getElementById('pdf-bar');
+  const status=document.getElementById('pdf-status');
+  const dlBtn=document.getElementById('pdf-download-btn');
+
+  try{
+    bar.style.width='20%';
+    status.textContent='Uploading HTML to Google Drive…';
+
+    const data=await apiFetch(`exportPdf=${currentFile.id}`);
+
+    bar.style.width='80%';
+    status.textContent='Exporting to PDF…';
+
+    await new Promise(r=>setTimeout(r,400));
+
+    if(data.error) throw new Error(data.error);
+
+    if(data.pdf){
+      // base64 PDF returned
+      pdfData={b64:data.pdf, name:data.name||currentFile.name.replace(/\.html?$/i,'.pdf')};
+      bar.style.width='100%';
+      status.textContent='✅ PDF ready! Click Download to save.';
+      dlBtn.disabled=false;
+    } else if(data.driveUrl){
+      // For non-HTML files, just open the Drive download URL
+      bar.style.width='100%';
+      status.textContent='✅ Redirecting to Drive download…';
+      window.open(data.driveUrl,'_blank');
+      setTimeout(closePdfModal,1200);
+    }
+  }catch(err){
+    bar.style.width='100%';
+    bar.style.background='var(--red)';
+    status.textContent='❌ Error: '+err.message;
+  }
+}
+
+function downloadPdf(){
+  if(!pdfData) return;
+  // Convert base64 to blob and trigger download
+  const byteChars=atob(pdfData.b64);
+  const bytes=new Uint8Array(byteChars.length);
+  for(let i=0;i<byteChars.length;i++) bytes[i]=byteChars.charCodeAt(i);
+  const blob=new Blob([bytes],{type:'application/pdf'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=pdfData.name; a.click();
+  URL.revokeObjectURL(url);
+  closePdfModal();
+}
+
+function closePdfModal(){
+  document.getElementById('pdf-modal').classList.remove('show');
+  document.getElementById('pdf-bar').style.background='';
+  pdfData=null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  API FETCH helper
+// ═══════════════════════════════════════════════════════
+async function apiFetch(params){
+  const url=`${APPS_SCRIPT_URL}?${params}&token=${encodeURIComponent(AUTH.token)}`;
+  const res=await fetch(url);
+  const data=await res.json();
+  if(data.error==='UNAUTHORIZED'){AUTH.clear();doLogout();throw new Error('Session expired');}
+  return data;
+}
+
+// ═══════════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════════
+async function openDashboard(school){
+  state.school=school; state.view='dashboard'; state.reportType=null; state.frequency=null;
+  updateBreadcrumb();
+
+  const cls=sClass(school);
+  const sd=FOLDERS[school];
+  const rts=Object.keys(sd);
+  const totalFolders=rts.reduce((s,rt)=>s+Object.keys(sd[rt].folders).length,0);
+
+  // Header
+  const pill=document.getElementById('dash-pill');
+  pill.textContent=school==='GHK Lab School'?'LAB SCHOOL':'SCHOOL';
+  pill.className='dash-school-pill '+cls;
+  document.getElementById('dash-title').textContent=school+' — Report Dashboard';
+  document.getElementById('dash-sub').textContent='Live overview of all '+rts.length+' report types · '+totalFolders+' folders';
+  document.getElementById('dash-refreshed').textContent='Loading…';
+
+  // KPI defaults
+  document.getElementById('kpi-types').textContent=rts.length;
+  document.getElementById('kpi-folders').textContent=totalFolders;
+  document.getElementById('kpi-files').textContent='…';
+  document.getElementById('kpi-today').textContent='…';
+  document.getElementById('kpi-empty').textContent='…';
+
+  // Build section skeletons
+  const sectionsEl=document.getElementById('dash-sections');
+  sectionsEl.innerHTML='';
+  for(const rt of rts){
+    const freqKeys=Object.keys(sd[rt].folders);
+    const sec=document.createElement('div');
+    sec.className='dash-sec';
+    sec.id='ds-'+rt.replace(/\s+/g,'_');
+
+    const chips=freqKeys.map(f=>`<span class="freq-status-chip ${cls}" id="chip-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}" onclick="dashOpenFreq('${esc(rt)}','${esc(f)}')" title="Click to open">
+      <span class="dot grey" id="dot-${rt.replace(/\s+/g,'_')}-${f.replace(/[\s()]+/g,'_')}"></span>${f}
+    </span>`).join('');
+
+    sec.innerHTML=`
+      <div class="dash-sec-head">
+        <div class="dash-sec-head-left">
+          <span class="dash-sec-head-icon">${sd[rt].icon}</span>
+          <h3>${rt}</h3>
+        </div>
+        <span class="browse-link ${cls}" onclick="dashOpenReport('${esc(school)}','${esc(rt)}')">Browse all ›</span>
+      </div>
+      <div class="dash-freq-bar" id="fbar-${rt.replace(/\s+/g,'_')}">${chips}</div>
+      <div id="dlat-${rt.replace(/\s+/g,'_')}"><div class="dash-loading"><div class="mini-spin"></div> Loading latest files…</div></div>`;
+    sectionsEl.appendChild(sec);
+  }
+
+  showView('dashboard-view');
+  window.scrollTo(0,0);
+
+  // Load data in parallel
+  let totalFiles=0, updatedToday=0, emptyFolders=0;
+  const today=new Date().toDateString();
+
+  await Promise.all(rts.map(async rt=>{
+    const freqEntries=Object.entries(sd[rt].folders);
+    const latEl=document.getElementById('dlat-'+rt.replace(/\s+/g,'_'));
+
+    // Load each frequency folder to get counts + latest file
+    let allLatest=[];
+    await Promise.all(freqEntries.map(async ([freq,folderId])=>{
+      try{
+        const data=await apiFetch(`folderId=${folderId}`);
+        if(data.error||!data.files){
+          setFreqDot(rt,freq,'red'); emptyFolders++; return;
+        }
+        const count=data.files.length;
+        totalFiles+=count;
+        data.files.forEach(f=>{if(new Date(f.modified).toDateString()===today)updatedToday++;});
+
+        // Dot color: green=has files updated today or recently, orange=has files but older, red=empty
+        if(count===0){ setFreqDot(rt,freq,'red'); emptyFolders++; }
+        else{
+          const latestDate=new Date(data.files[0].modified);
+          const daysDiff=(Date.now()-latestDate)/(1000*60*60*24);
+          setFreqDot(rt,freq,daysDiff<1?'green':daysDiff<7?'orange':'red');
+          // Add latest file from this freq to the combined list
+          if(data.files[0]) allLatest.push({...data.files[0],_freq:freq});
+        }
+        // Update KPI live
+        document.getElementById('kpi-files').textContent=totalFiles;
+        document.getElementById('kpi-today').textContent=updatedToday;
+        document.getElementById('kpi-empty').textContent=emptyFolders;
+      }catch(e){ setFreqDot(rt,freq,'grey'); }
+    }));
+
+    // Show top 4 latest files across all freqs for this report type
+    allLatest.sort((a,b)=>new Date(b.modified)-new Date(a.modified));
+    const top=allLatest.slice(0,4);
+    if(top.length===0){
+      latEl.innerHTML=`<div class="no-files-note">No files found across any folder.</div>`;
+    } else {
+      latEl.innerHTML=`<div class="dash-latest-files">
+        <div class="dash-latest-label">Most recent files</div>
+        ${top.map(f=>`
+          <div class="dash-file-row" onclick="openViewerFromDash(${JSON.stringify(f).replace(/"/g,'&quot;')})">
+            <span class="dfi-icon">${getFileIcon(f.mimeType,f.name)}</span>
+            <span class="dfi-name">${f.name}</span>
+            <span class="dfi-freq-tag ${cls}">${f._freq}</span>
+            <span class="dfi-date">${formatDate(f.modified)}</span>
+          </div>`).join('')}
+      </div>`;
+    }
+  }));
+
+  document.getElementById('dash-refreshed').textContent='Refreshed '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+}
+
+function esc(s){ return String(s).replace(/'/g,"\\'"); }
+
+function setFreqDot(rt,freq,color){
+  const id='dot-'+rt.replace(/\s+/g,'_')+'-'+freq.replace(/[\s()]+/g,'_');
+  const el=document.getElementById(id);
+  if(el){ el.className='dot '+color; }
+}
+
+function dashOpenFreq(rt,freq){
+  state.school=state.school; // already set
+  state.reportType=rt; state.frequency=freq; state.view='files';
+  updateBreadcrumb(); renderFilesView(); showView('files-view');
+  setTimeout(()=>selectFrequency(freq),60);
+  window.scrollTo(0,0);
+}
+
+function dashOpenReport(school,rt){
+  state.school=school; state.reportType=rt; state.frequency=null; state.view='files';
+  updateBreadcrumb(); renderFilesView(); showView('files-view');
+  window.scrollTo(0,0);
+}
+
+function openViewerFromDash(file){
+  openViewer(file);
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+if(AUTH.isLoggedIn()) showApp();
+else updateBreadcrumb();
+</script>
+</body>
+</html>
