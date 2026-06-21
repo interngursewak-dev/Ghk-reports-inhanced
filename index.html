@@ -35,6 +35,7 @@
   @media(max-width:800px){.grid2{grid-template-columns:1fr;}}
   .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px;}
   .card h3{margin-top:0;font-size:15px;color:var(--navy);}
+  .card .empty-note{color:var(--muted);font-size:13px;font-style:italic;}
   table{width:100%;border-collapse:collapse;font-size:13px;}
   th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);}
   th{color:var(--muted);font-weight:600;}
@@ -43,6 +44,10 @@
   @media(max-width:800px){.compare-cols{grid-template-columns:1fr;}}
   .period-label{font-weight:700;color:#fff;padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:8px;font-size:12px;}
   .p1{background:var(--navy);} .p2{background:var(--terracotta);}
+  .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-right:6px;}
+  .pill.green{background:#e3f0e8;color:var(--green);}
+  .pill.red{background:#f6e3da;color:var(--terracotta);}
+  .pill.gray{background:#eceeec;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -84,16 +89,30 @@
   <!-- DASHBOARD TAB -->
   <div id="tab-dashboard">
     <div id="kpiGrid" class="kpi-grid"></div>
+
     <div class="grid2">
       <div class="card">
-        <h3>Trend (row count by date)</h3>
-        <canvas id="trendChart" height="220"></canvas>
+        <h3 id="statusChartTitle">Status breakdown</h3>
+        <canvas id="statusChart" height="220"></canvas>
+        <div id="statusEmptyNote" class="empty-note" style="display:none;">No status-style column (e.g. Present/Absent, Done/Pending) was detected in this sheet.</div>
       </div>
       <div class="card">
-        <h3 id="catChartTitle">Category breakdown</h3>
-        <canvas id="catChart" height="220"></canvas>
+        <h3>Trend (entries by date)</h3>
+        <canvas id="trendChart" height="220"></canvas>
+        <div id="trendEmptyNote" class="empty-note" style="display:none;">No date column was detected in this sheet, so a time trend can't be shown.</div>
       </div>
     </div>
+
+    <div class="card">
+      <h3 id="topEntitiesTitle">Top entities in this range</h3>
+      <div id="topEntitiesBody"></div>
+    </div>
+
+    <div class="card">
+      <h3 id="catChartTitle">Other category breakdown</h3>
+      <div id="categoryBody"></div>
+    </div>
+
     <div class="card">
       <h3>Raw data preview (latest 25 rows in range)</h3>
       <div style="overflow-x:auto;">
@@ -133,11 +152,11 @@
     <div class="compare-cols">
       <div class="card">
         <span class="period-label p1">Period 1</span>
-        <div id="p1Categories"></div>
+        <div id="p1Status"></div>
       </div>
       <div class="card">
         <span class="period-label p2">Period 2</span>
-        <div id="p2Categories"></div>
+        <div id="p2Status"></div>
       </div>
     </div>
   </div>
@@ -148,11 +167,11 @@
 /* ============================================================
    CONFIG — paste your Apps Script Web App /exec URL below
    ============================================================ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbxMSY5FpGD-3uRLCvgNWly-FIwFk0rWRgI1m-XULNinLvf0DfijZxaM_z_dYab85wA/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxeG7C8j6_Uqiy0wjNz9CWERvRCTGT3LNY91WnNprH1rGDxwhgeU97sfJJdeEZw12U/exec';
 
 let INDEX = [];
-let trendChart, catChart, compareTrendChart;
-const COLORS = ['#2c6e49','#f7b500','#2a3b8f','#a54f2e','#6aa84f','#cc7722'];
+let statusChart, trendChart, compareTrendChart;
+const COLORS = ['#2c6e49','#f7b500','#2a3b8f','#a54f2e','#6aa84f','#cc7722','#8e44ad','#16a085'];
 
 async function api(params) {
   const url = API_URL + '?' + new URLSearchParams(params).toString();
@@ -170,7 +189,6 @@ async function init() {
   schoolSelect.innerHTML = schools.map(s => `<option value="${s}">${s}</option>`).join('');
   schoolSelect.onchange = populateReports;
   populateReports();
-  document.getElementById('lastUpdated').textContent = 'Live • ' + new Date().toLocaleTimeString();
   setDefaultDates();
   loadDashboard();
 }
@@ -214,8 +232,10 @@ async function loadDashboard() {
   const summary = await api({ action: 'summary', id, sheet, from, to });
 
   renderKpis(summary);
-  renderTrendChart(summary.trend);
-  renderCategoryChart(summary.categoryCounts);
+  renderStatusChart(summary.statusBreakdown);
+  renderTrendChart(summary.trend, summary.hasDateColumn);
+  renderTopEntities(summary.topEntities);
+  renderCategoryBody(summary.categoryCounts);
   await renderTable(id, sheet);
   document.getElementById('lastUpdated').textContent = 'Live • ' + new Date().toLocaleTimeString();
 }
@@ -223,10 +243,26 @@ async function loadDashboard() {
 function renderKpis(summary) {
   let html = `
     <div class="kpi-card">
-      <div class="label">Rows in range</div>
+      <div class="label">Entries in range</div>
       <div class="value">${summary.rowCount}</div>
       <div class="sub">of ${summary.totalRowsAllTime} total</div>
     </div>`;
+
+  // Headline status KPI: if there's a status breakdown, show the leading category as a clear %
+  const statusKeys = Object.keys(summary.statusBreakdown || {});
+  if (statusKeys.length) {
+    const key = statusKeys[0];
+    const items = summary.statusBreakdown[key];
+    items.slice(0, 3).forEach(item => {
+      html += `
+      <div class="kpi-card">
+        <div class="label">${key}: ${item.label}</div>
+        <div class="value">${item.pct}%</div>
+        <div class="sub">${item.count} of ${summary.rowCount} entries</div>
+      </div>`;
+    });
+  }
+
   Object.entries(summary.numericTotals || {}).forEach(([key, val]) => {
     html += `
     <div class="kpi-card">
@@ -235,42 +271,102 @@ function renderKpis(summary) {
       <div class="sub">avg ${summary.numericAverages[key]}</div>
     </div>`;
   });
+
+  if (statusKeys.length === 0 && Object.keys(summary.numericTotals || {}).length === 0) {
+    html += `<div class="kpi-card"><div class="label">Note</div><div class="sub">No status or numeric columns were detected — this sheet may be mostly free-text/category data. See "Other category breakdown" below.</div></div>`;
+  }
+
   document.getElementById('kpiGrid').innerHTML = html;
 }
 
-function renderTrendChart(trend) {
+function renderStatusChart(statusBreakdown) {
+  const keys = Object.keys(statusBreakdown || {});
+  const ctx = document.getElementById('statusChart');
+  const emptyNote = document.getElementById('statusEmptyNote');
+  if (statusChart) { statusChart.destroy(); statusChart = null; }
+  if (!keys.length) {
+    ctx.style.display = 'none';
+    emptyNote.style.display = 'block';
+    return;
+  }
+  ctx.style.display = 'block';
+  emptyNote.style.display = 'none';
+  const key = keys[0];
+  document.getElementById('statusChartTitle').textContent = 'Status breakdown: ' + key;
+  const data = statusBreakdown[key];
+  statusChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: data.map(d => d.label + ' (' + d.pct + '%)'),
+      datasets: [{ data: data.map(d => d.count), backgroundColor: COLORS }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+
+function renderTrendChart(trend, hasDateColumn) {
   const ctx = document.getElementById('trendChart');
-  if (trendChart) trendChart.destroy();
+  const emptyNote = document.getElementById('trendEmptyNote');
+  if (trendChart) { trendChart.destroy(); trendChart = null; }
+  if (!hasDateColumn || !trend || !trend.length) {
+    ctx.style.display = 'none';
+    emptyNote.style.display = 'block';
+    return;
+  }
+  ctx.style.display = 'block';
+  emptyNote.style.display = 'none';
   trendChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: trend.map(t => t.date),
-      datasets: [{ label: 'Rows per day', data: trend.map(t => t.count),
+      datasets: [{ label: 'Entries per day', data: trend.map(t => t.count),
         borderColor: '#2c6e49', backgroundColor: 'rgba(44,110,73,0.15)', fill: true, tension: 0.3 }]
     },
     options: { responsive: true, plugins: { legend: { display: false } } }
   });
 }
 
-function renderCategoryChart(categoryCounts) {
-  const keys = Object.keys(categoryCounts || {});
-  const ctx = document.getElementById('catChart');
-  if (catChart) catChart.destroy();
-  if (!keys.length) {
-    document.getElementById('catChartTitle').textContent = 'No category columns detected';
+function renderTopEntities(topEntities) {
+  const title = document.getElementById('topEntitiesTitle');
+  const body = document.getElementById('topEntitiesBody');
+  if (!topEntities || !topEntities.length) {
+    title.textContent = 'Top entities';
+    body.innerHTML = '<p class="empty-note">No name/student/staff column was detected, so per-person ranking isn\'t available for this sheet.</p>';
     return;
   }
-  const firstKey = keys[0];
-  document.getElementById('catChartTitle').textContent = 'Breakdown: ' + firstKey;
-  const data = categoryCounts[firstKey];
-  catChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: data.map(d => d.label),
-      datasets: [{ data: data.map(d => d.count), backgroundColor: COLORS }]
-    },
-    options: { responsive: true }
+  title.textContent = 'Top entities in this range (by number of entries)';
+  let html = '<table><tr><th>Name</th><th>Total entries</th><th>Breakdown</th></tr>';
+  topEntities.forEach(e => {
+    const breakdown = Object.entries(e.byStatus || {})
+      .map(([label, count]) => {
+        const cls = /present|done|complete|approved|yes|ok/i.test(label) ? 'green' : /absent|pending|reject|no/i.test(label) ? 'red' : 'gray';
+        return `<span class="pill ${cls}">${label}: ${count}</span>`;
+      }).join(' ');
+    html += `<tr><td>${e.name}</td><td>${e.total}</td><td>${breakdown || '—'}</td></tr>`;
   });
+  html += '</table>';
+  body.innerHTML = html;
+}
+
+function renderCategoryBody(categoryCounts) {
+  const keys = Object.keys(categoryCounts || {});
+  const body = document.getElementById('categoryBody');
+  const title = document.getElementById('catChartTitle');
+  if (!keys.length) {
+    title.textContent = 'Other category breakdown';
+    body.innerHTML = '<p class="empty-note">No other category-style columns to show.</p>';
+    return;
+  }
+  title.textContent = 'Other category breakdown';
+  let html = '';
+  keys.forEach(key => {
+    html += `<h4 style="margin-bottom:6px;">${key}</h4><table style="margin-bottom:14px;">`;
+    categoryCounts[key].forEach(row => {
+      html += `<tr><td>${row.label}</td><td>${row.count}</td></tr>`;
+    });
+    html += '</table>';
+  });
+  body.innerHTML = html;
 }
 
 async function renderTable(id, sheet) {
@@ -296,13 +392,13 @@ async function loadComparison() {
 
   renderCompareKpis(cmp);
   renderCompareTrend(cmp.period1.trend, cmp.period2.trend);
-  renderCompareCategories('p1Categories', cmp.period1.categoryCounts, 'p1');
-  renderCompareCategories('p2Categories', cmp.period2.categoryCounts, 'p2');
+  renderCompareStatus('p1Status', cmp.period1.statusBreakdown, cmp.period1.rowCount);
+  renderCompareStatus('p2Status', cmp.period2.statusBreakdown, cmp.period2.rowCount);
 }
 
 function renderCompareKpis(cmp) {
   const rc = cmp.rowCountChange;
-  let html = kpiChangeCard('Total rows', rc.period1, rc.period2, rc.delta, rc.pctChange);
+  let html = kpiChangeCard('Total entries', rc.period1, rc.period2, rc.delta, rc.pctChange);
   Object.entries(cmp.numericChange || {}).forEach(([key, v]) => {
     html += kpiChangeCard(key, v.period1, v.period2, v.delta, v.pctChange);
   });
@@ -324,28 +420,33 @@ function kpiChangeCard(label, p1, p2, delta, pct) {
 function renderCompareTrend(t1, t2) {
   const ctx = document.getElementById('compareTrendChart');
   if (compareTrendChart) compareTrendChart.destroy();
-  const labels = [...new Set([...t1.map(t=>t.date), ...t2.map(t=>t.date)])].sort();
+  if ((!t1 || !t1.length) && (!t2 || !t2.length)) {
+    ctx.style.display = 'none';
+    return;
+  }
+  ctx.style.display = 'block';
+  const labels = [...new Set([...(t1||[]).map(t=>t.date), ...(t2||[]).map(t=>t.date)])].sort();
   compareTrendChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels,
       datasets: [
-        { label: 'Period 1', data: labels.map(l => (t1.find(t=>t.date===l)||{}).count || 0), borderColor: '#2a3b8f', backgroundColor:'rgba(42,59,143,.1)', tension:0.3 },
-        { label: 'Period 2', data: labels.map(l => (t2.find(t=>t.date===l)||{}).count || 0), borderColor: '#a54f2e', backgroundColor:'rgba(165,79,46,.1)', tension:0.3 }
+        { label: 'Period 1', data: labels.map(l => ((t1||[]).find(t=>t.date===l)||{}).count || 0), borderColor: '#2a3b8f', backgroundColor:'rgba(42,59,143,.1)', tension:0.3 },
+        { label: 'Period 2', data: labels.map(l => ((t2||[]).find(t=>t.date===l)||{}).count || 0), borderColor: '#a54f2e', backgroundColor:'rgba(165,79,46,.1)', tension:0.3 }
       ]
     },
     options: { responsive: true }
   });
 }
 
-function renderCompareCategories(elId, categoryCounts, cls) {
-  const keys = Object.keys(categoryCounts || {});
-  if (!keys.length) { document.getElementById(elId).innerHTML = '<p>No category data</p>'; return; }
-  let html = '';
+function renderCompareStatus(elId, statusBreakdown, rowCount) {
+  const keys = Object.keys(statusBreakdown || {});
+  if (!keys.length) { document.getElementById(elId).innerHTML = `<p class="empty-note">No status data (total entries: ${rowCount})</p>`; return; }
+  let html = `<p class="sub">Total entries: ${rowCount}</p>`;
   keys.forEach(key => {
     html += `<h4>${key}</h4><table>`;
-    categoryCounts[key].forEach(row => {
-      html += `<tr><td>${row.label}</td><td>${row.count}</td></tr>`;
+    statusBreakdown[key].forEach(row => {
+      html += `<tr><td>${row.label}</td><td>${row.count}</td><td>${row.pct}%</td></tr>`;
     });
     html += '</table>';
   });
