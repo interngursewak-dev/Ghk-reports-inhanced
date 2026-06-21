@@ -1,461 +1,530 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>GHK Reports — Live Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
   :root{
-    --green:#2c6e49; --yellow:#f7b500; --navy:#2a3b8f; --terracotta:#a54f2e;
-    --bg:#f4f6f5; --card:#ffffff; --text:#1f2a24; --muted:#637067; --border:#e1e6e3;
+    --green:#2c6e49;
+    --green-dark:#1d4a32;
+    --gold:#f7b500;
+    --navy:#2a3b8f;
+    --terracotta:#a54f2e;
+    --cream:#faf7f0;
+    --paper:#ffffff;
+    --ink:#1c2420;
+    --ink-soft:#5b6a62;
+    --line:#e3ddcd;
+    --good:#2c6e49;
+    --warn:#b8860b;
+    --bad:#a54f2e;
+    --radius:14px;
+    --shadow:0 2px 14px rgba(28,36,32,.06);
   }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);}
-  header{background:var(--green);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-  header h1{margin:0;font-size:20px;font-weight:600;}
-  header .badge{background:var(--yellow);color:#3a2900;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;}
-  .container{max-width:1200px;margin:0 auto;padding:24px;}
-  .controls{display:flex;flex-wrap:wrap;gap:12px;background:var(--card);padding:16px;border-radius:12px;border:1px solid var(--border);margin-bottom:20px;}
-  .controls label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px;}
-  select,input[type=date]{padding:8px 10px;border-radius:8px;border:1px solid var(--border);font-size:14px;min-width:160px;}
-  button{background:var(--navy);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:600;}
-  button.secondary{background:var(--terracotta);}
-  button:hover{opacity:.9;}
-  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
-  .tab-btn{background:var(--card);border:1px solid var(--border);padding:8px 16px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);}
-  .tab-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
-  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px;}
-  .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
-  .kpi-card .label{font-size:12px;color:var(--muted);margin-bottom:6px;}
-  .kpi-card .value{font-size:26px;font-weight:700;color:var(--navy);}
-  .kpi-card .sub{font-size:12px;margin-top:4px;}
-  .sub.up{color:var(--green);} .sub.down{color:var(--terracotta);}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  @media(max-width:800px){.grid2{grid-template-columns:1fr;}}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px;}
-  .card h3{margin-top:0;font-size:15px;color:var(--navy);}
-  .card .empty-note{color:var(--muted);font-size:13px;font-style:italic;}
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);}
-  th{color:var(--muted);font-weight:600;}
-  .loading,.empty{padding:40px;text-align:center;color:var(--muted);}
-  .compare-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  @media(max-width:800px){.compare-cols{grid-template-columns:1fr;}}
-  .period-label{font-weight:700;color:#fff;padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:8px;font-size:12px;}
-  .p1{background:var(--navy);} .p2{background:var(--terracotta);}
-  .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-right:6px;}
-  .pill.green{background:#e3f0e8;color:var(--green);}
-  .pill.red{background:#f6e3da;color:var(--terracotta);}
-  .pill.gray{background:#eceeec;color:var(--muted);}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Source Sans Pro', Avenir, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Iowan Old Style','Palatino Linotype', Georgia, 'Times New Roman', serif;
+    letter-spacing:.2px;
+  }
+  a{color:inherit;}
+
+  /* ---------- App shell ---------- */
+  #app{display:flex; min-height:100vh;}
+
+  /* Sidebar */
+  #sidebar{
+    width:280px; flex:0 0 280px;
+    background:var(--green-dark);
+    color:#eef3ee;
+    padding:28px 20px 20px;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  .brand{display:flex; align-items:baseline; gap:8px; margin-bottom:4px;}
+  .brand .mark{
+    font-family:'Iowan Old Style', Georgia, serif; font-size:26px; font-weight:700; color:var(--gold);
+  }
+  .brand .sub{font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:#a9c2b1;}
+  .school-toggle{
+    margin:22px 0 18px; display:flex; background:rgba(255,255,255,.08); border-radius:10px; padding:4px;
+  }
+  .school-toggle button{
+    flex:1; border:none; background:transparent; color:#cfe0d4; padding:9px 6px;
+    font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; transition:.15s;
+  }
+  .school-toggle button.active{background:var(--gold); color:#2a2000;}
+
+  .nav-group-label{
+    font-size:10.5px; text-transform:uppercase; letter-spacing:1.4px; color:#8fae98;
+    margin:18px 4px 8px;
+  }
+  .nav-item{
+    display:flex; align-items:center; gap:10px;
+    padding:9px 10px; border-radius:9px; cursor:pointer; color:#dcebe0;
+    font-size:14px; margin-bottom:2px; transition:.12s;
+  }
+  .nav-item:hover{background:rgba(255,255,255,.07);}
+  .nav-item.active{background:var(--gold); color:#2a2000; font-weight:600;}
+  .nav-item .ic{font-size:15px; width:18px; text-align:center;}
+
+  .conn-status{
+    margin-top:24px; padding:10px 12px; border-radius:10px; font-size:12px;
+    background:rgba(255,255,255,.06); color:#bcd2c2; line-height:1.5;
+  }
+  .conn-status.bad{background:rgba(165,79,46,.25); color:#ffd9c8;}
+  .conn-status code{font-size:11px; word-break:break-all;}
+
+  /* Main */
+  #main{flex:1; min-width:0; padding:32px 40px 60px;}
+  .topbar{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;
+    margin-bottom:26px;
+  }
+  .topbar h1{font-size:28px; margin:0 0 4px; color:var(--green-dark);}
+  .topbar .crumb{font-size:13px; color:var(--ink-soft);}
+  .controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .controls input[type=date]{
+    border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:7px 10px; font-size:13px;
+  }
+  .controls label{font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.6px; margin-right:4px;}
+  .btn{
+    border:1px solid var(--green); background:var(--green); color:#fff; padding:8px 16px; border-radius:8px;
+    font-size:13px; font-weight:600; cursor:pointer; transition:.15s;
+  }
+  .btn.secondary{background:transparent; color:var(--green); }
+  .btn.ghost{background:transparent; color:var(--ink-soft); border-color:var(--line);}
+  .btn:hover{opacity:.85;}
+
+  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:16px; margin-bottom:24px;}
+  .kpi-card{
+    background:var(--paper); border-radius:var(--radius); padding:18px 18px 16px; box-shadow:var(--shadow);
+    border-left:4px solid var(--line); position:relative;
+  }
+  .kpi-card.good{border-left-color:var(--good);}
+  .kpi-card.warn{border-left-color:var(--warn);}
+  .kpi-card.bad{border-left-color:var(--bad);}
+  .kpi-card .label{font-size:11.5px; text-transform:uppercase; letter-spacing:.8px; color:var(--ink-soft); margin-bottom:8px;}
+  .kpi-card .value{font-size:30px; font-weight:700; font-family:'Iowan Old Style',Georgia,serif; color:var(--ink);}
+  .kpi-card .sub{font-size:12px; color:var(--ink-soft); margin-top:4px;}
+
+  .panel{background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow); padding:20px 22px; margin-bottom:22px;}
+  .panel h3{margin:0 0 14px; font-size:16px; color:var(--green-dark);}
+  .chart-wrap{position:relative; height:280px;}
+  .grid-2{display:grid; grid-template-columns:1.3fr 1fr; gap:20px;}
+  @media(max-width:900px){.grid-2{grid-template-columns:1fr;}}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  th,td{padding:8px 10px; text-align:left; border-bottom:1px solid var(--line);}
+  th{font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--ink-soft); font-weight:600;}
+  tbody tr:hover{background:#f7f4ea;}
+  .table-scroll{max-height:420px; overflow:auto;}
+
+  .notes{font-size:12.5px; color:var(--ink-soft); background:#f4f0e2; border-radius:10px; padding:10px 14px; margin-top:4px;}
+  .notes p{margin:4px 0;}
+
+  .hub-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px;}
+  .hub-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px 20px; cursor:pointer;
+    border-top:4px solid var(--gold); transition:.15s;
+  }
+  .hub-card:hover{transform:translateY(-2px);}
+  .hub-card .icon{font-size:22px;}
+  .hub-card h4{margin:8px 0 10px; font-size:15px; color:var(--green-dark);}
+  .hub-card .mini-kpi{display:flex; justify-content:space-between; font-size:12.5px; padding:3px 0; color:var(--ink-soft);}
+  .hub-card .mini-kpi b{color:var(--ink); font-weight:700;}
+
+  .loading, .err, .empty{padding:40px; text-align:center; color:var(--ink-soft);}
+  .err{color:var(--bad);}
+  .spin{
+    width:26px; height:26px; border:3px solid var(--line); border-top-color:var(--green);
+    border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 12px;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .deltas-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
+  .delta-card{background:var(--paper); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow);}
+  .delta-card .lbl{font-size:11px; text-transform:uppercase; color:var(--ink-soft); letter-spacing:.6px;}
+  .delta-row{display:flex; align-items:baseline; gap:8px; margin-top:6px;}
+  .delta-row .v2{font-size:20px; font-weight:700;}
+  .delta-row .arrow{font-size:13px;}
+  .delta-row .up{color:var(--good);}
+  .delta-row .down{color:var(--bad);}
+
+  footer.app-footer{margin-top:30px; font-size:11.5px; color:#9aa79f; text-align:center;}
+  ::-webkit-scrollbar{width:8px; height:8px;}
+  ::-webkit-scrollbar-thumb{background:#c9c2ab; border-radius:4px;}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>📊 GHK Reports — Live Dashboard</h1>
-  <span class="badge" id="lastUpdated">Loading…</span>
-</header>
+<div id="app">
+  <aside id="sidebar">
+    <div class="brand"><span class="mark">GHK</span><span class="sub">Live Reports</span></div>
+    <div class="school-toggle" id="schoolToggle"></div>
+    <div id="navGroups"></div>
+    <div class="conn-status" id="connStatus">Connecting…</div>
+  </aside>
 
-<div class="container">
-
-  <div class="controls">
-    <div>
-      <label>School</label>
-      <select id="schoolSelect"></select>
-    </div>
-    <div>
-      <label>Report</label>
-      <select id="reportSelect"></select>
-    </div>
-    <div>
-      <label>From</label>
-      <input type="date" id="fromDate">
-    </div>
-    <div>
-      <label>To</label>
-      <input type="date" id="toDate">
-    </div>
-    <div style="align-self:end;">
-      <button onclick="loadDashboard()">🔄 Refresh</button>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <div class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</div>
-    <div class="tab-btn" data-tab="compare" onclick="switchTab('compare')">Compare Periods</div>
-  </div>
-
-  <!-- DASHBOARD TAB -->
-  <div id="tab-dashboard">
-    <div id="kpiGrid" class="kpi-grid"></div>
-
-    <div class="grid2">
-      <div class="card">
-        <h3 id="statusChartTitle">Status breakdown</h3>
-        <canvas id="statusChart" height="220"></canvas>
-        <div id="statusEmptyNote" class="empty-note" style="display:none;">No status-style column (e.g. Present/Absent, Done/Pending) was detected in this sheet.</div>
-      </div>
-      <div class="card">
-        <h3>Trend (entries by date)</h3>
-        <canvas id="trendChart" height="220"></canvas>
-        <div id="trendEmptyNote" class="empty-note" style="display:none;">No date column was detected in this sheet, so a time trend can't be shown.</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3 id="topEntitiesTitle">Top entities in this range</h3>
-      <div id="topEntitiesBody"></div>
-    </div>
-
-    <div class="card">
-      <h3 id="catChartTitle">Other category breakdown</h3>
-      <div id="categoryBody"></div>
-    </div>
-
-    <div class="card">
-      <h3>Raw data preview (latest 25 rows in range)</h3>
-      <div style="overflow-x:auto;">
-        <table id="dataTable"></table>
-      </div>
-    </div>
-  </div>
-
-  <!-- COMPARE TAB -->
-  <div id="tab-compare" style="display:none;">
-    <div class="controls">
+  <main id="main">
+    <div class="topbar">
       <div>
-        <label>Period 1: From</label>
-        <input type="date" id="p1From">
+        <h1 id="pageTitle">All Dashboards</h1>
+        <div class="crumb" id="pageCrumb">Overview across every report for the selected school</div>
       </div>
-      <div>
-        <label>Period 1: To</label>
-        <input type="date" id="p1To">
-      </div>
-      <div>
-        <label>Period 2: From</label>
-        <input type="date" id="p2From">
-      </div>
-      <div>
-        <label>Period 2: To</label>
-        <input type="date" id="p2To">
-      </div>
-      <div style="align-self:end;">
-        <button class="secondary" onclick="loadComparison()">⚖️ Compare</button>
-      </div>
+      <div class="controls" id="controlsBar"></div>
     </div>
-    <div id="compareKpis" class="kpi-grid"></div>
-    <div class="card">
-      <h3>Trend comparison</h3>
-      <canvas id="compareTrendChart" height="240"></canvas>
-    </div>
-    <div class="compare-cols">
-      <div class="card">
-        <span class="period-label p1">Period 1</span>
-        <div id="p1Status"></div>
-      </div>
-      <div class="card">
-        <span class="period-label p2">Period 2</span>
-        <div id="p2Status"></div>
-      </div>
-    </div>
-  </div>
-
+    <div id="content"><div class="loading"><div class="spin"></div>Loading…</div></div>
+    <footer class="app-footer">GHK Reports · live data from Google Sheets · built with Apps Script</footer>
+  </main>
 </div>
 
 <script>
-/* ============================================================
-   CONFIG — paste your Apps Script Web App /exec URL below
-   ============================================================ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbxeG7C8j6_Uqiy0wjNz9CWERvRCTGT3LNY91WnNprH1rGDxwhgeU97sfJJdeEZw12U/exec';
+/* ============================================================================
+   CONFIG — paste your Apps Script /exec URL here after deploying Code.gs
+   ============================================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycbxBezEyzJyXXQefg1m_NJ9WS-RdxWsOjiYcZ0mT-09jR5VlfVexLZvN6XeN922pxmU/exec";
 
-let INDEX = [];
-let statusChart, trendChart, compareTrendChart;
-const COLORS = ['#2c6e49','#f7b500','#2a3b8f','#a54f2e','#6aa84f','#cc7722','#8e44ad','#16a085'];
+/* ============================================================================
+   STATE
+   ============================================================================ */
+let STATE = {
+  schools: [],
+  items: [],
+  school: null,
+  view: 'hub',        // 'hub' | sourceId
+  from: ymd(daysAgo(30)),
+  to: ymd(new Date()),
+  compareMode: false,
+  charts: []
+};
 
-async function api(params) {
-  const url = API_URL + '?' + new URLSearchParams(params).toString();
-  const res = await fetch(url);
-  const json = await res.json();
-  if (json.error) throw new Error(json.error);
-  return json;
+function ymd(d){ return d.toISOString().slice(0,10); }
+function daysAgo(n){ return new Date(Date.now()-n*86400000); }
+
+/* ============================================================================
+   API
+   ============================================================================ */
+async function api(action, params){
+  if(!API_URL || API_URL.indexOf('PASTE_') === 0){
+    throw new Error('NO_API_URL');
+  }
+  const url = new URL(API_URL);
+  url.searchParams.set('action', action);
+  Object.keys(params||{}).forEach(k=>{ if(params[k]!==undefined && params[k]!==null) url.searchParams.set(k, params[k]); });
+  const res = await fetch(url.toString());
+  const data = await res.json();
+  if(data.error) throw new Error(data.error);
+  return data;
 }
 
-async function init() {
-  const idx = await api({ action: 'list' });
-  INDEX = idx.items;
-  const schools = [...new Set(INDEX.map(i => i.school))];
-  const schoolSelect = document.getElementById('schoolSelect');
-  schoolSelect.innerHTML = schools.map(s => `<option value="${s}">${s}</option>`).join('');
-  schoolSelect.onchange = populateReports;
-  populateReports();
-  setDefaultDates();
-  loadDashboard();
+/* ============================================================================
+   BOOT
+   ============================================================================ */
+async function boot(){
+  try{
+    const list = await api('list', {});
+    STATE.schools = list.schools;
+    STATE.items = list.items;
+    STATE.school = list.schools[0];
+    document.getElementById('connStatus').textContent = '● Connected · live data';
+    renderSidebar();
+    renderView();
+  }catch(err){
+    if(err.message === 'NO_API_URL'){
+      document.getElementById('connStatus').className = 'conn-status bad';
+      document.getElementById('connStatus').innerHTML =
+        '⚠ Not connected.<br>Paste your Apps Script Web App URL into <code>API_URL</code> near the top of this file\'s &lt;script&gt; block, then redeploy.';
+      document.getElementById('content').innerHTML =
+        '<div class="empty">This dashboard has no data source configured yet.<br>Set <code>API_URL</code> in index.html to your Apps Script <code>/exec</code> URL.</div>';
+    } else {
+      document.getElementById('connStatus').className = 'conn-status bad';
+      document.getElementById('connStatus').textContent = '⚠ ' + err.message;
+      document.getElementById('content').innerHTML = '<div class="err">Could not load report list:<br>'+escapeHtml(err.message)+'</div>';
+    }
+  }
 }
 
-function populateReports() {
-  const school = document.getElementById('schoolSelect').value;
-  const reports = INDEX.filter(i => i.school === school);
-  const reportSelect = document.getElementById('reportSelect');
-  reportSelect.innerHTML = reports.map(r => `<option value="${r.id}|||${r.sheet}">${r.sheet}</option>`).join('');
-}
+/* ============================================================================
+   SIDEBAR
+   ============================================================================ */
+function renderSidebar(){
+  const toggle = document.getElementById('schoolToggle');
+  toggle.innerHTML = STATE.schools.map(s =>
+    `<button data-school="${escapeHtml(s)}" class="${s===STATE.school?'active':''}">${escapeHtml(s)}</button>`
+  ).join('');
+  toggle.querySelectorAll('button').forEach(b=>{
+    b.onclick = ()=>{ STATE.school = b.dataset.school; STATE.view='hub'; renderSidebar(); renderView(); };
+  });
 
-function setDefaultDates() {
-  const today = new Date();
-  const past = new Date(); past.setDate(today.getDate() - 30);
-  document.getElementById('fromDate').value = past.toISOString().slice(0,10);
-  document.getElementById('toDate').value = today.toISOString().slice(0,10);
-  document.getElementById('p1From').value = past.toISOString().slice(0,10);
-  document.getElementById('p1To').value = today.toISOString().slice(0,10);
-  const prevPast = new Date(past); prevPast.setDate(past.getDate() - 30);
-  document.getElementById('p2From').value = prevPast.toISOString().slice(0,10);
-  document.getElementById('p2To').value = past.toISOString().slice(0,10);
-}
+  const itemsForSchool = STATE.items.filter(i => i.school === STATE.school);
+  const bySchema = {};
+  itemsForSchool.forEach(i=>{
+    const grp = groupLabel(i.schema);
+    bySchema[grp] = bySchema[grp] || [];
+    bySchema[grp].push(i);
+  });
 
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  document.getElementById('tab-dashboard').style.display = tab === 'dashboard' ? 'block' : 'none';
-  document.getElementById('tab-compare').style.display = tab === 'compare' ? 'block' : 'none';
-}
-
-function currentSelection() {
-  const [id, sheet] = document.getElementById('reportSelect').value.split('|||');
-  return { id, sheet };
-}
-
-async function loadDashboard() {
-  const { id, sheet } = currentSelection();
-  const from = document.getElementById('fromDate').value;
-  const to = document.getElementById('toDate').value;
-  document.getElementById('kpiGrid').innerHTML = '<div class="loading">Loading live data…</div>';
-
-  const summary = await api({ action: 'summary', id, sheet, from, to });
-
-  renderKpis(summary);
-  renderStatusChart(summary.statusBreakdown);
-  renderTrendChart(summary.trend, summary.hasDateColumn);
-  renderTopEntities(summary.topEntities);
-  renderCategoryBody(summary.categoryCounts);
-  await renderTable(id, sheet);
-  document.getElementById('lastUpdated').textContent = 'Live • ' + new Date().toLocaleTimeString();
-}
-
-function renderKpis(summary) {
-  let html = `
-    <div class="kpi-card">
-      <div class="label">Entries in range</div>
-      <div class="value">${summary.rowCount}</div>
-      <div class="sub">of ${summary.totalRowsAllTime} total</div>
-    </div>`;
-
-  // Headline status KPI: if there's a status breakdown, show the leading category as a clear %
-  const statusKeys = Object.keys(summary.statusBreakdown || {});
-  if (statusKeys.length) {
-    const key = statusKeys[0];
-    const items = summary.statusBreakdown[key];
-    items.slice(0, 3).forEach(item => {
-      html += `
-      <div class="kpi-card">
-        <div class="label">${key}: ${item.label}</div>
-        <div class="value">${item.pct}%</div>
-        <div class="sub">${item.count} of ${summary.rowCount} entries</div>
-      </div>`;
+  let html = `<div class="nav-item ${STATE.view==='hub'?'active':''}" id="navHub"><span class="ic">🏠</span> All Dashboards</div>`;
+  Object.keys(bySchema).forEach(grp=>{
+    html += `<div class="nav-group-label">${escapeHtml(grp)}</div>`;
+    bySchema[grp].forEach(i=>{
+      html += `<div class="nav-item ${STATE.view===i.id?'active':''}" data-id="${i.id}"><span class="ic">${i.icon||'📄'}</span> ${escapeHtml(i.label)}</div>`;
     });
-  }
-
-  Object.entries(summary.numericTotals || {}).forEach(([key, val]) => {
-    html += `
-    <div class="kpi-card">
-      <div class="label">${key} (total)</div>
-      <div class="value">${val}</div>
-      <div class="sub">avg ${summary.numericAverages[key]}</div>
-    </div>`;
   });
+  document.getElementById('navGroups').innerHTML = html;
 
-  if (statusKeys.length === 0 && Object.keys(summary.numericTotals || {}).length === 0) {
-    html += `<div class="kpi-card"><div class="label">Note</div><div class="sub">No status or numeric columns were detected — this sheet may be mostly free-text/category data. See "Other category breakdown" below.</div></div>`;
-  }
-
-  document.getElementById('kpiGrid').innerHTML = html;
-}
-
-function renderStatusChart(statusBreakdown) {
-  const keys = Object.keys(statusBreakdown || {});
-  const ctx = document.getElementById('statusChart');
-  const emptyNote = document.getElementById('statusEmptyNote');
-  if (statusChart) { statusChart.destroy(); statusChart = null; }
-  if (!keys.length) {
-    ctx.style.display = 'none';
-    emptyNote.style.display = 'block';
-    return;
-  }
-  ctx.style.display = 'block';
-  emptyNote.style.display = 'none';
-  const key = keys[0];
-  document.getElementById('statusChartTitle').textContent = 'Status breakdown: ' + key;
-  const data = statusBreakdown[key];
-  statusChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: data.map(d => d.label + ' (' + d.pct + '%)'),
-      datasets: [{ data: data.map(d => d.count), backgroundColor: COLORS }]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  document.getElementById('navHub').onclick = ()=>{ STATE.view='hub'; renderSidebar(); renderView(); };
+  document.querySelectorAll('#navGroups [data-id]').forEach(el=>{
+    el.onclick = ()=>{ STATE.view = el.dataset.id; STATE.compareMode=false; renderSidebar(); renderView(); };
   });
 }
 
-function renderTrendChart(trend, hasDateColumn) {
-  const ctx = document.getElementById('trendChart');
-  const emptyNote = document.getElementById('trendEmptyNote');
-  if (trendChart) { trendChart.destroy(); trendChart = null; }
-  if (!hasDateColumn || !trend || !trend.length) {
-    ctx.style.display = 'none';
-    emptyNote.style.display = 'block';
-    return;
-  }
-  ctx.style.display = 'block';
-  emptyNote.style.display = 'none';
-  trendChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: trend.map(t => t.date),
-      datasets: [{ label: 'Entries per day', data: trend.map(t => t.count),
-        borderColor: '#2c6e49', backgroundColor: 'rgba(44,110,73,0.15)', fill: true, tension: 0.3 }]
-    },
-    options: { responsive: true, plugins: { legend: { display: false } } }
-  });
+function groupLabel(schema){
+  return ({
+    attendance_student:'Student Attendance', staff_logs:'Staff Attendance',
+    supervisor_checklist:'Supervisor Checklist', behavior_log:'Behavior & Consequence',
+    lesson_plan_grade:'Lesson Plans', lesson_plan_overview:'Lesson Plans',
+    financials:'Financials'
+  })[schema] || 'Other';
 }
 
-function renderTopEntities(topEntities) {
-  const title = document.getElementById('topEntitiesTitle');
-  const body = document.getElementById('topEntitiesBody');
-  if (!topEntities || !topEntities.length) {
-    title.textContent = 'Top entities';
-    body.innerHTML = '<p class="empty-note">No name/student/staff column was detected, so per-person ranking isn\'t available for this sheet.</p>';
-    return;
-  }
-  title.textContent = 'Top entities in this range (by number of entries)';
-  let html = '<table><tr><th>Name</th><th>Total entries</th><th>Breakdown</th></tr>';
-  topEntities.forEach(e => {
-    const breakdown = Object.entries(e.byStatus || {})
-      .map(([label, count]) => {
-        const cls = /present|done|complete|approved|yes|ok/i.test(label) ? 'green' : /absent|pending|reject|no/i.test(label) ? 'red' : 'gray';
-        return `<span class="pill ${cls}">${label}: ${count}</span>`;
-      }).join(' ');
-    html += `<tr><td>${e.name}</td><td>${e.total}</td><td>${breakdown || '—'}</td></tr>`;
-  });
-  html += '</table>';
-  body.innerHTML = html;
+/* ============================================================================
+   ROUTER
+   ============================================================================ */
+function renderView(){
+  destroyCharts();
+  if(STATE.view === 'hub') return renderHub();
+  const src = STATE.items.find(i=>i.id===STATE.view);
+  if(!src) return;
+  document.getElementById('pageTitle').textContent = src.label;
+  document.getElementById('pageCrumb').textContent = src.school + ' · ' + groupLabel(src.schema);
+  renderControls(src);
+  loadSummary(src);
 }
 
-function renderCategoryBody(categoryCounts) {
-  const keys = Object.keys(categoryCounts || {});
-  const body = document.getElementById('categoryBody');
-  const title = document.getElementById('catChartTitle');
-  if (!keys.length) {
-    title.textContent = 'Other category breakdown';
-    body.innerHTML = '<p class="empty-note">No other category-style columns to show.</p>';
+/* ============================================================================
+   CONTROLS (date range + compare)
+   ============================================================================ */
+function renderControls(src){
+  const bar = document.getElementById('controlsBar');
+  if(!src.supportsRange){
+    bar.innerHTML = `<button class="btn secondary" id="viewDataBtn">View raw data</button>`;
+    bindDataBtn(src);
     return;
   }
-  title.textContent = 'Other category breakdown';
-  let html = '';
-  keys.forEach(key => {
-    html += `<h4 style="margin-bottom:6px;">${key}</h4><table style="margin-bottom:14px;">`;
-    categoryCounts[key].forEach(row => {
-      html += `<tr><td>${row.label}</td><td>${row.count}</td></tr>`;
+  bar.innerHTML = `
+    <label>From</label><input type="date" id="fromInput" value="${STATE.from}">
+    <label>To</label><input type="date" id="toInput" value="${STATE.to}">
+    <button class="btn" id="applyBtn">Apply</button>
+    ${src.supportsCompare ? `<button class="btn secondary" id="compareBtn">${STATE.compareMode?'Exit compare':'Compare periods'}</button>` : ''}
+    <button class="btn ghost" id="viewDataBtn">Raw data</button>
+  `;
+  document.getElementById('applyBtn').onclick = ()=>{
+    STATE.from = document.getElementById('fromInput').value;
+    STATE.to = document.getElementById('toInput').value;
+    if(STATE.compareMode) loadCompare(src); else loadSummary(src);
+  };
+  if(src.supportsCompare){
+    document.getElementById('compareBtn').onclick = ()=>{
+      STATE.compareMode = !STATE.compareMode;
+      renderControls(src);
+      if(STATE.compareMode) loadCompare(src); else loadSummary(src);
+    };
+  }
+  bindDataBtn(src);
+}
+
+function bindDataBtn(src){
+  const b = document.getElementById('viewDataBtn');
+  if(b) b.onclick = ()=> loadRawData(src);
+}
+
+/* ============================================================================
+   HUB (All Dashboards)
+   ============================================================================ */
+async function renderHub(){
+  document.getElementById('pageTitle').textContent = 'All Dashboards';
+  document.getElementById('pageCrumb').textContent = STATE.school + ' · last 7 days at a glance';
+  document.getElementById('controlsBar').innerHTML = '';
+  const content = document.getElementById('content');
+  content.innerHTML = '<div class="loading"><div class="spin"></div>Loading overview…</div>';
+  try{
+    const ov = await api('overview', { school: STATE.school });
+    if(!ov.cards.length){ content.innerHTML = '<div class="empty">No reports configured for this school yet.</div>'; return; }
+    content.innerHTML = `<div class="hub-grid">${ov.cards.map(cardHtml).join('')}</div>`;
+    ov.cards.forEach(c=>{
+      const el = document.getElementById('hub-'+c.sourceId);
+      if(el) el.onclick = ()=>{ STATE.view = c.sourceId; STATE.compareMode=false; renderSidebar(); renderView(); };
     });
-    html += '</table>';
-  });
-  body.innerHTML = html;
-}
-
-async function renderTable(id, sheet) {
-  const data = await api({ action: 'data', id, sheet });
-  const headers = data.headers;
-  const rows = data.rows.slice(-25);
-  let html = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
-  rows.forEach(r => {
-    html += '<tr>' + r.map(c => `<td>${c ?? ''}</td>`).join('') + '</tr>';
-  });
-  document.getElementById('dataTable').innerHTML = html;
-}
-
-async function loadComparison() {
-  const { id, sheet } = currentSelection();
-  const p1From = document.getElementById('p1From').value;
-  const p1To = document.getElementById('p1To').value;
-  const p2From = document.getElementById('p2From').value;
-  const p2To = document.getElementById('p2To').value;
-
-  document.getElementById('compareKpis').innerHTML = '<div class="loading">Comparing…</div>';
-  const cmp = await api({ action: 'compare', id, sheet, p1From, p1To, p2From, p2To });
-
-  renderCompareKpis(cmp);
-  renderCompareTrend(cmp.period1.trend, cmp.period2.trend);
-  renderCompareStatus('p1Status', cmp.period1.statusBreakdown, cmp.period1.rowCount);
-  renderCompareStatus('p2Status', cmp.period2.statusBreakdown, cmp.period2.rowCount);
-}
-
-function renderCompareKpis(cmp) {
-  const rc = cmp.rowCountChange;
-  let html = kpiChangeCard('Total entries', rc.period1, rc.period2, rc.delta, rc.pctChange);
-  Object.entries(cmp.numericChange || {}).forEach(([key, v]) => {
-    html += kpiChangeCard(key, v.period1, v.period2, v.delta, v.pctChange);
-  });
-  document.getElementById('compareKpis').innerHTML = html;
-}
-
-function kpiChangeCard(label, p1, p2, delta, pct) {
-  const dir = pct >= 0 ? 'up' : 'down';
-  const arrow = pct >= 0 ? '▲' : '▼';
-  return `
-    <div class="kpi-card">
-      <div class="label">${label}</div>
-      <div class="value">${p2}</div>
-      <div class="sub">${p1} → ${p2}</div>
-      <div class="sub ${dir}">${arrow} ${Math.abs(pct)}% (Δ${delta})</div>
-    </div>`;
-}
-
-function renderCompareTrend(t1, t2) {
-  const ctx = document.getElementById('compareTrendChart');
-  if (compareTrendChart) compareTrendChart.destroy();
-  if ((!t1 || !t1.length) && (!t2 || !t2.length)) {
-    ctx.style.display = 'none';
-    return;
+  }catch(err){
+    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
   }
-  ctx.style.display = 'block';
-  const labels = [...new Set([...(t1||[]).map(t=>t.date), ...(t2||[]).map(t=>t.date)])].sort();
-  compareTrendChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        { label: 'Period 1', data: labels.map(l => ((t1||[]).find(t=>t.date===l)||{}).count || 0), borderColor: '#2a3b8f', backgroundColor:'rgba(42,59,143,.1)', tension:0.3 },
-        { label: 'Period 2', data: labels.map(l => ((t2||[]).find(t=>t.date===l)||{}).count || 0), borderColor: '#a54f2e', backgroundColor:'rgba(165,79,46,.1)', tension:0.3 }
-      ]
-    },
-    options: { responsive: true }
-  });
 }
 
-function renderCompareStatus(elId, statusBreakdown, rowCount) {
-  const keys = Object.keys(statusBreakdown || {});
-  if (!keys.length) { document.getElementById(elId).innerHTML = `<p class="empty-note">No status data (total entries: ${rowCount})</p>`; return; }
-  let html = `<p class="sub">Total entries: ${rowCount}</p>`;
-  keys.forEach(key => {
-    html += `<h4>${key}</h4><table>`;
-    statusBreakdown[key].forEach(row => {
-      html += `<tr><td>${row.label}</td><td>${row.count}</td><td>${row.pct}%</td></tr>`;
+function cardHtml(c){
+  if(c.error){
+    return `<div class="hub-card" id="hub-${c.sourceId}"><div class="icon">${c.icon}</div><h4>${escapeHtml(c.label)}</h4>
+      <div class="mini-kpi" style="color:var(--bad)">${escapeHtml(c.error)}</div></div>`;
+  }
+  const kpis = (c.kpis||[]).map(k=>`<div class="mini-kpi"><span>${escapeHtml(k.label)}</span><b>${escapeHtml(k.displayValue)}</b></div>`).join('');
+  return `<div class="hub-card" id="hub-${c.sourceId}"><div class="icon">${c.icon}</div><h4>${escapeHtml(c.label)}</h4>${kpis}</div>`;
+}
+
+/* ============================================================================
+   SUMMARY VIEW
+   ============================================================================ */
+async function loadSummary(src){
+  const content = document.getElementById('content');
+  content.innerHTML = '<div class="loading"><div class="spin"></div>Crunching the numbers…</div>';
+  try{
+    const params = src.supportsRange ? { id: src.id, from: STATE.from, to: STATE.to } : { id: src.id };
+    const s = await api('summary', params);
+    renderSummary(s);
+  }catch(err){
+    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
+  }
+}
+
+function renderSummary(s){
+  destroyCharts();
+  const content = document.getElementById('content');
+  let html = `<div class="kpi-grid">${(s.kpis||[]).map(kpiCard).join('')}</div>`;
+
+  const chartKeys = Object.keys(s.charts||{});
+  if(chartKeys.length){
+    html += `<div class="grid-2">`;
+    chartKeys.forEach((k,i)=>{
+      html += `<div class="panel"><h3>${escapeHtml(s.charts[k].title)}</h3><div class="chart-wrap"><canvas id="chart-${k}"></canvas></div></div>`;
     });
-    html += '</table>';
+    html += `</div>`;
+  }
+
+  const tableKeys = Object.keys(s.tables||{});
+  tableKeys.forEach(k=>{
+    const t = s.tables[k];
+    html += `<div class="panel"><h3>${escapeHtml(t.title)}</h3><div class="table-scroll">${tableHtml(t)}</div></div>`;
   });
-  document.getElementById(elId).innerHTML = html;
+
+  if((s.notes||[]).length){
+    html += `<div class="notes">${s.notes.map(n=>`<p>ℹ️ ${escapeHtml(n)}</p>`).join('')}</div>`;
+  }
+
+  content.innerHTML = html;
+  chartKeys.forEach(k => drawChart('chart-'+k, s.charts[k]));
 }
 
-init().catch(err => {
-  document.getElementById('kpiGrid').innerHTML = `<div class="empty">⚠️ ${err.message}</div>`;
-});
+function kpiCard(k){
+  return `<div class="kpi-card ${k.tone||'neutral'}">
+    <div class="label">${escapeHtml(k.label)}</div>
+    <div class="value">${escapeHtml(String(k.displayValue))}</div>
+    ${k.sub ? `<div class="sub">${escapeHtml(k.sub)}</div>` : ''}
+  </div>`;
+}
+
+function tableHtml(t){
+  if(!t.rows.length) return '<div class="empty">No rows for this range.</div>';
+  return `<table><thead><tr>${t.columns.map(c=>`<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+    <tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td>${escapeHtml(c==null?'—':String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function drawChart(canvasId, spec){
+  const el = document.getElementById(canvasId);
+  if(!el) return;
+  const ctx = el.getContext('2d');
+  const palette = ['#2c6e49','#f7b500','#2a3b8f','#a54f2e','#6aa67f'];
+  if(spec.type === 'doughnut'){
+    const c = new Chart(ctx, { type:'doughnut', data:{ labels: spec.labels, datasets:[{ data: spec.data, backgroundColor: palette }] },
+      options:{ plugins:{ legend:{ position:'bottom', labels:{font:{size:11}} } }, maintainAspectRatio:false } });
+    STATE.charts.push(c); return;
+  }
+  const datasets = (spec.series||[]).map((s,i)=>({
+    label: s.name, data: s.data,
+    borderColor: palette[i%palette.length], backgroundColor: spec.type==='bar' ? palette[i%palette.length] : 'transparent',
+    tension:.3, fill:false, borderWidth:2, pointRadius: spec.type==='line' ? 2 : 0
+  }));
+  const c = new Chart(ctx, {
+    type: spec.type === 'bar' ? 'bar' : 'line',
+    data: { labels: spec.labels, datasets },
+    options: {
+      maintainAspectRatio:false,
+      plugins:{ legend:{ display: datasets.length>1, position:'bottom', labels:{font:{size:11}} } },
+      scales:{ x:{ ticks:{ font:{size:10}, maxRotation:60 } }, y:{ beginAtZero:true, ticks:{font:{size:10}} } }
+    }
+  });
+  STATE.charts.push(c);
+}
+
+function destroyCharts(){ STATE.charts.forEach(c=>c.destroy()); STATE.charts = []; }
+
+/* ============================================================================
+   COMPARE VIEW
+   ============================================================================ */
+async function loadCompare(src){
+  const content = document.getElementById('content');
+  content.innerHTML = '<div class="loading"><div class="spin"></div>Comparing periods…</div>';
+  try{
+    const spanMs = (new Date(STATE.to) - new Date(STATE.from)) || 7*86400000;
+    const p2To = STATE.to, p2From = STATE.from;
+    const p1To = ymd(new Date(new Date(STATE.from).getTime() - 86400000));
+    const p1From = ymd(new Date(new Date(STATE.from).getTime() - spanMs - 86400000));
+    const cmp = await api('compare', { id: src.id, p1From, p1To, p2From: p2From, p2To: p2To });
+    renderCompare(cmp, p1From, p1To, p2From, p2To);
+  }catch(err){
+    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
+  }
+}
+
+function renderCompare(cmp, p1From, p1To, p2From, p2To){
+  destroyCharts();
+  const content = document.getElementById('content');
+  let html = `<div class="panel"><h3>Period 1: ${p1From} → ${p1To} &nbsp;vs&nbsp; Period 2: ${p2From} → ${p2To}</h3>
+    <div class="deltas-grid">${cmp.deltas.map(deltaCard).join('')}</div></div>`;
+  content.innerHTML = html;
+}
+
+function deltaCard(d){
+  const up = d.delta > 0;
+  const dir = d.delta === 0 ? '' : (up ? '▲' : '▼');
+  const cls = d.delta === 0 ? '' : (up ? 'up' : 'down');
+  return `<div class="delta-card">
+    <div class="lbl">${escapeHtml(d.label)}</div>
+    <div class="delta-row"><span>${escapeHtml(String(d.period1Display))}</span><span class="arrow">→</span>
+      <span class="v2">${escapeHtml(String(d.period2Display))}</span></div>
+    <div class="delta-row ${cls}" style="font-size:12px;">${dir} ${d.pctChange!=null ? Math.abs(d.pctChange)+'%' : ''}</div>
+  </div>`;
+}
+
+/* ============================================================================
+   RAW DATA VIEW
+   ============================================================================ */
+async function loadRawData(src){
+  const content = document.getElementById('content');
+  content.innerHTML = '<div class="loading"><div class="spin"></div>Loading raw rows…</div>';
+  try{
+    const d = await api('data', { id: src.id });
+    const t = { title: 'Raw data — ' + d.totalRows + ' rows', columns: d.headers, rows: d.rows.slice(0, 1000) };
+    content.innerHTML = `<div class="panel"><h3>${escapeHtml(t.title)}${d.totalRows>1000?' (showing first 1000)':''}</h3><div class="table-scroll">${tableHtml(t)}</div></div>`;
+  }catch(err){
+    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
+  }
+}
+
+/* ============================================================================
+   UTIL
+   ============================================================================ */
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+boot();
 </script>
 </body>
 </html>
