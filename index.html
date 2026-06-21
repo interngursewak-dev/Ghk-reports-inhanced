@@ -7,160 +7,105 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
   :root{
-    --green:#2c6e49;
-    --green-dark:#1d4a32;
-    --gold:#f7b500;
-    --navy:#2a3b8f;
-    --terracotta:#a54f2e;
-    --cream:#faf7f0;
-    --paper:#ffffff;
-    --ink:#1c2420;
-    --ink-soft:#5b6a62;
-    --line:#e3ddcd;
-    --good:#2c6e49;
-    --warn:#b8860b;
-    --bad:#a54f2e;
-    --radius:14px;
-    --shadow:0 2px 14px rgba(28,36,32,.06);
+    --green:#2c6e49;--green-dark:#1d4a32;--gold:#f7b500;--navy:#2a3b8f;
+    --terracotta:#a54f2e;--cream:#faf7f0;--paper:#ffffff;--ink:#1c2420;
+    --ink-soft:#5b6a62;--line:#e3ddcd;--good:#2c6e49;--warn:#b8860b;
+    --bad:#a54f2e;--radius:14px;--shadow:0 2px 14px rgba(28,36,32,.06);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{
-    background:var(--cream);
-    color:var(--ink);
-    font-family:'Source Sans Pro', Avenir, 'Segoe UI', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.display{
-    font-family:'Iowan Old Style','Palatino Linotype', Georgia, 'Times New Roman', serif;
-    letter-spacing:.2px;
-  }
-  a{color:inherit;}
+  body{background:var(--cream);color:var(--ink);font-family:'Source Sans Pro',Avenir,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.display{font-family:'Iowan Old Style','Palatino Linotype',Georgia,'Times New Roman',serif;letter-spacing:.2px;}
 
-  /* ---------- App shell ---------- */
-  #app{display:flex; min-height:100vh;}
+  /* ---- App shell ---- */
+  #app{display:flex;min-height:100vh;}
 
   /* Sidebar */
-  #sidebar{
-    width:280px; flex:0 0 280px;
-    background:var(--green-dark);
-    color:#eef3ee;
-    padding:28px 20px 20px;
-    position:sticky; top:0; height:100vh; overflow-y:auto;
-  }
-  .brand{display:flex; align-items:baseline; gap:8px; margin-bottom:4px;}
-  .brand .mark{
-    font-family:'Iowan Old Style', Georgia, serif; font-size:26px; font-weight:700; color:var(--gold);
-  }
-  .brand .sub{font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:#a9c2b1;}
-  .school-toggle{
-    margin:22px 0 18px; display:flex; background:rgba(255,255,255,.08); border-radius:10px; padding:4px;
-  }
-  .school-toggle button{
-    flex:1; border:none; background:transparent; color:#cfe0d4; padding:9px 6px;
-    font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; transition:.15s;
-  }
-  .school-toggle button.active{background:var(--gold); color:#2a2000;}
-
-  .nav-group-label{
-    font-size:10.5px; text-transform:uppercase; letter-spacing:1.4px; color:#8fae98;
-    margin:18px 4px 8px;
-  }
-  .nav-item{
-    display:flex; align-items:center; gap:10px;
-    padding:9px 10px; border-radius:9px; cursor:pointer; color:#dcebe0;
-    font-size:14px; margin-bottom:2px; transition:.12s;
-  }
+  #sidebar{width:280px;flex:0 0 280px;background:var(--green-dark);color:#eef3ee;padding:28px 20px 20px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+  .brand{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;}
+  .brand .mark{font-family:'Iowan Old Style',Georgia,serif;font-size:26px;font-weight:700;color:var(--gold);}
+  .brand .sub{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#a9c2b1;}
+  .school-toggle{margin:22px 0 18px;display:flex;background:rgba(255,255,255,.08);border-radius:10px;padding:4px;}
+  .school-toggle button{flex:1;border:none;background:transparent;color:#cfe0d4;padding:9px 6px;font-size:13px;font-weight:600;border-radius:8px;cursor:pointer;transition:.15s;}
+  .school-toggle button.active{background:var(--gold);color:#2a2000;}
+  .nav-group-label{font-size:10.5px;text-transform:uppercase;letter-spacing:1.4px;color:#8fae98;margin:18px 4px 8px;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;color:#dcebe0;font-size:14px;margin-bottom:2px;transition:.12s;}
   .nav-item:hover{background:rgba(255,255,255,.07);}
-  .nav-item.active{background:var(--gold); color:#2a2000; font-weight:600;}
-  .nav-item .ic{font-size:15px; width:18px; text-align:center;}
-
-  .conn-status{
-    margin-top:24px; padding:10px 12px; border-radius:10px; font-size:12px;
-    background:rgba(255,255,255,.06); color:#bcd2c2; line-height:1.5;
-  }
-  .conn-status.bad{background:rgba(165,79,46,.25); color:#ffd9c8;}
-  .conn-status code{font-size:11px; word-break:break-all;}
+  .nav-item.active{background:var(--gold);color:#2a2000;font-weight:600;}
+  .nav-item .ic{font-size:15px;width:18px;text-align:center;}
+  .conn-status{margin-top:24px;padding:10px 12px;border-radius:10px;font-size:12px;background:rgba(255,255,255,.06);color:#bcd2c2;line-height:1.5;}
+  .conn-status.bad{background:rgba(165,79,46,.25);color:#ffd9c8;}
+  .conn-status code{font-size:11px;word-break:break-all;}
 
   /* Main */
-  #main{flex:1; min-width:0; padding:32px 40px 60px;}
-  .topbar{
-    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;
-    margin-bottom:26px;
-  }
-  .topbar h1{font-size:28px; margin:0 0 4px; color:var(--green-dark);}
-  .topbar .crumb{font-size:13px; color:var(--ink-soft);}
-  .controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-  .controls input[type=date]{
-    border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:7px 10px; font-size:13px;
-  }
-  .controls label{font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.6px; margin-right:4px;}
-  .btn{
-    border:1px solid var(--green); background:var(--green); color:#fff; padding:8px 16px; border-radius:8px;
-    font-size:13px; font-weight:600; cursor:pointer; transition:.15s;
-  }
-  .btn.secondary{background:transparent; color:var(--green); }
-  .btn.ghost{background:transparent; color:var(--ink-soft); border-color:var(--line);}
+  #main{flex:1;min-width:0;padding:32px 40px 60px;}
+  .topbar{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:26px;}
+  .topbar-left{display:flex;align-items:center;gap:14px;}
+  .topbar h1{font-size:28px;margin:0 0 4px;color:var(--green-dark);}
+  .topbar .crumb{font-size:13px;color:var(--ink-soft);}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .controls input[type=date]{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 10px;font-size:13px;}
+  .controls label{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.6px;margin-right:4px;}
+
+  /* Back button */
+  .btn-back{display:inline-flex;align-items:center;gap:6px;border:none;background:rgba(255,255,255,.12);color:#dcebe0;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.15s;margin-bottom:6px;}
+  .btn-back:hover{background:rgba(255,255,255,.2);}
+  .btn-back svg{width:14px;height:14px;fill:currentColor;}
+
+  .btn{border:1px solid var(--green);background:var(--green);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;}
+  .btn.secondary{background:transparent;color:var(--green);}
+  .btn.ghost{background:transparent;color:var(--ink-soft);border-color:var(--line);}
   .btn:hover{opacity:.85;}
 
-  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:16px; margin-bottom:24px;}
-  .kpi-card{
-    background:var(--paper); border-radius:var(--radius); padding:18px 18px 16px; box-shadow:var(--shadow);
-    border-left:4px solid var(--line); position:relative;
-  }
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:24px;}
+  .kpi-card{background:var(--paper);border-radius:var(--radius);padding:18px 18px 16px;box-shadow:var(--shadow);border-left:4px solid var(--line);position:relative;}
   .kpi-card.good{border-left-color:var(--good);}
   .kpi-card.warn{border-left-color:var(--warn);}
   .kpi-card.bad{border-left-color:var(--bad);}
-  .kpi-card .label{font-size:11.5px; text-transform:uppercase; letter-spacing:.8px; color:var(--ink-soft); margin-bottom:8px;}
-  .kpi-card .value{font-size:30px; font-weight:700; font-family:'Iowan Old Style',Georgia,serif; color:var(--ink);}
-  .kpi-card .sub{font-size:12px; color:var(--ink-soft); margin-top:4px;}
+  .kpi-card .label{font-size:11.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-soft);margin-bottom:8px;}
+  .kpi-card .value{font-size:30px;font-weight:700;font-family:'Iowan Old Style',Georgia,serif;color:var(--ink);}
+  .kpi-card .sub{font-size:12px;color:var(--ink-soft);margin-top:4px;}
 
-  .panel{background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow); padding:20px 22px; margin-bottom:22px;}
-  .panel h3{margin:0 0 14px; font-size:16px; color:var(--green-dark);}
-  .chart-wrap{position:relative; height:280px;}
-  .grid-2{display:grid; grid-template-columns:1.3fr 1fr; gap:20px;}
+  .panel{background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;margin-bottom:22px;}
+  .panel h3{margin:0 0 14px;font-size:16px;color:var(--green-dark);}
+  .chart-wrap{position:relative;height:280px;}
+  .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;}
   @media(max-width:900px){.grid-2{grid-template-columns:1fr;}}
 
-  table{width:100%; border-collapse:collapse; font-size:13.5px;}
-  th,td{padding:8px 10px; text-align:left; border-bottom:1px solid var(--line);}
-  th{font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--ink-soft); font-weight:600;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);font-weight:600;}
   tbody tr:hover{background:#f7f4ea;}
-  .table-scroll{max-height:420px; overflow:auto;}
+  .table-scroll{max-height:420px;overflow:auto;}
 
-  .notes{font-size:12.5px; color:var(--ink-soft); background:#f4f0e2; border-radius:10px; padding:10px 14px; margin-top:4px;}
+  .notes{font-size:12.5px;color:var(--ink-soft);background:#f4f0e2;border-radius:10px;padding:10px 14px;margin-top:4px;}
   .notes p{margin:4px 0;}
 
-  .hub-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px;}
-  .hub-card{
-    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px 20px; cursor:pointer;
-    border-top:4px solid var(--gold); transition:.15s;
-  }
+  .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+  .hub-card{background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;cursor:pointer;border-top:4px solid var(--gold);transition:.15s;}
   .hub-card:hover{transform:translateY(-2px);}
   .hub-card .icon{font-size:22px;}
-  .hub-card h4{margin:8px 0 10px; font-size:15px; color:var(--green-dark);}
-  .hub-card .mini-kpi{display:flex; justify-content:space-between; font-size:12.5px; padding:3px 0; color:var(--ink-soft);}
-  .hub-card .mini-kpi b{color:var(--ink); font-weight:700;}
+  .hub-card h4{margin:8px 0 10px;font-size:15px;color:var(--green-dark);}
+  .hub-card .mini-kpi{display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0;color:var(--ink-soft);}
+  .hub-card .mini-kpi b{color:var(--ink);font-weight:700;}
 
-  .loading, .err, .empty{padding:40px; text-align:center; color:var(--ink-soft);}
+  .loading,.err,.empty{padding:40px;text-align:center;color:var(--ink-soft);}
   .err{color:var(--bad);}
-  .spin{
-    width:26px; height:26px; border:3px solid var(--line); border-top-color:var(--green);
-    border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 12px;
-  }
+  .spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
   @keyframes spin{to{transform:rotate(360deg);}}
 
-  .deltas-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
-  .delta-card{background:var(--paper); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow);}
-  .delta-card .lbl{font-size:11px; text-transform:uppercase; color:var(--ink-soft); letter-spacing:.6px;}
-  .delta-row{display:flex; align-items:baseline; gap:8px; margin-top:6px;}
-  .delta-row .v2{font-size:20px; font-weight:700;}
+  .deltas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;}
+  .delta-card{background:var(--paper);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);}
+  .delta-card .lbl{font-size:11px;text-transform:uppercase;color:var(--ink-soft);letter-spacing:.6px;}
+  .delta-row{display:flex;align-items:baseline;gap:8px;margin-top:6px;}
+  .delta-row .v2{font-size:20px;font-weight:700;}
   .delta-row .arrow{font-size:13px;}
   .delta-row .up{color:var(--good);}
   .delta-row .down{color:var(--bad);}
 
-  footer.app-footer{margin-top:30px; font-size:11.5px; color:#9aa79f; text-align:center;}
-  ::-webkit-scrollbar{width:8px; height:8px;}
-  ::-webkit-scrollbar-thumb{background:#c9c2ab; border-radius:4px;}
+  footer.app-footer{margin-top:30px;font-size:11.5px;color:#9aa79f;text-align:center;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:#c9c2ab;border-radius:4px;}
 </style>
 </head>
 <body>
@@ -175,9 +120,11 @@
 
   <main id="main">
     <div class="topbar">
-      <div>
-        <h1 id="pageTitle">All Dashboards</h1>
-        <div class="crumb" id="pageCrumb">Overview across every report for the selected school</div>
+      <div class="topbar-left">
+        <div>
+          <h1 id="pageTitle">All Dashboards</h1>
+          <div class="crumb" id="pageCrumb">Overview across every report for the selected school</div>
+        </div>
       </div>
       <div class="controls" id="controlsBar"></div>
     </div>
@@ -190,21 +137,34 @@
 /* ============================================================================
    CONFIG — paste your Apps Script /exec URL here after deploying Code.gs
    ============================================================================ */
-const API_URL = "https://script.google.com/macros/s/AKfycbxBezEyzJyXXQefg1m_NJ9WS-RdxWsOjiYcZ0mT-09jR5VlfVexLZvN6XeN922pxmU/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbw2wPYWiOYX9TvKNXOoNqlojM3UUxMxISYcPcIhWvIB3UvuHo3nW1rHXyxwsJpglys/exec";
 
 /* ============================================================================
-   STATE
+   STATE + HISTORY STACK
    ============================================================================ */
 let STATE = {
-  schools: [],
-  items: [],
-  school: null,
-  view: 'hub',        // 'hub' | sourceId
-  from: ymd(daysAgo(30)),
-  to: ymd(new Date()),
-  compareMode: false,
-  charts: []
+  schools:[],items:[],school:null,
+  view:'hub',from:ymd(daysAgo(30)),to:ymd(new Date()),
+  compareMode:false,charts:[]
 };
+
+// Simple navigation history for Back button
+let NAV_HISTORY = [];  // [{view, school, compareMode}]
+
+function pushHistory(){
+  NAV_HISTORY.push({ view:STATE.view, school:STATE.school, compareMode:STATE.compareMode });
+  if(NAV_HISTORY.length > 50) NAV_HISTORY.shift();
+}
+
+function goBack(){
+  if(!NAV_HISTORY.length) return;
+  const prev = NAV_HISTORY.pop();
+  STATE.view        = prev.view;
+  STATE.school      = prev.school;
+  STATE.compareMode = prev.compareMode;
+  renderSidebar();
+  renderView(true); // true = from history (don't push)
+}
 
 function ymd(d){ return d.toISOString().slice(0,10); }
 function daysAgo(n){ return new Date(Date.now()-n*86400000); }
@@ -213,13 +173,13 @@ function daysAgo(n){ return new Date(Date.now()-n*86400000); }
    API
    ============================================================================ */
 async function api(action, params){
-  if(!API_URL || API_URL.indexOf('PASTE_') === 0){
-    throw new Error('NO_API_URL');
-  }
+  if(!API_URL || API_URL.indexOf('PASTE_')===0) throw new Error('NO_API_URL');
   const url = new URL(API_URL);
   url.searchParams.set('action', action);
-  Object.keys(params||{}).forEach(k=>{ if(params[k]!==undefined && params[k]!==null) url.searchParams.set(k, params[k]); });
-  const res = await fetch(url.toString());
+  Object.keys(params||{}).forEach(k=>{
+    if(params[k]!==undefined && params[k]!==null) url.searchParams.set(k, params[k]);
+  });
+  const res  = await fetch(url.toString());
   const data = await res.json();
   if(data.error) throw new Error(data.error);
   return data;
@@ -230,24 +190,24 @@ async function api(action, params){
    ============================================================================ */
 async function boot(){
   try{
-    const list = await api('list', {});
+    const list = await api('list',{});
     STATE.schools = list.schools;
-    STATE.items = list.items;
-    STATE.school = list.schools[0];
+    STATE.items   = list.items;
+    STATE.school  = list.schools[0];
     document.getElementById('connStatus').textContent = '● Connected · live data';
     renderSidebar();
-    renderView();
+    renderView(true);
   }catch(err){
-    if(err.message === 'NO_API_URL'){
-      document.getElementById('connStatus').className = 'conn-status bad';
-      document.getElementById('connStatus').innerHTML =
+    if(err.message==='NO_API_URL'){
+      document.getElementById('connStatus').className='conn-status bad';
+      document.getElementById('connStatus').innerHTML=
         '⚠ Not connected.<br>Paste your Apps Script Web App URL into <code>API_URL</code> near the top of this file\'s &lt;script&gt; block, then redeploy.';
-      document.getElementById('content').innerHTML =
-        '<div class="empty">This dashboard has no data source configured yet.<br>Set <code>API_URL</code> in index.html to your Apps Script <code>/exec</code> URL.</div>';
+      document.getElementById('content').innerHTML=
+        '<div class="empty">Dashboard not connected yet.<br>Set <code>API_URL</code> in index.html to your Apps Script <code>/exec</code> URL.</div>';
     } else {
-      document.getElementById('connStatus').className = 'conn-status bad';
-      document.getElementById('connStatus').textContent = '⚠ ' + err.message;
-      document.getElementById('content').innerHTML = '<div class="err">Could not load report list:<br>'+escapeHtml(err.message)+'</div>';
+      document.getElementById('connStatus').className='conn-status bad';
+      document.getElementById('connStatus').textContent='⚠ '+err.message;
+      document.getElementById('content').innerHTML='<div class="err">Could not load report list:<br>'+esc(err.message)+'</div>';
     }
   }
 }
@@ -257,248 +217,286 @@ async function boot(){
    ============================================================================ */
 function renderSidebar(){
   const toggle = document.getElementById('schoolToggle');
-  toggle.innerHTML = STATE.schools.map(s =>
-    `<button data-school="${escapeHtml(s)}" class="${s===STATE.school?'active':''}">${escapeHtml(s)}</button>`
+  toggle.innerHTML = STATE.schools.map(s=>
+    `<button data-school="${esc(s)}" class="${s===STATE.school?'active':''}">${esc(s)}</button>`
   ).join('');
   toggle.querySelectorAll('button').forEach(b=>{
-    b.onclick = ()=>{ STATE.school = b.dataset.school; STATE.view='hub'; renderSidebar(); renderView(); };
+    b.onclick=()=>{ pushHistory(); STATE.school=b.dataset.school; STATE.view='hub'; renderSidebar(); renderView(true); };
   });
 
-  const itemsForSchool = STATE.items.filter(i => i.school === STATE.school);
-  const bySchema = {};
+  const itemsForSchool = STATE.items.filter(i=>i.school===STATE.school);
+  const bySchema={};
   itemsForSchool.forEach(i=>{
-    const grp = groupLabel(i.schema);
-    bySchema[grp] = bySchema[grp] || [];
-    bySchema[grp].push(i);
+    const grp=groupLabel(i.schema); bySchema[grp]=bySchema[grp]||[]; bySchema[grp].push(i);
   });
 
-  let html = `<div class="nav-item ${STATE.view==='hub'?'active':''}" id="navHub"><span class="ic">🏠</span> All Dashboards</div>`;
+  let html=`<div class="nav-item ${STATE.view==='hub'?'active':''}" id="navHub"><span class="ic">🏠</span> All Dashboards</div>`;
   Object.keys(bySchema).forEach(grp=>{
-    html += `<div class="nav-group-label">${escapeHtml(grp)}</div>`;
+    html+=`<div class="nav-group-label">${esc(grp)}</div>`;
     bySchema[grp].forEach(i=>{
-      html += `<div class="nav-item ${STATE.view===i.id?'active':''}" data-id="${i.id}"><span class="ic">${i.icon||'📄'}</span> ${escapeHtml(i.label)}</div>`;
+      html+=`<div class="nav-item ${STATE.view===i.id?'active':''}" data-id="${i.id}"><span class="ic">${i.icon||'📄'}</span> ${esc(i.label)}</div>`;
     });
   });
-  document.getElementById('navGroups').innerHTML = html;
+  document.getElementById('navGroups').innerHTML=html;
 
-  document.getElementById('navHub').onclick = ()=>{ STATE.view='hub'; renderSidebar(); renderView(); };
+  document.getElementById('navHub').onclick=()=>{ pushHistory(); STATE.view='hub'; renderSidebar(); renderView(true); };
   document.querySelectorAll('#navGroups [data-id]').forEach(el=>{
-    el.onclick = ()=>{ STATE.view = el.dataset.id; STATE.compareMode=false; renderSidebar(); renderView(); };
+    el.onclick=()=>{ pushHistory(); STATE.view=el.dataset.id; STATE.compareMode=false; renderSidebar(); renderView(true); };
   });
 }
 
 function groupLabel(schema){
   return ({
-    attendance_student:'Student Attendance', staff_logs:'Staff Attendance',
-    supervisor_checklist:'Supervisor Checklist', behavior_log:'Behavior & Consequence',
-    lesson_plan_grade:'Lesson Plans', lesson_plan_overview:'Lesson Plans',
-    financials:'Financials'
-  })[schema] || 'Other';
+    attendance_student:'Student Attendance',staff_logs:'Staff Attendance',
+    supervisor_checklist:'Supervisor Checklist',behavior_log:'Behavior & Consequence',
+    lesson_plan_grade:'Lesson Plans',lesson_plan_overview:'Lesson Plans',financials:'Financials'
+  })[schema]||'Other';
 }
 
 /* ============================================================================
    ROUTER
    ============================================================================ */
-function renderView(){
+function renderView(fromHistory){
   destroyCharts();
-  if(STATE.view === 'hub') return renderHub();
+  // Render back button in sidebar whenever history exists
+  renderBackBtn();
+  if(STATE.view==='hub') return renderHub();
   const src = STATE.items.find(i=>i.id===STATE.view);
   if(!src) return;
-  document.getElementById('pageTitle').textContent = src.label;
-  document.getElementById('pageCrumb').textContent = src.school + ' · ' + groupLabel(src.schema);
+  document.getElementById('pageTitle').textContent  = src.label;
+  document.getElementById('pageCrumb').textContent  = src.school+' · '+groupLabel(src.schema);
   renderControls(src);
   loadSummary(src);
+}
+
+/* ---- Back button ---- */
+function renderBackBtn(){
+  // Remove any old back btn
+  document.getElementById('backBtn')?.remove();
+  if(!NAV_HISTORY.length) return;
+  const btn = document.createElement('button');
+  btn.id='backBtn'; btn.className='btn-back';
+  btn.innerHTML=`<svg viewBox="0 0 20 20"><path d="M15 10H7.83l3.58-3.59L10 5l-6 6 6 6 1.41-1.41L7.83 12H15v-2z"/></svg> Back`;
+  btn.onclick=goBack;
+  document.getElementById('navGroups').prepend(btn);
 }
 
 /* ============================================================================
    CONTROLS (date range + compare)
    ============================================================================ */
 function renderControls(src){
-  const bar = document.getElementById('controlsBar');
+  const bar=document.getElementById('controlsBar');
   if(!src.supportsRange){
-    bar.innerHTML = `<button class="btn secondary" id="viewDataBtn">View raw data</button>`;
-    bindDataBtn(src);
-    return;
+    bar.innerHTML=`<button class="btn secondary" id="viewDataBtn">View raw data</button>`;
+    bindDataBtn(src); return;
   }
-  bar.innerHTML = `
+  bar.innerHTML=`
     <label>From</label><input type="date" id="fromInput" value="${STATE.from}">
     <label>To</label><input type="date" id="toInput" value="${STATE.to}">
     <button class="btn" id="applyBtn">Apply</button>
-    ${src.supportsCompare ? `<button class="btn secondary" id="compareBtn">${STATE.compareMode?'Exit compare':'Compare periods'}</button>` : ''}
+    ${src.supportsCompare?`<button class="btn secondary" id="compareBtn">${STATE.compareMode?'Exit compare':'Compare periods'}</button>`:''}
     <button class="btn ghost" id="viewDataBtn">Raw data</button>
   `;
-  document.getElementById('applyBtn').onclick = ()=>{
-    STATE.from = document.getElementById('fromInput').value;
-    STATE.to = document.getElementById('toInput').value;
+  document.getElementById('applyBtn').onclick=()=>{
+    STATE.from=document.getElementById('fromInput').value;
+    STATE.to  =document.getElementById('toInput').value;
     if(STATE.compareMode) loadCompare(src); else loadSummary(src);
   };
   if(src.supportsCompare){
-    document.getElementById('compareBtn').onclick = ()=>{
-      STATE.compareMode = !STATE.compareMode;
+    document.getElementById('compareBtn').onclick=()=>{
+      STATE.compareMode=!STATE.compareMode;
       renderControls(src);
       if(STATE.compareMode) loadCompare(src); else loadSummary(src);
     };
   }
   bindDataBtn(src);
 }
-
 function bindDataBtn(src){
-  const b = document.getElementById('viewDataBtn');
-  if(b) b.onclick = ()=> loadRawData(src);
+  const b=document.getElementById('viewDataBtn');
+  if(b) b.onclick=()=>loadRawData(src);
 }
 
 /* ============================================================================
-   HUB (All Dashboards)
+   HUB
    ============================================================================ */
 async function renderHub(){
-  document.getElementById('pageTitle').textContent = 'All Dashboards';
-  document.getElementById('pageCrumb').textContent = STATE.school + ' · last 7 days at a glance';
-  document.getElementById('controlsBar').innerHTML = '';
-  const content = document.getElementById('content');
-  content.innerHTML = '<div class="loading"><div class="spin"></div>Loading overview…</div>';
+  document.getElementById('pageTitle').textContent='All Dashboards';
+  document.getElementById('pageCrumb').textContent=STATE.school+' · last 7 days at a glance';
+  document.getElementById('controlsBar').innerHTML='';
+  const content=document.getElementById('content');
+  content.innerHTML='<div class="loading"><div class="spin"></div>Loading overview…</div>';
   try{
-    const ov = await api('overview', { school: STATE.school });
-    if(!ov.cards.length){ content.innerHTML = '<div class="empty">No reports configured for this school yet.</div>'; return; }
-    content.innerHTML = `<div class="hub-grid">${ov.cards.map(cardHtml).join('')}</div>`;
+    const ov=await api('overview',{school:STATE.school});
+    if(!ov.cards.length){ content.innerHTML='<div class="empty">No reports configured for this school yet.</div>'; return; }
+    content.innerHTML=`<div class="hub-grid">${ov.cards.map(cardHtml).join('')}</div>`;
     ov.cards.forEach(c=>{
-      const el = document.getElementById('hub-'+c.sourceId);
-      if(el) el.onclick = ()=>{ STATE.view = c.sourceId; STATE.compareMode=false; renderSidebar(); renderView(); };
+      const el=document.getElementById('hub-'+c.sourceId);
+      if(el) el.onclick=()=>{ pushHistory(); STATE.view=c.sourceId; STATE.compareMode=false; renderSidebar(); renderView(true); };
     });
   }catch(err){
-    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
+    content.innerHTML='<div class="err">'+esc(err.message)+'</div>';
   }
 }
 
 function cardHtml(c){
   if(c.error){
-    return `<div class="hub-card" id="hub-${c.sourceId}"><div class="icon">${c.icon}</div><h4>${escapeHtml(c.label)}</h4>
-      <div class="mini-kpi" style="color:var(--bad)">${escapeHtml(c.error)}</div></div>`;
+    return `<div class="hub-card" id="hub-${c.sourceId}"><div class="icon">${c.icon}</div>
+      <h4>${esc(c.label)}</h4><div class="mini-kpi" style="color:var(--bad)">${esc(c.error)}</div></div>`;
   }
-  const kpis = (c.kpis||[]).map(k=>`<div class="mini-kpi"><span>${escapeHtml(k.label)}</span><b>${escapeHtml(k.displayValue)}</b></div>`).join('');
-  return `<div class="hub-card" id="hub-${c.sourceId}"><div class="icon">${c.icon}</div><h4>${escapeHtml(c.label)}</h4>${kpis}</div>`;
+  const kpis=(c.kpis||[]).map(k=>`<div class="mini-kpi"><span>${esc(k.label)}</span><b>${esc(k.displayValue)}</b></div>`).join('');
+  return `<div class="hub-card" id="hub-${c.sourceId}"><div class="icon">${c.icon}</div><h4>${esc(c.label)}</h4>${kpis}</div>`;
 }
 
 /* ============================================================================
    SUMMARY VIEW
    ============================================================================ */
 async function loadSummary(src){
-  const content = document.getElementById('content');
-  content.innerHTML = '<div class="loading"><div class="spin"></div>Crunching the numbers…</div>';
+  const content=document.getElementById('content');
+  content.innerHTML='<div class="loading"><div class="spin"></div>Crunching the numbers…</div>';
   try{
-    const params = src.supportsRange ? { id: src.id, from: STATE.from, to: STATE.to } : { id: src.id };
-    const s = await api('summary', params);
+    const params=src.supportsRange?{id:src.id,from:STATE.from,to:STATE.to}:{id:src.id};
+    const s=await api('summary',params);
     renderSummary(s);
   }catch(err){
-    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
+    content.innerHTML='<div class="err">'+esc(err.message)+'</div>';
   }
 }
 
 function renderSummary(s){
   destroyCharts();
-  const content = document.getElementById('content');
-  let html = `<div class="kpi-grid">${(s.kpis||[]).map(kpiCard).join('')}</div>`;
+  const content=document.getElementById('content');
+  let html=`<div class="kpi-grid">${(s.kpis||[]).map(kpiCard).join('')}</div>`;
 
-  const chartKeys = Object.keys(s.charts||{});
+  const charts=s.charts||{};
+  const chartKeys=Object.keys(charts).filter(k=>charts[k]&&charts[k].type);
   if(chartKeys.length){
-    html += `<div class="grid-2">`;
-    chartKeys.forEach((k,i)=>{
-      html += `<div class="panel"><h3>${escapeHtml(s.charts[k].title)}</h3><div class="chart-wrap"><canvas id="chart-${k}"></canvas></div></div>`;
+    html+=`<div class="grid-2">`;
+    chartKeys.forEach(k=>{
+      html+=`<div class="panel"><h3>${esc(charts[k].title||k)}</h3><div class="chart-wrap"><canvas id="chart-${k}"></canvas></div></div>`;
     });
-    html += `</div>`;
+    html+=`</div>`;
   }
 
-  const tableKeys = Object.keys(s.tables||{});
-  tableKeys.forEach(k=>{
-    const t = s.tables[k];
-    html += `<div class="panel"><h3>${escapeHtml(t.title)}</h3><div class="table-scroll">${tableHtml(t)}</div></div>`;
+  const tables=s.tables||{};
+  Object.keys(tables).forEach(k=>{
+    const t=tables[k];
+    html+=`<div class="panel"><h3>${esc(t.title||k)}</h3><div class="table-scroll">${tableHtml(t)}</div></div>`;
   });
 
   if((s.notes||[]).length){
-    html += `<div class="notes">${s.notes.map(n=>`<p>ℹ️ ${escapeHtml(n)}</p>`).join('')}</div>`;
+    html+=`<div class="notes">${s.notes.map(n=>`<p>ℹ️ ${esc(n)}</p>`).join('')}</div>`;
   }
+  content.innerHTML=html;
 
-  content.innerHTML = html;
-  chartKeys.forEach(k => drawChart('chart-'+k, s.charts[k]));
+  // Draw charts AFTER DOM is updated
+  chartKeys.forEach(k=>{ try{ drawChart('chart-'+k, charts[k]); }catch(e){ console.warn('Chart error',k,e); } });
 }
 
 function kpiCard(k){
   return `<div class="kpi-card ${k.tone||'neutral'}">
-    <div class="label">${escapeHtml(k.label)}</div>
-    <div class="value">${escapeHtml(String(k.displayValue))}</div>
-    ${k.sub ? `<div class="sub">${escapeHtml(k.sub)}</div>` : ''}
+    <div class="label">${esc(k.label)}</div>
+    <div class="value">${esc(String(k.displayValue))}</div>
+    ${k.sub?`<div class="sub">${esc(k.sub)}</div>`:''}
   </div>`;
 }
 
 function tableHtml(t){
-  if(!t.rows.length) return '<div class="empty">No rows for this range.</div>';
-  return `<table><thead><tr>${t.columns.map(c=>`<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
-    <tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td>${escapeHtml(c==null?'—':String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  if(!t.rows||!t.rows.length) return '<div class="empty">No rows for this range.</div>';
+  return `<table><thead><tr>${(t.columns||[]).map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead>
+    <tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c==null?'—':String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 }
 
+/* ============================================================================
+   CHART DRAWING — FIX: guard against missing/empty data + use globalThis.Chart
+   ============================================================================ */
 function drawChart(canvasId, spec){
-  const el = document.getElementById(canvasId);
+  if(!spec||!spec.type) return;
+  const el=document.getElementById(canvasId);
   if(!el) return;
-  const ctx = el.getContext('2d');
-  const palette = ['#2c6e49','#f7b500','#2a3b8f','#a54f2e','#6aa67f'];
-  if(spec.type === 'doughnut'){
-    const c = new Chart(ctx, { type:'doughnut', data:{ labels: spec.labels, datasets:[{ data: spec.data, backgroundColor: palette }] },
-      options:{ plugins:{ legend:{ position:'bottom', labels:{font:{size:11}} } }, maintainAspectRatio:false } });
-    STATE.charts.push(c); return;
-  }
-  const datasets = (spec.series||[]).map((s,i)=>({
-    label: s.name, data: s.data,
-    borderColor: palette[i%palette.length], backgroundColor: spec.type==='bar' ? palette[i%palette.length] : 'transparent',
-    tension:.3, fill:false, borderWidth:2, pointRadius: spec.type==='line' ? 2 : 0
-  }));
-  const c = new Chart(ctx, {
-    type: spec.type === 'bar' ? 'bar' : 'line',
-    data: { labels: spec.labels, datasets },
-    options: {
-      maintainAspectRatio:false,
-      plugins:{ legend:{ display: datasets.length>1, position:'bottom', labels:{font:{size:11}} } },
-      scales:{ x:{ ticks:{ font:{size:10}, maxRotation:60 } }, y:{ beginAtZero:true, ticks:{font:{size:10}} } }
+  // Wait for Chart.js to be available
+  const ChartLib = (typeof Chart !== 'undefined') ? Chart : (globalThis.Chart||window.Chart);
+  if(!ChartLib){ console.warn('Chart.js not loaded'); return; }
+
+  const ctx=el.getContext('2d');
+  const palette=['#2c6e49','#f7b500','#2a3b8f','#a54f2e','#6aa67f','#8b4513','#20b2aa'];
+
+  try{
+    if(spec.type==='doughnut'){
+      const labels = (spec.labels||[]).filter((_,i)=>(spec.data||[])[i]!=null && (spec.data||[])[i]!==0);
+      const data   = (spec.data||[]).filter(v=>v!=null && v!==0);
+      if(!data.length){ el.closest('.panel').querySelector('h3').textContent+=' (no data)'; return; }
+      const c=new ChartLib(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:palette}]},
+        options:{plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},maintainAspectRatio:false}});
+      STATE.charts.push(c); return;
     }
-  });
-  STATE.charts.push(c);
+
+    const labels  = spec.labels||[];
+    const datasets = (spec.series||[]).map((s,i)=>({
+      label:s.name, data:s.data||[],
+      borderColor:palette[i%palette.length],
+      backgroundColor:spec.type==='bar'?palette[i%palette.length]+'bb':'transparent',
+      tension:.3, fill:false, borderWidth:2,
+      pointRadius:spec.type==='line'?2:0,
+      spanGaps:true  // connect line across null gaps
+    }));
+    if(!datasets.length){ el.closest('.panel').querySelector('h3').textContent+=' (no data)'; return; }
+    const c=new ChartLib(ctx,{
+      type:spec.type==='bar'?'bar':'line',
+      data:{labels,datasets},
+      options:{
+        maintainAspectRatio:false,
+        plugins:{legend:{display:datasets.length>1,position:'bottom',labels:{font:{size:11}}}},
+        scales:{x:{ticks:{font:{size:10},maxRotation:60}},y:{beginAtZero:true,ticks:{font:{size:10}}}}
+      }
+    });
+    STATE.charts.push(c);
+  }catch(e){
+    console.error('drawChart failed',canvasId, e);
+  }
 }
 
-function destroyCharts(){ STATE.charts.forEach(c=>c.destroy()); STATE.charts = []; }
+function destroyCharts(){ STATE.charts.forEach(c=>{try{c.destroy();}catch(e){}}); STATE.charts=[]; }
 
 /* ============================================================================
    COMPARE VIEW
    ============================================================================ */
 async function loadCompare(src){
-  const content = document.getElementById('content');
-  content.innerHTML = '<div class="loading"><div class="spin"></div>Comparing periods…</div>';
+  const content=document.getElementById('content');
+  content.innerHTML='<div class="loading"><div class="spin"></div>Comparing periods…</div>';
   try{
-    const spanMs = (new Date(STATE.to) - new Date(STATE.from)) || 7*86400000;
-    const p2To = STATE.to, p2From = STATE.from;
-    const p1To = ymd(new Date(new Date(STATE.from).getTime() - 86400000));
-    const p1From = ymd(new Date(new Date(STATE.from).getTime() - spanMs - 86400000));
-    const cmp = await api('compare', { id: src.id, p1From, p1To, p2From: p2From, p2To: p2To });
-    renderCompare(cmp, p1From, p1To, p2From, p2To);
+    const spanMs=(new Date(STATE.to)-new Date(STATE.from))||7*86400000;
+    const p2To=STATE.to, p2From=STATE.from;
+    const p1To=ymd(new Date(new Date(STATE.from).getTime()-86400000));
+    const p1From=ymd(new Date(new Date(STATE.from).getTime()-spanMs-86400000));
+    const cmp=await api('compare',{id:src.id,p1From,p1To,p2From,p2To});
+    renderCompare(cmp,p1From,p1To,p2From,p2To);
   }catch(err){
-    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
+    content.innerHTML='<div class="err">'+esc(err.message)+'</div>';
   }
 }
 
-function renderCompare(cmp, p1From, p1To, p2From, p2To){
+function renderCompare(cmp,p1From,p1To,p2From,p2To){
   destroyCharts();
-  const content = document.getElementById('content');
-  let html = `<div class="panel"><h3>Period 1: ${p1From} → ${p1To} &nbsp;vs&nbsp; Period 2: ${p2From} → ${p2To}</h3>
-    <div class="deltas-grid">${cmp.deltas.map(deltaCard).join('')}</div></div>`;
-  content.innerHTML = html;
+  const content=document.getElementById('content');
+  let html=`<div class="panel"><h3>Period 1: ${p1From} → ${p1To} &nbsp;vs&nbsp; Period 2: ${p2From} → ${p2To}</h3>`;
+  if(!cmp.deltas||!cmp.deltas.length){
+    html+='<div class="empty">No comparable KPIs found for these periods.</div>';
+  } else {
+    html+=`<div class="deltas-grid">${cmp.deltas.map(deltaCard).join('')}</div>`;
+  }
+  html+='</div>';
+  content.innerHTML=html;
 }
 
 function deltaCard(d){
-  const up = d.delta > 0;
-  const dir = d.delta === 0 ? '' : (up ? '▲' : '▼');
-  const cls = d.delta === 0 ? '' : (up ? 'up' : 'down');
+  const up=d.delta>0;
+  const dir=d.delta===0?'':(up?'▲':'▼');
+  const cls=d.delta===0?'':(up?'up':'down');
   return `<div class="delta-card">
-    <div class="lbl">${escapeHtml(d.label)}</div>
-    <div class="delta-row"><span>${escapeHtml(String(d.period1Display))}</span><span class="arrow">→</span>
-      <span class="v2">${escapeHtml(String(d.period2Display))}</span></div>
-    <div class="delta-row ${cls}" style="font-size:12px;">${dir} ${d.pctChange!=null ? Math.abs(d.pctChange)+'%' : ''}</div>
+    <div class="lbl">${esc(d.label)}</div>
+    <div class="delta-row"><span>${esc(String(d.period1Display))}</span><span class="arrow">→</span>
+      <span class="v2">${esc(String(d.period2Display))}</span></div>
+    <div class="delta-row ${cls}" style="font-size:12px;">${dir} ${d.pctChange!=null?Math.abs(d.pctChange)+'%':''}</div>
   </div>`;
 }
 
@@ -506,22 +504,23 @@ function deltaCard(d){
    RAW DATA VIEW
    ============================================================================ */
 async function loadRawData(src){
-  const content = document.getElementById('content');
-  content.innerHTML = '<div class="loading"><div class="spin"></div>Loading raw rows…</div>';
+  const content=document.getElementById('content');
+  content.innerHTML='<div class="loading"><div class="spin"></div>Loading raw rows…</div>';
   try{
-    const d = await api('data', { id: src.id });
-    const t = { title: 'Raw data — ' + d.totalRows + ' rows', columns: d.headers, rows: d.rows.slice(0, 1000) };
-    content.innerHTML = `<div class="panel"><h3>${escapeHtml(t.title)}${d.totalRows>1000?' (showing first 1000)':''}</h3><div class="table-scroll">${tableHtml(t)}</div></div>`;
+    const d=await api('data',{id:src.id});
+    const t={title:'Raw data — '+d.totalRows+' rows',columns:d.headers,rows:d.rows.slice(0,1000)};
+    content.innerHTML=`<div class="panel"><h3>${esc(t.title)}${d.totalRows>1000?' (showing first 1000)':''}</h3>
+      <div class="table-scroll">${tableHtml(t)}</div></div>`;
   }catch(err){
-    content.innerHTML = '<div class="err">'+escapeHtml(err.message)+'</div>';
+    content.innerHTML='<div class="err">'+esc(err.message)+'</div>';
   }
 }
 
 /* ============================================================================
    UTIL
    ============================================================================ */
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 boot();
